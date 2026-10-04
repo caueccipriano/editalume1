@@ -165,6 +165,23 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .rankgrid{display:grid;grid-template-columns:1fr;gap:9px}
 .rankbox{border:1px solid #eee0e2;border-radius:14px;background:#fffafa;padding:10px}
 .rankbox h4{margin:0 0 8px;font-size:11px}.rankitem{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #f1e7e8;font-size:9px}.rankitem:first-of-type{border-top:0}.rankitem b{font-size:10px}
+.apurationpanel{grid-column:span 12;padding:15px}
+.apurationgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.aprank{border:1px solid #eee0e2;border-radius:14px;background:linear-gradient(180deg,#fff,#fffafa);padding:10px;min-width:0}
+.aprank h4{margin:0 0 8px;font-size:11px}
+.apitem{padding:7px 0;border-top:1px solid #f2e7e9}
+.apitem:first-of-type{border-top:0}
+.apline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px}
+.apleft{display:flex;align-items:center;gap:7px;min-width:0}
+.apnum{width:22px;height:22px;border-radius:7px;background:#fff0f2;color:#96001c;display:grid;place-items:center;font-weight:1000;font-size:8px;flex:0 0 auto}
+.apuf{font-weight:1000;font-size:10px}
+.aplead{font-size:7px;font-weight:900;color:#8c7d81}
+.apvalue{font-weight:1000;font-size:10px;white-space:nowrap}
+.apbar{height:5px;background:#f1e7e9;border-radius:999px;overflow:hidden;margin-top:5px}
+.apbar i{display:block;height:100%;background:linear-gradient(90deg,#a90020,#e33b5c);border-radius:999px}
+.apbar.blue i{background:linear-gradient(90deg,#91aff0,#2d67d8)}
+.apbar.gray i{background:linear-gradient(90deg,#d2c9cb,#9a8f92)}
+.apmeta{display:flex;justify-content:space-between;gap:6px;margin-top:4px;color:#9a8b8f;font-size:7px}
 .historypanel{grid-column:span 12;padding:15px}
 .historystrip{display:flex;gap:8px;overflow-x:auto;padding:2px 0 5px}
 .histitem{min-width:145px;border:1px solid #eee0e2;background:#fffafa;border-radius:13px;padding:10px}
@@ -183,8 +200,8 @@ body.screenmode .candidate:first-child{padding:22px}
   body:before{font-size:46px;opacity:.6}.wrap{padding:12px 10px 26px}.mast{border-radius:22px;padding:18px 15px 16px}.header{align-items:flex-start}.livebox{align-items:flex-end}
   .refreshhint{display:none}h1{font-size:35px}.subtitle{font-size:11px}.hero{padding:14px}.candgrid{grid-template-columns:1fr}.divider{height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--line),transparent)}
   .photo{width:58px;height:58px;border-radius:16px}.share{font-size:50px}.herohead{align-items:flex-start}.sourcepill{display:none}.herofooter{gap:7px}.kpi{padding:13px;min-height:103px}.big{font-size:27px}
-  .states{padding:13px}.statehead{align-items:flex-start;flex-direction:column}.segmented{width:100%}.list{grid-template-columns:1fr}.footer{flex-direction:column}.state{padding:12px}
-  .topactions{justify-content:flex-end}.batchrow{grid-template-columns:1fr}.chartpanel,.mappanel,.rankpanel,.historypanel{grid-column:span 12}.maplayout{grid-template-columns:1fr}.chartbox{height:165px}.batchmain .headline{font-size:17px}
+  .states{padding:13px}.statehead{align-items:flex-start;flex-direction:column}.segmented{width:100%}.list{grid-template-columns:1fr}.footer{flex-direction:column}.state{padding:12px}.apurationgrid{grid-template-columns:1fr}
+  .topactions{justify-content:flex-end}.batchrow{grid-template-columns:1fr}.chartpanel,.mappanel,.rankpanel,.historypanel,.apurationpanel{grid-column:span 12}.apurationgrid{grid-template-columns:1fr 1fr}.maplayout{grid-template-columns:1fr}.chartbox{height:165px}.batchmain .headline{font-size:17px}
 }
 </style>
 </head>
@@ -314,6 +331,20 @@ body.screenmode .candidate:first-child{padding:22px}
       </div>
     </section>
 
+
+    <section class="card apurationpanel analytics">
+      <div class="paneltitle">
+        <div><div class="eyebrow">★ Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
+        <div class="sourcepill">27 UFs • atualização automática</div>
+      </div>
+      <div class="apurationgrid">
+        <div class="aprank"><h4>Mais apurados agora</h4><div id="rankMostCounted"></div></div>
+        <div class="aprank"><h4>Menos apurados agora</h4><div id="rankLeastCounted"></div></div>
+        <div class="aprank"><h4>Mais seções no último lote</h4><div id="rankNewSections"></div></div>
+        <div class="aprank"><h4>Maior peso nos votos já contados</h4><div id="rankVoteWeight"></div></div>
+      </div>
+    </section>
+
     <section class="card historypanel analytics">
       <div class="paneltitle"><div><div class="eyebrow">Até 50 lotes salvos neste aparelho</div><h3>Linha do tempo da apuração</h3></div><div id="historyCount" class="sourcepill">0 lotes</div></div>
       <div id="historyStrip" class="historystrip"></div>
@@ -436,6 +467,53 @@ function renderRanks(){
   $("rankFlavio").innerHTML=rankHtml(f,d=>fpp(d.dfp||0),d=>fvdelta(d.dfv||0));
   $("rankWeight").innerHTML=rankHtml(w,d=>"+"+fi(Math.max(0,d.dvv||0)),d=>"votos válidos no lote");
 }
+function apLeadLabel(d){
+  return who(d)==="l"?"Lula à frente":who(d)==="f"?"Flávio à frente":"Empate";
+}
+function apRankHtml(arr,valueFn,barFn,metaFn,barClass=""){
+  if(!arr.length)return'<div class="kpisub">Aguardando dados das UFs…</div>';
+  return arr.slice(0,7).map((d,i)=>{
+    const pct=Math.max(0,Math.min(100,barFn(d)));
+    return '<div class="apitem"><div class="apline"><div class="apleft"><span class="apnum">'+(i+1)+'</span><span><span class="apuf">'+d.uf+'</span><br><span class="aplead">'+apLeadLabel(d)+'</span></span></div><span class="apvalue">'+valueFn(d)+'</span></div><div class="apbar '+barClass+'"><i style="width:'+pct+'%"></i></div><div class="apmeta">'+metaFn(d)+'</div></div>';
+  }).join("");
+}
+function renderApurationRadar(){
+  const most=[...states].sort((a,b)=>b.a-a.a);
+  const least=[...states].sort((a,b)=>a.a-b.a);
+  const newSections=states.filter(d=>d.dst!=null).sort((a,b)=>(b.dst||0)-(a.dst||0));
+  const totalVV=states.reduce((s,d)=>s+(d.vv||0),0)||1;
+  const weighted=[...states].sort((a,b)=>(b.vv||0)-(a.vv||0));
+
+  $("rankMostCounted").innerHTML=apRankHtml(
+    most,
+    d=>fpct(d.a),
+    d=>d.a,
+    d=>'<span>'+fi(d.st)+' / '+fi(d.ts)+' seções</span><span>'+fi(Math.max(0,d.ts-d.st))+' faltam</span>'
+  );
+  $("rankLeastCounted").innerHTML=apRankHtml(
+    least,
+    d=>fpct(d.a),
+    d=>d.a,
+    d=>'<span>'+fi(d.st)+' / '+fi(d.ts)+' seções</span><span>'+fi(Math.max(0,d.ts-d.st))+' faltam</span>',
+    "gray"
+  );
+  $("rankNewSections").innerHTML=apRankHtml(
+    newSections,
+    d=>"+"+fi(Math.max(0,d.dst||0)),
+    d=>{
+      const max=Math.max(...newSections.map(x=>Math.max(0,x.dst||0)),1);
+      return 100*Math.max(0,d.dst||0)/max;
+    },
+    d=>'<span>seções no último lote</span><span>'+fpct(d.a)+' totalizado</span>',
+    "blue"
+  );
+  $("rankVoteWeight").innerHTML=apRankHtml(
+    weighted,
+    d=>(100*(d.vv||0)/totalVV).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%",
+    d=>100*(d.vv||0)/(weighted[0]?.vv||1),
+    d=>'<span>'+fi(d.vv||0)+' votos válidos</span><span>'+fpct(d.a)+' apurado</span>'
+  );
+}
 function renderMap(){
   const byUf=new Map(states.map(s=>[s.uf,s]));
   $("tileMap").innerHTML=U.map(uf=>{const d=byUf.get(uf),pos=MAP_POS[uf]||[1,1],cls=d?who(d):"t";return'<button type="button" class="maptile '+cls+(selectedUF===uf?" sel":"")+'" data-uf="'+uf+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'" aria-label="'+uf+'">'+uf+'</button>'}).join("");
@@ -448,7 +526,7 @@ function renderHistory(){
   $("historyCount").textContent=history.length+" lote"+(history.length===1?"":"s");
   $("historyStrip").innerHTML=[...history].reverse().slice(0,20).map(h=>'<div class="histitem"><div class="time">'+(h.dt||"—")+'</div><b>Lula '+fpct(h.lp)+'</b><span>Flávio '+fpct(h.fp)+'<br>Diferença '+fi(Math.abs(h.lead))+' votos</span></div>').join("")||'<div class="kpisub">O histórico começa a ser salvo neste aparelho a partir de agora.</div>';
 }
-function renderAnalytics(){renderBatch();renderCharts();renderRanks();renderMap();renderHistory()}
+function renderAnalytics(){renderBatch();renderCharts();renderRanks();renderApurationRadar();renderMap();renderHistory()}
 
 function walk(n,o=[]){
   if(!n)return o;
