@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#b00020">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Apuração 2026">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <title>Apuração 2026 — Lula × Flávio Bolsonaro</title>
 <style>
 :root{
@@ -123,12 +127,64 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .credits{max-width:620px}.err{display:none;margin-bottom:12px;background:#fff0f2;border:1px solid #efc5cd;color:#8c1630;border-radius:13px;padding:11px 12px;font-size:10px}
 .loading{animation:fade 1.2s ease-in-out infinite alternate}@keyframes fade{to{opacity:.45}}
 .starline{display:flex;gap:5px;margin-top:11px;color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.12em}
+.topactions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:3px}
+.actionbtn{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:7px 9px;font-size:9px;font-weight:900;cursor:pointer}
+.actionbtn:hover{background:rgba(255,255,255,.17)}
+.batchticker{display:none;align-items:center;gap:9px;margin:0 0 12px;background:#fff;border:1px solid #edcfd5;border-left:5px solid var(--red);border-radius:14px;padding:10px 12px;box-shadow:0 8px 24px rgba(95,20,38,.08);font-size:10px;font-weight:850;color:#5f3c44}
+.batchticker.show{display:flex;animation:tickerin .25s ease-out}
+.batchticker .tstar{color:var(--red);font-size:15px}
+@keyframes tickerin{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.analytics{position:relative;overflow:hidden}
+.analytics:after{content:"★";position:absolute;right:-10px;bottom:-28px;font-size:100px;color:rgba(176,0,32,.026);font-weight:1000;pointer-events:none}
+.batchcard{grid-column:span 12;padding:16px;background:linear-gradient(135deg,#fff,#fff5f6)}
+.batchrow{display:grid;grid-template-columns:1.35fr .9fr .9fr;gap:10px;align-items:stretch}
+.batchmain{border:1px solid #efd8dd;border-radius:15px;background:#fff;padding:13px}
+.batchmain .eyebrow,.paneltitle .eyebrow{font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:#9c858a;font-weight:1000}
+.batchmain .headline{font-size:20px;line-height:1.1;font-weight:1000;letter-spacing:-.025em;margin-top:5px}
+.batchmetric{border:1px solid #eee0e3;border-radius:15px;background:#fffafa;padding:12px}
+.batchmetric b{display:block;font-size:20px;letter-spacing:-.03em;margin-top:4px}
+.chartpanel{grid-column:span 6;padding:15px}
+.paneltitle{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.paneltitle h3{font-size:15px;margin:3px 0 0;letter-spacing:-.02em}
+.chartbox{height:180px;border:1px solid #f0e2e4;background:linear-gradient(#fff,#fffafa);border-radius:14px;padding:7px;overflow:hidden}
+.chartbox svg{width:100%;height:100%;display:block}
+.chartlegend{display:flex;gap:12px;flex-wrap:wrap;color:#837578;font-size:9px;font-weight:800}
+.legenddot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.mappanel{grid-column:span 7;padding:15px}
+.maplayout{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;align-items:stretch}
+.mapscroll{overflow-x:auto;padding-bottom:3px}
+.tilemap{min-width:430px;display:grid;grid-template-columns:repeat(9,42px);grid-auto-rows:42px;gap:5px;justify-content:center;padding:8px;background:#fffafa;border:1px solid #f0e1e3;border-radius:15px}
+.maptile{border:0;border-radius:11px;font-size:9px;font-weight:1000;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);transition:.15s ease}
+.maptile.l{background:#c9002b;color:#fff}.maptile.f{background:#e9eef8;color:#2f5ea8;border:1px solid #cfddf5}.maptile.t{background:#eee8e9;color:#675f61}
+.maptile.sel{outline:3px solid #7d0017;outline-offset:2px;transform:scale(1.04)}
+.mapdetail{border:1px solid #efdfe2;border-radius:15px;background:#fff;padding:13px;min-width:0}
+.mapdetail h4{margin:0 0 4px;font-size:22px}.mapdetail .leadline{font-size:10px;color:#796d70;font-weight:800}
+.mapnumbers{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.mapnum{border-radius:12px;background:#fff5f6;padding:9px}.mapnum.f{background:#f3f6fd}.mapnum b{display:block;font-size:21px;margin-top:2px}.mapnum.l b{color:var(--red2)}.mapnum.f b{color:var(--blue)}
+.mapfoot{border-top:1px solid #eee4e5;margin-top:10px;padding-top:9px;color:#8b7e81;font-size:9px;line-height:1.45}
+.rankpanel{grid-column:span 5;padding:15px}
+.rankgrid{display:grid;grid-template-columns:1fr;gap:9px}
+.rankbox{border:1px solid #eee0e2;border-radius:14px;background:#fffafa;padding:10px}
+.rankbox h4{margin:0 0 8px;font-size:11px}.rankitem{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #f1e7e8;font-size:9px}.rankitem:first-of-type{border-top:0}.rankitem b{font-size:10px}
+.historypanel{grid-column:span 12;padding:15px}
+.historystrip{display:flex;gap:8px;overflow-x:auto;padding:2px 0 5px}
+.histitem{min-width:145px;border:1px solid #eee0e2;background:#fffafa;border-radius:13px;padding:10px}
+.histitem .time{font-size:8px;color:#96868a;font-weight:900}.histitem b{display:block;font-size:13px;margin-top:4px}.histitem span{font-size:8px;color:#8c7e82}
+.installhelp{display:none;margin-top:9px;background:#fff;border:1px solid #efd5da;color:#7c4b55;border-radius:11px;padding:8px 10px;font-size:9px;line-height:1.45}
+.installhelp.show{display:block}
+body.screenmode{background:#fff}
+body.screenmode .wrap{max-width:1500px}
+body.screenmode .mast{margin-bottom:10px}
+body.screenmode .kpi,body.screenmode .states,body.screenmode .analytics,body.screenmode .footer{display:none!important}
+body.screenmode .hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center}
+body.screenmode .share{font-size:clamp(72px,10vw,120px)}
+body.screenmode .candidate:first-child{padding:22px}
 @media(max-width:900px){.kpi{grid-column:span 6}.list{grid-template-columns:repeat(2,1fr)}.herofooter{grid-template-columns:1fr}.candgrid{gap:12px}}
 @media(max-width:620px){
   body:before{font-size:46px;opacity:.6}.wrap{padding:12px 10px 26px}.mast{border-radius:22px;padding:18px 15px 16px}.header{align-items:flex-start}.livebox{align-items:flex-end}
   .refreshhint{display:none}h1{font-size:35px}.subtitle{font-size:11px}.hero{padding:14px}.candgrid{grid-template-columns:1fr}.divider{height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--line),transparent)}
   .photo{width:58px;height:58px;border-radius:16px}.share{font-size:50px}.herohead{align-items:flex-start}.sourcepill{display:none}.herofooter{gap:7px}.kpi{padding:13px;min-height:103px}.big{font-size:27px}
   .states{padding:13px}.statehead{align-items:flex-start;flex-direction:column}.segmented{width:100%}.list{grid-template-columns:1fr}.footer{flex-direction:column}.state{padding:12px}
+  .topactions{justify-content:flex-end}.batchrow{grid-template-columns:1fr}.chartpanel,.mappanel,.rankpanel,.historypanel{grid-column:span 12}.maplayout{grid-template-columns:1fr}.chartbox{height:165px}.batchmain .headline{font-size:17px}
 }
 </style>
 </head>
@@ -145,11 +201,17 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
       <div class="livebox">
         <div class="live"><span class="dot"></span><span id="cd">Atualiza a cada 1s</span></div>
         <div class="refreshhint">Atualização automática</div>
+        <div class="topactions">
+          <button id="screenBtn" class="actionbtn" type="button">◫ Modo telão</button>
+          <button id="installBtn" class="actionbtn" type="button">＋ Tela inicial</button>
+        </div>
+        <div id="installHelp" class="installhelp">No iPhone: toque em Compartilhar → <b>Adicionar à Tela de Início</b>.</div>
       </div>
     </header>
   </section>
 
   <div id="err" class="err"></div>
+  <div id="ticker" class="batchticker"><span class="tstar">★</span><span id="tickerText">Novo lote do TSE</span></div>
 
   <main class="grid">
     <section class="card hero">
@@ -218,6 +280,45 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
       <div><div id="nationalA" class="big">—</div><div class="kpisub">das seções no país</div></div>
     </section>
 
+
+    <section class="card batchcard analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
+      <div class="batchrow">
+        <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O painel consulta a cada 1 s, mas só compara quando os números oficiais mudam.</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">★</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
+      </div>
+    </section>
+
+    <section class="card chartpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Evolução dos percentuais</h3></div><div class="chartlegend"><span><i class="legenddot" style="background:#c9002b"></i>Lula</span><span><i class="legenddot" style="background:#2d67d8"></i>Flávio</span></div></div>
+      <div id="shareChart" class="chartbox"></div>
+    </section>
+
+    <section class="card chartpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Diferença em votos</h3></div><div class="chartlegend"><span>Acima de zero = Lula à frente</span></div></div>
+      <div id="gapChart" class="chartbox"></div>
+    </section>
+
+    <section class="card mappanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Mapa esquemático</div><h3>Brasil por UF</h3></div><div class="sourcepill">Toque em um estado</div></div>
+      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
+    </section>
+
+    <section class="card rankpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Último lote</div><h3>Onde a apuração mexeu mais</h3></div></div>
+      <div class="rankgrid">
+        <div class="rankbox"><h4>★ Maior variação do Lula</h4><div id="rankLula"></div></div>
+        <div class="rankbox"><h4>Maior variação do Flávio</h4><div id="rankFlavio"></div></div>
+        <div class="rankbox"><h4>Mais votos válidos adicionados</h4><div id="rankWeight"></div></div>
+      </div>
+    </section>
+
+    <section class="card historypanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Até 50 lotes salvos neste aparelho</div><h3>Linha do tempo da apuração</h3></div><div id="historyCount" class="sourcepill">0 lotes</div></div>
+      <div id="historyStrip" class="historystrip"></div>
+    </section>
+
     <section class="card states">
       <div class="statehead">
         <div><h2>★ Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
@@ -233,7 +334,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
   </main>
 
   <footer class="footer">
-    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. Este painel exibe resultados parciais e não faz projeções.</span>
+    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. O histórico de até 50 lotes fica salvo localmente neste aparelho. Este painel exibe resultados parciais e não faz projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -242,7 +343,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 const B="https://resultados.tse.jus.br/oficial/ele2026/6257/dados/";
 const U=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 const I=1000;
-let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={};
+let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={},history=[],lastBatchSummary=null,selectedUF="SP",installPrompt=null,tickerTimer=null;
 const $=x=>document.getElementById(x);
 const pi=n=>Number(String(n??"").replace(/\D/g,""))||0;
 const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0};
@@ -260,6 +361,95 @@ const batchDeltaText=(dv,dp)=>{
   return arrow+" "+fpp(dp)+" • "+fvdelta(dv);
 };
 
+const MAP_POS={
+  RR:[1,3],AP:[1,7],AM:[2,2],PA:[2,5],AC:[3,1],RO:[3,2],MT:[3,4],TO:[3,5],MA:[3,6],CE:[3,8],RN:[3,9],
+  PI:[4,6],PE:[4,8],PB:[4,9],AL:[5,8],SE:[5,9],BA:[5,6],GO:[5,5],DF:[6,5],MS:[6,4],MG:[6,6],ES:[6,8],
+  SP:[7,5],RJ:[7,7],PR:[8,5],SC:[9,5],RS:[10,4]
+};
+const compact=n=>new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1}).format(Number(n)||0);
+const signedLead=d=>(d?.l?.v||0)-(d?.f?.v||0);
+function describeBatch(n,o){
+  if(!o)return null;
+  const move=signedLead(n)-signedLead(o);
+  const ppMove=(n.l.p-n.f.p)-(o.l.p-o.f.p);
+  let headline="Saldo entre Lula e Flávio ficou estável";
+  if(move>0){
+    headline=n.l.v>=n.f.v?(o.l.v>=o.f.v?"Lula ampliou a vantagem em "+fi(move)+" votos":"Lula avançou "+fi(move)+" votos no saldo do lote"):"Lula reduziu a diferença em "+fi(move)+" votos";
+  }else if(move<0){
+    const x=Math.abs(move);
+    headline=n.f.v>=n.l.v?(o.f.v>=o.l.v?"Flávio ampliou a vantagem em "+fi(x)+" votos":"Flávio avançou "+fi(x)+" votos no saldo do lote"):"Flávio reduziu a diferença em "+fi(x)+" votos";
+  }
+  return{headline,move,ppMove,dt:n.dt||"—"};
+}
+function historyPoint(n){
+  return{dt:n.dt,a:n.a,lp:n.l.p,fp:n.f.p,lv:n.l.v,fv:n.f.v,lead:signedLead(n),gapPP:n.l.p-n.f.p};
+}
+function pushHistory(n){
+  const p=historyPoint(n),last=history[history.length-1];
+  if(!last||last.dt!==p.dt||last.lv!==p.lv||last.fv!==p.fv){
+    history.push(p);history=history.slice(-50);
+  }
+}
+function lineSvg(rows,keys,colors,format,zeroLine=false){
+  if(!rows.length)return'<div style="display:grid;place-items:center;height:100%;color:#998b8e;font-size:10px">Aguardando lotes oficiais…</div>';
+  const W=620,H=180,P=20,vals=rows.flatMap(r=>keys.map(k=>Number(r[k])||0));
+  let min=Math.min(...vals),max=Math.max(...vals);
+  if(zeroLine){min=Math.min(min,0);max=Math.max(max,0)}
+  if(min===max){min-=1;max+=1}
+  const pad=(max-min)*.08;min-=pad;max+=pad;
+  const x=i=>rows.length===1?W/2:P+i*(W-2*P)/(rows.length-1);
+  const y=v=>H-P-(v-min)*(H-2*P)/(max-min);
+  let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img">';
+  for(let i=0;i<4;i++){const yy=P+i*(H-2*P)/3;svg+='<line x1="'+P+'" y1="'+yy+'" x2="'+(W-P)+'" y2="'+yy+'" stroke="#f0e4e6" stroke-width="1"/>'}
+  if(zeroLine&&min<0&&max>0){const zy=y(0);svg+='<line x1="'+P+'" y1="'+zy+'" x2="'+(W-P)+'" y2="'+zy+'" stroke="#b9adb0" stroke-dasharray="4 4"/>'}
+  keys.forEach((k,ki)=>{const pts=rows.map((r,i)=>x(i)+','+y(Number(r[k])||0)).join(' ');svg+='<polyline points="'+pts+'" fill="none" stroke="'+colors[ki]+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';const last=rows[rows.length-1];svg+='<circle cx="'+x(rows.length-1)+'" cy="'+y(Number(last[k])||0)+'" r="4" fill="'+colors[ki]+'"/>'});
+  const first=rows[0],last=rows[rows.length-1];svg+='<text x="'+P+'" y="'+(H-3)+'" fill="#9b8d90" font-size="9">'+(first.dt||"início")+'</text><text x="'+(W-P)+'" y="'+(H-3)+'" text-anchor="end" fill="#9b8d90" font-size="9">'+(last.dt||"agora")+'</text>';
+  keys.forEach((k,ki)=>{svg+='<text x="'+(W-P)+'" y="'+(P+ki*14)+'" text-anchor="end" fill="'+colors[ki]+'" font-size="10" font-weight="800">'+format(Number(last[k])||0)+'</text>'});
+  return svg+'</svg>';
+}
+function showTicker(textValue){
+  $("tickerText").textContent=textValue;$("ticker").classList.add("show");
+  clearTimeout(tickerTimer);tickerTimer=setTimeout(()=>$("ticker").classList.remove("show"),9000);
+}
+function renderBatch(){
+  if(!lastBatchSummary||!natDelta){$("batchHeadline").textContent="Aguardando dois lotes diferentes do TSE…";return}
+  $("batchHeadline").textContent=lastBatchSummary.headline;
+  $("batchDetail").textContent="Mudança do saldo entre os dois: "+fvdelta(lastBatchSummary.move)+" • "+fpp(lastBatchSummary.ppMove);
+  $("batchClock").textContent=lastBatchSummary.dt;
+  $("batchLula").textContent=fpp(natDelta.lp);$("batchLulaVotes").textContent=fvdelta(natDelta.lv);
+  $("batchFlavio").textContent=fpp(natDelta.fp);$("batchFlavioVotes").textContent=fvdelta(natDelta.fv);
+}
+function renderCharts(){
+  $("shareChart").innerHTML=lineSvg(history,["lp","fp"],["#c9002b","#2d67d8"],v=>fpct(v));
+  $("gapChart").innerHTML=lineSvg(history,["lead"],["#b00020"],v=>(v>=0?"+":"")+compact(v)+" votos",true);
+}
+function rankHtml(arr,valueFn,subFn){
+  if(!arr.length)return'<div class="kpisub">Aguardando um novo lote por UF…</div>';
+  return arr.slice(0,5).map((d,i)=>'<div class="rankitem"><span><b>'+(i+1)+'. '+d.uf+'</b><br><span style="color:#9a8a8e">'+subFn(d)+'</span></span><b>'+valueFn(d)+'</b></div>').join("");
+}
+function renderRanks(){
+  const withDelta=states.filter(d=>d.dlp!=null||d.dfp!=null);
+  const l=[...withDelta].sort((a,b)=>(b.dlp??-999)-(a.dlp??-999));
+  const f=[...withDelta].sort((a,b)=>(b.dfp??-999)-(a.dfp??-999));
+  const w=[...withDelta].sort((a,b)=>(b.dvv||0)-(a.dvv||0));
+  $("rankLula").innerHTML=rankHtml(l,d=>fpp(d.dlp||0),d=>fvdelta(d.dlv||0));
+  $("rankFlavio").innerHTML=rankHtml(f,d=>fpp(d.dfp||0),d=>fvdelta(d.dfv||0));
+  $("rankWeight").innerHTML=rankHtml(w,d=>"+"+fi(Math.max(0,d.dvv||0)),d=>"votos válidos no lote");
+}
+function renderMap(){
+  const byUf=new Map(states.map(s=>[s.uf,s]));
+  $("tileMap").innerHTML=U.map(uf=>{const d=byUf.get(uf),pos=MAP_POS[uf]||[1,1],cls=d?who(d):"t";return'<button type="button" class="maptile '+cls+(selectedUF===uf?" sel":"")+'" data-uf="'+uf+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'" aria-label="'+uf+'">'+uf+'</button>'}).join("");
+  const d=byUf.get(selectedUF)||states[0];
+  if(!d){$("mapDetail").textContent="Carregando UFs…";return}
+  const lead=who(d)==="l"?"Lula à frente":who(d)==="f"?"Flávio à frente":"Empate";
+  $("mapDetail").innerHTML='<h4>'+d.uf+'</h4><div class="leadline">'+lead+' • '+fpct(d.a)+' apurado</div><div class="mapnumbers"><div class="mapnum l"><span class="lab">Lula</span><b>'+fpct(d.l.p)+'</b><span class="sm">'+fi(d.l.v)+' votos</span></div><div class="mapnum f"><span class="lab">Flávio</span><b>'+fpct(d.f.p)+'</b><span class="sm">'+fi(d.f.v)+' votos</span></div></div><div class="mapfoot">Diferença: <b>'+fi(Math.abs(d.l.v-d.f.v))+' votos</b> • '+Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.<br>Lula no último lote: '+batchDeltaText(d.dlv,d.dlp)+'<br>Flávio no último lote: '+batchDeltaText(d.dfv,d.dfp)+'</div>';
+}
+function renderHistory(){
+  $("historyCount").textContent=history.length+" lote"+(history.length===1?"":"s");
+  $("historyStrip").innerHTML=[...history].reverse().slice(0,20).map(h=>'<div class="histitem"><div class="time">'+(h.dt||"—")+'</div><b>Lula '+fpct(h.lp)+'</b><span>Flávio '+fpct(h.fp)+'<br>Diferença '+fi(Math.abs(h.lead))+' votos</span></div>').join("")||'<div class="kpisub">O histórico começa a ser salvo neste aparelho a partir de agora.</div>';
+}
+function renderAnalytics(){renderBatch();renderCharts();renderRanks();renderMap();renderHistory()}
+
 function walk(n,o=[]){
   if(!n)return o;
   if(Array.isArray(n)){n.forEach(x=>walk(x,o));return o}
@@ -271,10 +461,11 @@ function walk(n,o=[]){
 }
 function parse(j){
   const s=j.s||j;
+  const v=j.v||j;
   const a=walk(j).map(c=>({n:String(c.nmu||c.nm||"").trim().toUpperCase(),v:pi(c.vap),p:pp(c.pvap)}));
   const l=a.find(x=>x.n==="LULA")||{v:0,p:0};
   const f=a.find(x=>x.n.includes("FLAVIO BOLSONARO")||x.n.includes("FLÁVIO BOLSONARO"))||{v:0,p:0};
-  return{l,f,a:pp(s.pst),st:pi(s.st),ts:pi(s.ts||j.s),dt:[j.dg,j.hg].filter(Boolean).join(" ")}
+  return{l,f,a:pp(s.pst),st:pi(s.st),ts:pi(s.ts||j.s),vv:pi(v.vv),dt:[j.dg,j.hg].filter(Boolean).join(" ")}
 }
 async function one(sc){
   const q=sc.toLowerCase();
@@ -346,7 +537,10 @@ async function go(){
           fv:n.f.v-oldN.f.v,
           fp:n.f.p-oldN.f.p
         };
+        lastBatchSummary=describeBatch(n,oldN);
+        showTicker("Novo lote TSE • "+lastBatchSummary.headline+" • Lula "+fpp(natDelta.lp)+" • Flávio "+fpp(natDelta.fp));
       }
+      pushHistory(n);
       if(!prev)prev={n:null,states:[]};
       prev.n=n;
     }
@@ -364,7 +558,9 @@ async function go(){
           dlv:s.l.v-o.l.v,
           dlp:s.l.p-o.l.p,
           dfv:s.f.v-o.f.v,
-          dfp:s.f.p-o.f.p
+          dfp:s.f.p-o.f.p,
+          dvv:s.vv-o.vv,
+          dst:s.st-o.st
         };
       }
       const d=stateDeltas[s.uf]||{};
@@ -373,8 +569,9 @@ async function go(){
     });
     prev.states=nextBaselines;
     draw();
+    renderAnalytics();
 
-    localStorage.setItem("e26",JSON.stringify({prev,natDelta,stateDeltas}))
+    localStorage.setItem("e26",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
   }catch(e){
     $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em aproximadamente 1 s. "+e.message;
     $("err").style.display="block"
@@ -388,6 +585,9 @@ try{
     prev=saved.prev;
     natDelta=saved.natDelta||null;
     stateDeltas=saved.stateDeltas||{};
+    history=Array.isArray(saved.history)?saved.history.slice(-50):[];
+    lastBatchSummary=saved.lastBatchSummary||null;
+    selectedUF=saved.selectedUF||"SP";
   }else if(saved){
     // Backwards compatibility with the previous storage format.
     prev=saved;
@@ -397,6 +597,20 @@ document.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".btn").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");mode=b.dataset.s;draw()
 });
+$("tileMap").addEventListener("click",e=>{
+  const b=e.target.closest("[data-uf]");if(!b)return;selectedUF=b.dataset.uf;renderMap();
+});
+$("screenBtn").addEventListener("click",()=>{
+  document.body.classList.toggle("screenmode");
+  $("screenBtn").textContent=document.body.classList.contains("screenmode")?"× Sair do telão":"◫ Modo telão";
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e});
+$("installBtn").addEventListener("click",async()=>{
+  if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return}
+  $("installHelp").classList.toggle("show");
+});
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
 setInterval(()=>{
   go();
   $("cd").textContent="Atualiza a cada 1s"
