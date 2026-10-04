@@ -132,7 +132,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
         <div class="starline">★ ★ ★ ★ ★</div>
       </div>
       <div class="livebox">
-        <div class="live"><span class="dot"></span><span id="cd">Atualiza em 15s</span></div>
+        <div class="live"><span class="dot"></span><span id="cd">Atualiza a cada 1s</span></div>
         <div class="refreshhint">Atualização automática</div>
       </div>
     </header>
@@ -189,7 +189,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 
     <section class="card kpi">
       <div class="kpihead"><span>Diferença nacional</span><span class="icon">↔</span></div>
-      <div><div id="gap" class="big">—</div><div class="kpisub">pontos percentuais</div></div>
+      <div><div id="gap" class="big">—</div><div class="kpisub"><span>p.p.</span> • <strong id="gapVotes">— votos</strong></div></div>
     </section>
 
     <section class="card kpi">
@@ -222,7 +222,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
   </main>
 
   <footer class="footer">
-    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 15 segundos; os números mudam apenas quando o TSE publica nova totalização. Este painel exibe resultados parciais e não faz projeções.</span>
+    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. Este painel exibe resultados parciais e não faz projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -277,9 +277,10 @@ function nat(d,o){
   $("barl").style.width=d.l.p+"%";$("baro").style.width=other+"%";$("barf").style.width=d.f.p+"%";
   $("others").textContent="Outros: "+fpct(other);
 
-  const w=who(d),g=Math.abs(d.l.p-d.f.p);
+  const w=who(d),g=Math.abs(d.l.p-d.f.p),gv=Math.abs(d.l.v-d.f.v);
   $("gap").textContent=g.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
-  $("lead").textContent=w==="t"?"Empate no recorte atual":(w==="l"?"Lula":"Flávio Bolsonaro")+" está à frente por "+$("gap").textContent+" p.p.";
+  $("gapVotes").textContent=fi(gv)+" votos";
+  $("lead").textContent=w==="t"?"Empate no recorte atual":(w==="l"?"Lula":"Flávio Bolsonaro")+" está à frente por "+fi(gv)+" votos ("+$("gap").textContent+" p.p.)";
   $("apur").textContent=fpct(d.a)+" • "+fi(d.st)+" de "+fi(d.ts)+" seções";
   $("upd").textContent=d.dt||"—";
   $("nationalA").textContent=f1(d.a);
@@ -294,13 +295,13 @@ function draw(){
   if(mode==="a")a.sort((x,y)=>y.a-x.a);
 
   $("list").innerHTML=a.map(d=>{
-    const w=who(d),g=Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    const w=who(d),g=Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}),gv=fi(Math.abs(d.l.v-d.f.v));
     const label=w==="l"?"Lula à frente":w==="f"?"Flávio à frente":"Empate";
     return '<article class="state">'+
       '<div class="sttop"><div class="uf">'+d.uf+'</div><span class="lead '+w+'">'+label+'</span></div>'+
       '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div></div>'+
       '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div></div>'+
-      '<div class="stmeta"><span>Diferença: '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
+      '<div class="stmeta"><span>Diferença: '+gv+' votos • '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
     '</article>'
   }).join("");
 
@@ -308,6 +309,8 @@ function draw(){
   $("fs").textContent=states.filter(x=>who(x)==="f").length
 }
 async function go(){
+  if(running)return;
+  running=true;
   $("err").style.display="none";
   try{
     const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
@@ -318,10 +321,11 @@ async function go(){
     prev={n,states};
     localStorage.setItem("e26",JSON.stringify(prev))
   }catch(e){
-    $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em até 15 s. "+e.message;
+    $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em aproximadamente 1 s. "+e.message;
     $("err").style.display="block"
+  } finally {
+    running=false
   }
-  sec=I
 }
 try{prev=JSON.parse(localStorage.getItem("e26")||"null")}catch{}
 document.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{
@@ -329,9 +333,9 @@ document.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{
   b.classList.add("on");mode=b.dataset.s;draw()
 });
 setInterval(()=>{
-  sec--;if(sec<=0)go();
-  $("cd").textContent="Atualiza em "+sec+"s"
-},1000);
+  go();
+  $("cd").textContent="Atualiza a cada 1s"
+},I);
 go();
 </script>
 </body>
