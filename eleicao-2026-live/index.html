@@ -80,7 +80,8 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .share{font-size:clamp(46px,7vw,72px);font-weight:1000;letter-spacing:-.065em;line-height:.95;margin:15px 0 6px}
 .share.l{color:var(--red2)}.share.f{color:var(--blue)}
 .voteinfo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.votes{font-size:13px;font-weight:780}.delta{font-size:9px;color:#7b666b;background:#fff;border:1px solid #ead9dc;border-radius:999px;padding:5px 7px;font-weight:800}
+.votes{font-size:13px;font-weight:780}.delta{font-size:9px;color:#7b666b;background:#fff;border:1px solid #ead9dc;border-radius:999px;padding:5px 7px;font-weight:850}
+.delta.up{color:#9e0b2a;background:#fff2f4;border-color:#efcdd4}.delta.down{color:#2e5fae;background:#f1f6ff;border-color:#d7e4fb}.delta.flat{color:#8c8083;background:#faf7f7}
 .stdelta{font-size:8px;line-height:1.35;color:#8a7b7f;margin-top:4px;font-weight:750}
 .stdelta.up{color:#9e0b2a}.stdelta.down{color:#466593}.stdelta.flat{color:#95898c}
 .compare{margin-top:18px}
@@ -241,7 +242,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 const B="https://resultados.tse.jus.br/oficial/ele2026/6257/dados/";
 const U=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 const I=1000;
-let mode="uf",states=[],prev=null,running=false;
+let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={};
 const $=x=>document.getElementById(x);
 const pi=n=>Number(String(n??"").replace(/\D/g,""))||0;
 const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0};
@@ -252,7 +253,12 @@ const sgn=n=>n>0?"+":n<0?"−":"";
 const fabs=n=>Math.abs(Number(n)||0);
 const fpp=n=>sgn(n)+fabs(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p.";
 const fvdelta=n=>sgn(n)+fi(fabs(n))+" votos";
-const deltaClass=(v,p)=>v>0||p>0?"up":v<0||p<0?"down":"flat";
+const deltaClass=(v,p)=>p>0?"up":p<0?"down":v!==0?"flat":"flat";
+const batchDeltaText=(dv,dp)=>{
+  if(dv==null||dp==null)return"Δ lote anterior: —";
+  const arrow=dp>0?"↑":dp<0?"↓":"→";
+  return arrow+" "+fpp(dp)+" • "+fvdelta(dv);
+};
 
 function walk(n,o=[]){
   if(!n)return o;
@@ -277,16 +283,14 @@ async function one(sc){
   return parse(await r.json())
 }
 function who(d){return d.l.p>d.f.p?"l":d.f.p>d.l.p?"f":"t"}
-function dtext(n,o){
-  if(!o)return"Δ desde a última: —";
-  const dv=n.v-o.v,dp=n.p-o.p;
-  return"Δ "+(dv>0?"+":"")+fi(dv)+" votos • "+(dp>0?"+":"")+dp.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p."
-}
-function nat(d,o){
+function nat(d,delta){
   $("lp").classList.remove("loading");$("fp").classList.remove("loading");
   $("lp").textContent=fpct(d.l.p);$("fp").textContent=fpct(d.f.p);
   $("lv").textContent=fi(d.l.v)+" votos";$("fv").textContent=fi(d.f.v)+" votos";
-  $("ld").textContent=dtext(d.l,o?.l);$("fd").textContent=dtext(d.f,o?.f);
+  $("ld").textContent=batchDeltaText(delta?.lv,delta?.lp);
+  $("fd").textContent=batchDeltaText(delta?.fv,delta?.fp);
+  $("ld").className="delta "+deltaClass(delta?.lv??0,delta?.lp??0);
+  $("fd").className="delta "+deltaClass(delta?.fv??0,delta?.fp??0);
 
   const other=Math.max(0,100-d.l.p-d.f.p);
   $("barl").style.width=d.l.p+"%";$("baro").style.width=other+"%";$("barf").style.width=d.f.p+"%";
@@ -314,8 +318,8 @@ function draw(){
     const label=w==="l"?"Lula à frente":w==="f"?"Flávio à frente":"Empate";
     return '<article class="state">'+
       '<div class="sttop"><div class="uf">'+d.uf+'</div><span class="lead '+w+'">'+label+'</span></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv,d.dlp)+'">Última atualização: '+(d.dlv==null?"—":fvdelta(d.dlv)+" • "+fpp(d.dlp))+'</div></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv,d.dfp)+'">Última atualização: '+(d.dfv==null?"—":fvdelta(d.dfv)+" • "+fpp(d.dfp))+'</div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv??0,d.dlp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dlv,d.dlp)+'</div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv??0,d.dfp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dfv,d.dfp)+'</div></div>'+
       '<div class="stmeta"><span>Diferença: '+gv+' votos • '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
     '</article>'
   }).join("");
@@ -330,21 +334,47 @@ async function go(){
   try{
     const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
     const n=r[0];
-    nat(n,prev?.n);
+
+    // NATIONAL: compare only when the TSE publishes a genuinely different batch.
+    const oldN=prev?.n||null;
+    const nationalChanged=!oldN || n.dt!==oldN.dt || n.l.v!==oldN.l.v || n.f.v!==oldN.f.v || n.l.p!==oldN.l.p || n.f.p!==oldN.f.p;
+    if(nationalChanged){
+      if(oldN){
+        natDelta={
+          lv:n.l.v-oldN.l.v,
+          lp:n.l.p-oldN.l.p,
+          fv:n.f.v-oldN.f.v,
+          fp:n.f.p-oldN.f.p
+        };
+      }
+      if(!prev)prev={n:null,states:[]};
+      prev.n=n;
+    }
+    nat(n,natDelta);
+
+    // STATES: same rule per UF. A 1-second poll with unchanged TSE data keeps
+    // the last meaningful delta visible instead of resetting to zero.
     const oldStateMap=new Map((prev?.states||[]).map(x=>[x.uf,x]));
+    const nextBaselines=[];
     states=r.slice(1).map(s=>{
       const o=oldStateMap.get(s.uf);
-      return {
-        ...s,
-        dlv:o?s.l.v-o.l.v:null,
-        dlp:o?s.l.p-o.l.p:null,
-        dfv:o?s.f.v-o.f.v:null,
-        dfp:o?s.f.p-o.f.p:null
+      const changed=!o || s.dt!==o.dt || s.l.v!==o.l.v || s.f.v!==o.f.v || s.l.p!==o.l.p || s.f.p!==o.f.p;
+      if(changed && o){
+        stateDeltas[s.uf]={
+          dlv:s.l.v-o.l.v,
+          dlp:s.l.p-o.l.p,
+          dfv:s.f.v-o.f.v,
+          dfp:s.f.p-o.f.p
+        };
       }
+      const d=stateDeltas[s.uf]||{};
+      nextBaselines.push(changed?s:o);
+      return {...s,...d};
     });
+    prev.states=nextBaselines;
     draw();
-    prev={n,states};
-    localStorage.setItem("e26",JSON.stringify(prev))
+
+    localStorage.setItem("e26",JSON.stringify({prev,natDelta,stateDeltas}))
   }catch(e){
     $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em aproximadamente 1 s. "+e.message;
     $("err").style.display="block"
@@ -352,7 +382,17 @@ async function go(){
     running=false
   }
 }
-try{prev=JSON.parse(localStorage.getItem("e26")||"null")}catch{}
+try{
+  const saved=JSON.parse(localStorage.getItem("e26")||"null");
+  if(saved?.prev){
+    prev=saved.prev;
+    natDelta=saved.natDelta||null;
+    stateDeltas=saved.stateDeltas||{};
+  }else if(saved){
+    // Backwards compatibility with the previous storage format.
+    prev=saved;
+  }
+}catch{}
 document.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".btn").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");mode=b.dataset.s;draw()
