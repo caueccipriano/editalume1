@@ -230,8 +230,8 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 <script>
 const B="https://resultados.tse.jus.br/oficial/ele2026/6257/dados/";
 const U=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
-const I=15;
-let sec=I,mode="uf",states=[],prev=null;
+const I=1000;
+let mode="uf",states=[],prev=null,running=false;
 const $=x=>document.getElementById(x);
 const pi=n=>Number(String(n??"").replace(/\D/g,""))||0;
 const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0};
