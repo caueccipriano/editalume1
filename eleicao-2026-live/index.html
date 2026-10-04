@@ -33,15 +33,18 @@ body:before{
 button{font:inherit}
 .wrap{position:relative;z-index:1;max-width:1240px;margin:auto;padding:20px 18px 34px}
 .mast{
-  background:linear-gradient(135deg,#9f001d 0%,#c20d31 55%,#d61f43 100%);
-  color:#fff;border-radius:28px;padding:22px 22px 19px;box-shadow:0 20px 48px rgba(138,0,27,.20);
-  position:relative;overflow:hidden;margin-bottom:14px
+  background:
+    linear-gradient(135deg,rgba(121,0,19,.12),transparent 35%),
+    linear-gradient(120deg,#8f0019 0%,#c9002b 52%,#e3264b 100%);
+  color:#fff;border-radius:28px;padding:24px 24px 21px;box-shadow:0 22px 52px rgba(138,0,27,.24);
+  position:relative;overflow:hidden;margin-bottom:14px;border:1px solid rgba(255,255,255,.12)
 }
 .mast:before,.mast:after{content:"★";position:absolute;color:rgba(255,255,255,.08);font-size:190px;font-weight:900;line-height:1}
 .mast:before{right:9%;top:-60px;transform:rotate(12deg)}.mast:after{right:-25px;bottom:-95px;font-size:230px}
 .header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;position:relative;z-index:1}
 .brandline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.brand{font-size:12px;font-weight:950;letter-spacing:.14em;text-transform:uppercase}
+.brand{font-size:12px;font-weight:1000;letter-spacing:.14em;text-transform:uppercase;display:inline-flex;align-items:center;gap:7px}
+.brand:before{content:"13";display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#fff;color:#b00020;font-size:10px;letter-spacing:0;box-shadow:0 5px 16px rgba(74,0,16,.18)}
 .datechip{font-size:10px;border:1px solid rgba(255,255,255,.30);background:rgba(255,255,255,.11);padding:5px 8px;border-radius:999px}
 h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacing:-.05em}
 .subtitle{font-size:13px;color:rgba(255,255,255,.78)}
@@ -53,13 +56,16 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
 .card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:21px;box-shadow:var(--shadow)}
 .hero{grid-column:span 12;padding:18px;overflow:hidden;position:relative}
-.hero:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--red2) 0 41%,var(--other) 41% 59%,var(--blue) 59%)}
+.hero:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,#a8001f 0 52%,#ef476f 52% 66%,#fff 66% 70%,#c9c3c5 70% 82%,var(--blue) 82%)}
+.hero:after{content:"★";position:absolute;right:18px;top:10px;color:rgba(176,0,32,.055);font-size:92px;font-weight:1000;line-height:1;pointer-events:none}
 .herohead{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:1px 0 15px}
 .sectiontitle{font-size:13px;font-weight:900}
 .sourcepill{font-size:10px;color:#7e6d71;border:1px solid var(--line);background:#fff8f8;border-radius:999px;padding:5px 8px}
 .candgrid{display:grid;grid-template-columns:1fr 1px 1fr;gap:19px;align-items:stretch}
 .divider{background:linear-gradient(transparent,var(--line),transparent)}
-.candidate{min-width:0}
+.candidate{min-width:0;position:relative}
+.candidate:first-child{background:linear-gradient(135deg,#fffafa,#fff3f4);border:1px solid #f0d1d8;border-radius:18px;padding:14px;box-shadow:inset 0 0 0 1px rgba(215,25,63,.02)}
+.candidate:first-child:after{content:"★ 13";position:absolute;right:14px;bottom:10px;color:rgba(176,0,32,.07);font-size:34px;font-weight:1000;letter-spacing:-.06em}
 .candtop{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .identity{display:flex;align-items:center;gap:12px;min-width:0}
 .photo{
@@ -74,7 +80,9 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .share{font-size:clamp(46px,7vw,72px);font-weight:1000;letter-spacing:-.065em;line-height:.95;margin:15px 0 6px}
 .share.l{color:var(--red2)}.share.f{color:var(--blue)}
 .voteinfo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.votes{font-size:13px;font-weight:780}.delta{font-size:9px;color:#807377;background:#faf3f4;border:1px solid #eee0e2;border-radius:999px;padding:5px 7px}
+.votes{font-size:13px;font-weight:780}.delta{font-size:9px;color:#7b666b;background:#fff;border:1px solid #ead9dc;border-radius:999px;padding:5px 7px;font-weight:800}
+.stdelta{font-size:8px;line-height:1.35;color:#8a7b7f;margin-top:4px;font-weight:750}
+.stdelta.up{color:#9e0b2a}.stdelta.down{color:#466593}.stdelta.flat{color:#95898c}
 .compare{margin-top:18px}
 .comparelabels{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:7px;font-weight:750}
 .sharebar{height:13px;display:flex;border-radius:999px;overflow:hidden;background:#eee;border:1px solid #eee0e2}
@@ -90,14 +98,16 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .big.red{color:var(--red2)}.big.blue{color:var(--blue)}
 .progressring{--p:0;position:relative;width:48px;height:48px;border-radius:50%;background:conic-gradient(var(--red2) calc(var(--p)*1%),#f0e3e5 0);display:grid;place-items:center}
 .progressring:after{content:"";width:36px;height:36px;border-radius:50%;background:#fff;position:absolute}.progressring span{position:relative;z-index:1;font-size:9px;font-weight:950;color:#8e2038}
-.states{grid-column:span 12;padding:17px}
+.states{grid-column:span 12;padding:17px;position:relative;overflow:hidden}
+.states:before{content:"★ ★ ★";position:absolute;right:18px;top:10px;color:rgba(176,0,32,.035);font-size:58px;font-weight:1000;letter-spacing:8px;pointer-events:none}
 .statehead{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
 .statehead h2{font-size:18px;margin:0 0 3px;letter-spacing:-.02em}.statehead p{margin:0;color:var(--muted);font-size:10px}
 .segmented{display:flex;gap:4px;padding:4px;background:#fff6f6;border:1px solid #eedfe1;border-radius:12px;overflow:auto;max-width:100%}
 .btn{border:0;background:transparent;color:#8b777b;border-radius:9px;padding:7px 9px;font-size:9px;font-weight:900;white-space:nowrap;cursor:pointer}
 .btn.on{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(176,0,32,.16)}
 .list{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.state{background:linear-gradient(180deg,#fff,#fff9f8);border:1px solid #ede1e2;border-radius:15px;padding:12px;transition:.18s ease}
+.state{background:linear-gradient(180deg,#fff,#fff9f8);border:1px solid #eadbdd;border-radius:15px;padding:12px;transition:.18s ease;position:relative;overflow:hidden}
+.state:before{content:"★";position:absolute;right:-8px;bottom:-20px;color:rgba(176,0,32,.028);font-size:72px;font-weight:1000}
 .state:hover{transform:translateY(-1px);border-color:#dec7ca}
 .sttop{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .uf{width:36px;height:28px;border-radius:9px;background:#fff0f2;border:1px solid #f2d7dc;display:grid;place-items:center;font-size:10px;font-weight:1000;letter-spacing:.05em;color:#8f001b}
@@ -143,7 +153,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
   <main class="grid">
     <section class="card hero">
       <div class="herohead">
-        <div class="sectiontitle">Resultado nacional</div>
+        <div class="sectiontitle">★ Resultado nacional <span style="color:#b00020">13</span></div>
         <div class="sourcepill">Parcial oficial • sem projeção</div>
       </div>
 
@@ -209,7 +219,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 
     <section class="card states">
       <div class="statehead">
-        <div><h2>★ Panorama por estado</h2><p>Percentuais, votos, diferença e totalização em cada UF</p></div>
+        <div><h2>★ Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
         <div class="segmented">
           <button class="btn on" data-s="uf">A–Z</button>
           <button class="btn" data-s="l">Maior % Lula</button>
@@ -238,6 +248,11 @@ const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"")
 const fi=n=>Number(n||0).toLocaleString("pt-BR");
 const f1=n=>(Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
 const fpct=n=>(Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+const sgn=n=>n>0?"+":n<0?"−":"";
+const fabs=n=>Math.abs(Number(n)||0);
+const fpp=n=>sgn(n)+fabs(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p.";
+const fvdelta=n=>sgn(n)+fi(fabs(n))+" votos";
+const deltaClass=(v,p)=>v>0||p>0?"up":v<0||p<0?"down":"flat";
 
 function walk(n,o=[]){
   if(!n)return o;
@@ -299,8 +314,8 @@ function draw(){
     const label=w==="l"?"Lula à frente":w==="f"?"Flávio à frente":"Empate";
     return '<article class="state">'+
       '<div class="sttop"><div class="uf">'+d.uf+'</div><span class="lead '+w+'">'+label+'</span></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv,d.dlp)+'">Última atualização: '+(d.dlv==null?"—":fvdelta(d.dlv)+" • "+fpp(d.dlp))+'</div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv,d.dfp)+'">Última atualização: '+(d.dfv==null?"—":fvdelta(d.dfv)+" • "+fpp(d.dfp))+'</div></div>'+
       '<div class="stmeta"><span>Diferença: '+gv+' votos • '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
     '</article>'
   }).join("");
@@ -316,7 +331,17 @@ async function go(){
     const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
     const n=r[0];
     nat(n,prev?.n);
-    states=r.slice(1);
+    const oldStateMap=new Map((prev?.states||[]).map(x=>[x.uf,x]));
+    states=r.slice(1).map(s=>{
+      const o=oldStateMap.get(s.uf);
+      return {
+        ...s,
+        dlv:o?s.l.v-o.l.v:null,
+        dlp:o?s.l.p-o.l.p:null,
+        dfv:o?s.f.v-o.f.v:null,
+        dfp:o?s.f.p-o.f.p:null
+      }
+    });
     draw();
     prev={n,states};
     localStorage.setItem("e26",JSON.stringify(prev))
