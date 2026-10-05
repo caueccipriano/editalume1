@@ -124,7 +124,7 @@ h1{margin:9px 0 5px;font-size:clamp(32px,5vw,54px);line-height:.98;letter-spacin
 .mini{height:7px;background:#f1e8ea;border-radius:999px;overflow:hidden;margin-top:5px}.fill{height:100%;border-radius:999px;transition:width .4s ease}.fill.l{background:linear-gradient(90deg,#bb0d31,#e84563)}.fill.f{background:linear-gradient(90deg,#7ba6ff,#3166cf)}
 .stmeta{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:#918286;font-size:8px;border-top:1px solid #f0e5e6;padding-top:9px}
 .footer{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;color:#8b7a7e;font-size:9px;line-height:1.45;margin-top:13px;padding:0 3px}
-.credits{max-width:620px}.err{display:none;margin-bottom:12px;background:#fff0f2;border:1px solid #efc5cd;color:#8c1630;border-radius:13px;padding:11px 12px;font-size:10px}
+.credits{max-width:620px}.err{display:none;margin-bottom:12px;background:#fff0f2;border:1px solid #efc5cd;color:#8c1630;border-radius:13px;padding:11px 12px;font-size:10px}.err.waiting{background:#fff8e8;border-color:#efd9a4;color:#71521b}
 .loading{animation:fade 1.2s ease-in-out infinite alternate}@keyframes fade{to{opacity:.45}}
 .starline{display:flex;gap:5px;margin-top:11px;color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.12em}
 .topactions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:3px}
@@ -210,7 +210,7 @@ body.screenmode .candidate:first-child{padding:22px}
   <section class="mast">
     <header class="header">
       <div>
-        <div class="brandline"><span class="brand">★ Apuração 2026</span><span class="datechip">Presidente • 1º turno • 04/10</span></div>
+        <div class="brandline"><span class="brand">★ Apuração 2026</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
         <h1>Lula <span style="opacity:.55">×</span> Flávio Bolsonaro</h1>
         <div class="subtitle">Acompanhamento em tempo real com dados oficiais do TSE</div>
         <div class="starline">★ ★ ★ ★ ★</div>
@@ -371,10 +371,13 @@ body.screenmode .candidate:first-child{padding:22px}
 </div>
 
 <script>
-const B="https://resultados.tse.jus.br/oficial/ele2026/6257/dados/";
+const ELECTION="6258";
+const B="https://resultados.tse.jus.br/oficial/ele2026/"+ELECTION+"/dados/";
+const RESULTS_START=Date.parse("2026-10-25T17:00:00-03:00");
+const WAIT_I=60000;
 const U=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 const I=1000;
-let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={},history=[],lastBatchSummary=null,selectedUF="SP",installPrompt=null,tickerTimer=null;
+let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={},history=[],lastBatchSummary=null,selectedUF="SP",installPrompt=null,tickerTimer=null,pollTimer=null,secondRoundLive=false;
 const $=x=>document.getElementById(x);
 const pi=n=>Number(String(n??"").replace(/\D/g,""))||0;
 const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0};
@@ -547,7 +550,7 @@ function parse(j){
 }
 async function one(sc){
   const q=sc.toLowerCase();
-  const r=await fetch(B+q+"/"+q+"-c0001-e006257-u.json",{cache:"no-store"});
+  const r=await fetch(B+q+"/"+q+"-c0001-e00"+ELECTION+"-u.json",{cache:"no-store"});
   if(!r.ok)throw Error(sc+" HTTP "+r.status);
   return parse(await r.json())
 }
@@ -596,13 +599,29 @@ function draw(){
   $("ls").textContent=states.filter(x=>who(x)==="l").length;
   $("fs").textContent=states.filter(x=>who(x)==="f").length
 }
+function showWaiting(){
+  secondRoundLive=false;
+  $("err").className="err waiting";
+  $("err").textContent="2º turno confirmado para 25/10. O painel está preparado e ativa a apuração automaticamente a partir das 17h (horário de Brasília), usando a base oficial do TSE.";
+  $("err").style.display="block";
+  $("cd").textContent="Aguardando 2º turno";
+  $("lead").textContent="2º turno em 25/10 • aguardando apuração oficial";
+  $("apur").textContent="A divulgação oficial começa a partir das 17h";
+  $("upd").textContent="—";
+}
+function nextDelay(){return Date.now()<RESULTS_START?Math.min(WAIT_I,Math.max(1000,RESULTS_START-Date.now())):(secondRoundLive?I:10000)}
+function scheduleNext(){clearTimeout(pollTimer);pollTimer=setTimeout(async()=>{await go();scheduleNext()},nextDelay())}
 async function go(){
   if(running)return;
+  if(Date.now()<RESULTS_START){showWaiting();return}
   running=true;
   $("err").style.display="none";
+  $("err").className="err";
   try{
     const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
     const n=r[0];
+    secondRoundLive=true;
+    $("cd").textContent="Atualiza a cada 1s";
 
     // NATIONAL: compare only when the TSE publishes a genuinely different batch.
     const oldN=prev?.n||null;
@@ -649,16 +668,24 @@ async function go(){
     draw();
     renderAnalytics();
 
-    localStorage.setItem("e26",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
+    localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
   }catch(e){
-    $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em aproximadamente 1 s. "+e.message;
-    $("err").style.display="block"
+    secondRoundLive=false;
+    const unavailable=/HTTP (403|404)/.test(e.message);
+    if(unavailable){
+      showWaiting();
+    }else{
+      $("err").className="err";
+      $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em alguns segundos. "+e.message;
+      $("err").style.display="block";
+      $("cd").textContent="Reconectando ao TSE";
+    }
   } finally {
     running=false
   }
 }
 try{
-  const saved=JSON.parse(localStorage.getItem("e26")||"null");
+  const saved=JSON.parse(localStorage.getItem("e26-r2")||"null");
   if(saved?.prev){
     prev=saved.prev;
     natDelta=saved.natDelta||null;
@@ -689,11 +716,7 @@ $("installBtn").addEventListener("click",async()=>{
   $("installHelp").classList.toggle("show");
 });
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
-setInterval(()=>{
-  go();
-  $("cd").textContent="Atualiza a cada 1s"
-},I);
-go();
+go().finally(scheduleNext);
 </script>
 </body>
 </html>
