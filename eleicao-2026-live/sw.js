@@ -1,4 +1,4 @@
-const CACHE="apuracao-2026-v1";
+const CACHE="apuracao-2026-v2";
 const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
