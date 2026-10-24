@@ -1,4 +1,4 @@
-const CACHE="eleicoes-2026-v3-editorial";
+const CACHE="eleicoes-2026-v4-visual-pt";
 const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
