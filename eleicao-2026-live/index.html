@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#b00020">
+<meta name="theme-color" content="#292620">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Apuração 2026">
+<meta name="apple-mobile-web-app-title" content="Eleições 2026">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
-<title>Apuração 2026 — Lula × Flávio Bolsonaro</title>
+<title>Eleições 2026 — Debates, Checagem e Apuração</title>
 <style>
 :root{
   --red:#b00020;--red2:#d7193f;--red3:#ef476f;--ink:#231f20;--muted:#746c6e;
@@ -203,6 +203,55 @@ body.screenmode .candidate:first-child{padding:22px}
   .states{padding:13px}.statehead{align-items:flex-start;flex-direction:column}.segmented{width:100%}.list{grid-template-columns:1fr}.footer{flex-direction:column}.state{padding:12px}.apurationgrid{grid-template-columns:1fr}
   .topactions{justify-content:flex-end}.batchrow{grid-template-columns:1fr}.chartpanel,.mappanel,.rankpanel,.historypanel,.apurationpanel{grid-column:span 12}.apurationgrid{grid-template-columns:1fr 1fr}.maplayout{grid-template-columns:1fr}.chartbox{height:165px}.batchmain .headline{font-size:17px}
 }
+
+/* Edição editorial — debates & segundo turno */
+:root{--paper:#f6f3ed;--white:#fffdfa;--line:#d6d0c4;--ink:#292620;--muted:#756e65;--shadow:0 3px 14px rgba(25,20,12,.04)}
+html,body{background:#f6f3ed}body{background:linear-gradient(#f8f6f1,#f2eee5);font-family:Arial,Helvetica,sans-serif}
+body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after,.candidate:first-child:after{display:none!important}
+.wrap{max-width:1200px;padding:18px 17px 40px}.mast{background:none!important;border:0;border-radius:0;border-top:4px double #282520;border-bottom:1px solid #b6ac9d;box-shadow:none;color:#292620;padding:13px 0 16px;margin-bottom:12px}
+.mast .brand{font-size:11px;color:#292620;letter-spacing:.18em}.mast .brand:before{content:"26";background:#292620;color:#fffdf6;border-radius:2px;box-shadow:none}
+.mast .datechip{border-radius:2px;border-color:var(--line);background:transparent;color:#555047}.mast h1{font:700 clamp(31px,5.2vw,60px)/1.02 Georgia,serif;letter-spacing:-.055em;margin:12px 0}
+.mast .subtitle,.mast .refreshhint{color:#6a6259}.mast .starline{display:none}
+.mast .live{color:#49423b;border:1px solid #ccc4b8;border-radius:2px;background:#fdfaf3}
+.mast .dot{background:#9a9187;animation:none;box-shadow:none}.mast .live.is-live .dot{background:#21815c;animation:pulse 1.7s infinite}
+.mast .actionbtn{color:#312d27;border-color:#cdc5b9;border-radius:2px;background:#fffdfa}
+.card{border-color:var(--line);background:#fffdfa;border-radius:5px;box-shadow:var(--shadow)}
+.candidate:first-child,.candidate:last-child{border:1px solid var(--line);border-radius:4px;padding:14px;background:#fffdfa;box-shadow:none}
+.hero:before{height:2px;background:#292620}.sectiontitle,.statehead h2,.paneltitle h3{font-family:Georgia,serif}
+.ed-nav{display:flex;align-items:center;border-top:1px solid #282520;border-bottom:1px solid #282520;margin:13px 0 23px;overflow-x:auto;scrollbar-width:none}
+.ed-tab{border:0;border-right:1px solid var(--line);padding:14px 19px;font-size:11px;letter-spacing:.06em;font-weight:850;text-transform:uppercase;white-space:nowrap;color:#6b645c;background:transparent;cursor:pointer;min-height:46px}
+.ed-tab.on{background:#292620;color:#fffdf6}.ed-tab:hover:not(.on){background:#e8e2d8;color:#292620}
+.ed-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:800;color:#867b6e}
+.ed-head{display:grid;grid-template-columns:1fr auto;gap:25px;padding:5px 0 21px;border-bottom:3px double #3c362d}
+.ed-head h2,.guide-head h2{font:700 clamp(45px,7vw,85px)/.95 Georgia,serif;letter-spacing:-.07em;margin:12px 0}
+.ed-head p,.guide-head p{font:14px/1.55 Arial,sans-serif;color:#6b6258;max-width:650px;margin:0}
+.ed-date{font:12px/1.55 Arial,sans-serif;min-width:158px;color:#5d554b;text-align:right;align-self:end}
+.ed-date b{display:block;font:34px/1.05 Georgia,serif;color:#292620}
+.ed-feature{display:grid;grid-template-columns:1.4fr .8fr;gap:35px;padding:27px 0;border-bottom:1px solid #a9a092}
+.ed-feature h3{font:700 clamp(28px,3.1vw,42px)/1.07 Georgia,serif;letter-spacing:-.035em;margin:12px 0}
+.ed-feature p,.ed-feature aside{color:#686057;font:13px/1.55 Arial,sans-serif}
+.ed-feature aside{border-left:1px solid #cfc6b8;padding-left:23px}.ed-feature aside b{color:#302b25}
+.ed-filter-head{display:flex;justify-content:space-between;align-items:end;gap:16px;padding:24px 0 10px}
+.ed-filter-head h3{font:700 26px Georgia,serif;margin:3px 0}
+.ed-count{font:700 11px Arial,sans-serif;color:#756e64}
+.ed-filters{display:flex;flex-wrap:wrap;gap:9px;padding:12px 0 17px;border-bottom:1px solid #d8d0c4}
+.ed-filters select,.ed-filters input{min-height:44px;padding:10px 12px;border:1px solid #cdc3b4;background:#fffdfa;border-radius:2px;color:#342f28;font:700 12px Arial,sans-serif}
+.ed-filters select{flex:1 1 140px}.ed-filters input{flex:2 1 230px;min-width:165px}
+.ed-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 26px;padding:0 0 10px}
+.ed-fact{border-bottom:1px solid #cfc5b5;padding:19px 0;min-width:0}.ed-fact h4{font:700 clamp(21px,2.2vw,29px)/1.12 Georgia,serif;letter-spacing:-.025em;margin:13px 0 10px}
+.ed-fact p{font:13px/1.55 Arial,sans-serif;color:#645d53;margin:0 0 12px}
+.ed-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#766e65;text-transform:uppercase;letter-spacing:.07em;font-size:10px;font-weight:800}
+.ed-mark{font-size:10px;font-weight:850;letter-spacing:.09em;background:#ece5d6;color:#534b3d;padding:5px 8px;border:1px solid #d4c7b4}
+.ed-mark.falso{color:#fff;background:#923f36;border-color:#923f36}.ed-mark.fato{color:#fff;background:#2f6653;border-color:#2f6653}.ed-mark.enganoso{color:#fff;background:#a47525;border-color:#a47525}
+.ed-source{display:flex;flex-wrap:wrap;gap:12px}.ed-source a,.guide-card a{color:#2f2a24;font-size:11px;font-weight:850;border-bottom:1px solid #7c7366;padding:4px 0;text-decoration:none}.ed-source a:hover,.guide-card a:hover{color:#9b473d;border-color:#9b473d}
+.ed-note{border-top:3px double #3e382f;border-bottom:1px solid #bdb3a6;padding:17px 0;color:#6d6257;font:12px/1.6 Arial,sans-serif;margin:15px 0 30px}
+.guide-head{padding:8px 0 21px;border-bottom:3px double #3c362d}.guide-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:23px 0}
+.guide-card{background:#fffdfa;border:1px solid var(--line);padding:22px}.guide-card span{font:42px Georgia,serif;color:#aba18f}
+.guide-card h3{font:700 25px Georgia,serif;margin:7px 0}.guide-card p{font:13px/1.6 Arial,sans-serif;color:#6a6258}
+#resultsView[hidden],#debatesView[hidden],#guideView[hidden]{display:none!important}
+@media(max-width:700px){.mast .header{flex-direction:column}.mast .livebox{align-items:flex-start}.mast .topactions{justify-content:flex-start}.ed-head{grid-template-columns:1fr}.ed-head h2{font-size:clamp(47px,11vw,74px)}.ed-date{text-align:left;border-top:1px solid var(--line);padding-top:11px}.ed-feature{grid-template-columns:1fr;gap:4px}.ed-feature aside{border-left:0;border-top:1px solid var(--line);padding:14px 0 0}.ed-facts,.guide-cards{grid-template-columns:1fr}.ed-tab{padding:13px 12px;font-size:10px}}
+@media print{.ed-nav,.ed-filters,.livebox{display:none!important}body{background:white!important}.ed-facts{grid-template-columns:1fr 1fr}.ed-fact{break-inside:avoid}}
+
 </style>
 </head>
 <body>
@@ -210,13 +259,13 @@ body.screenmode .candidate:first-child{padding:22px}
   <section class="mast">
     <header class="header">
       <div>
-        <div class="brandline"><span class="brand">★ Apuração 2026</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
+        <div class="brandline"><span class="brand">ELEIÇÕES 2026 · CADERNO ESPECIAL</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
         <h1>Lula <span style="opacity:.55">×</span> Flávio Bolsonaro</h1>
-        <div class="subtitle">Acompanhamento em tempo real com dados oficiais do TSE</div>
-        <div class="starline">★ ★ ★ ★ ★</div>
+        <div class="subtitle">Os debates checados e a apuração oficial de 25 de outubro</div>
+        
       </div>
       <div class="livebox">
-        <div class="live"><span class="dot"></span><span id="cd">Atualiza a cada 1s</span></div>
+        <div class="live"><span class="dot"></span><span id="cd">Aguardando TSE</span></div>
         <div class="refreshhint">Atualização automática</div>
         <div class="topactions">
           <button id="screenBtn" class="actionbtn" type="button">◫ Modo telão</button>
@@ -227,13 +276,48 @@ body.screenmode .candidate:first-child{padding:22px}
     </header>
   </section>
 
-  <div id="err" class="err"></div>
+  
+  <nav class="ed-nav" aria-label="Navegação eleitoral">
+    <button class="ed-tab on" type="button" data-ed-page="debates">01 · Debates &amp; fatos</button>
+    <button class="ed-tab" type="button" data-ed-page="results">02 · Apuração ao vivo</button>
+    <button class="ed-tab" type="button" data-ed-page="guide">03 · Guia do eleitor</button>
+  </nav>
+  <section id="debatesView" aria-labelledby="debatesTitle">
+    <header class="ed-head">
+      <div><div class="ed-kicker">Edição especial · Presidência · Segundo turno</div><h2 id="debatesTitle">O debate sob exame.</h2><p>O que é fato, falso ou precisa de contexto nas falas de Lula (PT) e Flávio Bolsonaro (PL). Informação verificada, com as fontes à vista e sem torcida.</p></div>
+      <div class="ed-date"><b>25.out</b>Domingo · dia de votar<br>08h–17h (Brasília)<br><br><b>24/10</b>Edição de hoje<br>Após a Globo</div>
+    </header>
+    <div class="ed-feature">
+      <div><div class="ed-kicker">A manchete · 23 de outubro</div><h3>Dois debates. Muitos números. As evidências valem mais do que as frases de efeito.</h3><p>Selecionamos declarações verificáveis dos debates da Band (18/10) e da Globo (23/10). Os vereditos abaixo são baseados em publicações de UOL Confere, Aos Fatos, Agência Lupa e Folha.</p></div>
+      <aside><div class="ed-kicker">Guia dos selos</div><p><b>Fato</b>: sustentado por evidências. <b>Falso</b>: contrariado pelas evidências. <b>Enganoso</b>: contém omissões decisivas. <b>Impreciso</b>: arredondamento, erro ou exagero que requer correção.</p><p>As falas estão resumidas, não transcritas integralmente. O conjunto é uma seleção editorial; não permite calcular uma taxa geral de mentiras de cada candidato.</p></aside>
+    </div>
+    <div class="ed-filter-head"><div><div class="ed-kicker">Arquivo de declarações</div><h3>Checagem fala a fala</h3></div><span id="edCount" class="ed-count" aria-live="polite">Carregando</span></div>
+    <div class="ed-filters">
+      <select id="edDebate" aria-label="Debate"><option value="todos">Band + Globo</option><option value="Globo">Globo · 23/10</option><option value="Band">Band · 18/10</option></select>
+      <select id="edWho" aria-label="Candidato"><option value="todos">Lula + Flávio</option><option value="Lula">Lula</option><option value="Flávio">Flávio Bolsonaro</option></select>
+      <select id="edType" aria-label="Veredito"><option value="todos">Todos os vereditos</option><option value="fato">Fato</option><option value="falso">Falso</option><option value="enganoso">Enganoso</option><option value="impreciso">Impreciso</option></select>
+      <input id="edSearch" type="search" placeholder="Buscar: economia, INSS, obras…" aria-label="Buscar falas">
+    </div>
+    <div id="edFacts" class="ed-facts"></div>
+    <div class="ed-note"><b>Transparência:</b> checagens baseadas nas publicações dos veículos indicados em cada item, consultadas em 24/10/2026. Rótulos e explicações são resumos editoriais; as classificações originais e a documentação completa estão nas fontes. As checagens não são atualizadas automaticamente.</div>
+  </section>
+  <section id="guideView" hidden aria-labelledby="guideTitle">
+    <header class="guide-head"><div class="ed-kicker">Serviço · TRE-SP e TSE</div><h2 id="guideTitle">Seu voto, sem dúvida.</h2><p>Domingo, 25 de outubro de 2026. Segundo turno presidencial das 8h às 17h, horário de Brasília.</p></header>
+    <div class="guide-cards">
+      <article class="guide-card"><span>01</span><h3>Quando votar</h3><p>Domingo, 25/10, das 8h às 17h. Quem estiver na fila às 17h poderá concluir a votação.</p><a href="https://www.tre-sp.jus.br/comunicacao/noticias/2026/Outubro/como-votar-no-2o-turno-das-eleicoes-2026-horario-local-justificativa-e-resultados" target="_blank" rel="noopener noreferrer">Ler guia TRE-SP ↗</a></article>
+      <article class="guide-card"><span>02</span><h3>Quem pode votar</h3><p>Quem faltou ao primeiro turno ainda pode votar no segundo, desde que o título esteja regular.</p><a href="https://www.tse.jus.br/" target="_blank" rel="noopener noreferrer">Consultar TSE ↗</a></article>
+      <article class="guide-card"><span>03</span><h3>Quando sai a apuração</h3><p>Dados oficiais a partir das 17h. O app já usa o código federal 6258, exclusivo do segundo turno.</p><a href="https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados" target="_blank" rel="noopener noreferrer">Parâmetros oficiais ↗</a></article>
+      <article class="guide-card"><span>04</span><h3>Como acompanhar</h3><p>Abra “Apuração ao vivo” para ver resultado nacional, evolução histórica e o panorama das UFs, sem projeções.</p><a href="https://www.tse.jus.br/eleicoes/eleicoes-2026-content/divulgacao-dos-resultados-das-eleicoes-2026" target="_blank" rel="noopener noreferrer">Resultados no TSE ↗</a></article>
+    </div>
+  </section>
+  <div id="resultsView" hidden>
+<div id="err" class="err"></div>
   <div id="ticker" class="batchticker"><span class="tstar">★</span><span id="tickerText">Novo lote do TSE</span></div>
 
   <main class="grid">
     <section class="card hero">
       <div class="herohead">
-        <div class="sectiontitle">★ Resultado nacional <span style="color:#b00020">13</span></div>
+        <div class="sectiontitle">Resultado nacional · 2º turno</div>
         <div class="sourcepill">Parcial oficial • sem projeção</div>
       </div>
 
@@ -283,7 +367,7 @@ body.screenmode .candidate:first-child{padding:22px}
     </section>
 
     <section class="card kpi">
-      <div class="kpihead"><span>Lula lidera</span><span class="icon">★</span></div>
+      <div class="kpihead"><span>Lula lidera</span><span class="icon">13</span></div>
       <div><div id="ls" class="big red">—</div><div class="kpisub">unidades da federação</div></div>
     </section>
 
@@ -302,7 +386,7 @@ body.screenmode .candidate:first-child{padding:22px}
       <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
       <div class="batchrow">
         <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O painel consulta a cada 1 s, mas só compara quando os números oficiais mudam.</div></div>
-        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">★</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">13</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
         <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
       </div>
     </section>
@@ -325,7 +409,7 @@ body.screenmode .candidate:first-child{padding:22px}
     <section class="card rankpanel analytics">
       <div class="paneltitle"><div><div class="eyebrow">Último lote</div><h3>Onde a apuração mexeu mais</h3></div></div>
       <div class="rankgrid">
-        <div class="rankbox"><h4>★ Maior variação do Lula</h4><div id="rankLula"></div></div>
+        <div class="rankbox"><h4>Maior variação do Lula</h4><div id="rankLula"></div></div>
         <div class="rankbox"><h4>Maior variação do Flávio</h4><div id="rankFlavio"></div></div>
         <div class="rankbox"><h4>Mais votos válidos adicionados</h4><div id="rankWeight"></div></div>
       </div>
@@ -334,7 +418,7 @@ body.screenmode .candidate:first-child{padding:22px}
 
     <section class="card apurationpanel analytics">
       <div class="paneltitle">
-        <div><div class="eyebrow">★ Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
+        <div><div class="eyebrow">Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
         <div class="sourcepill">27 UFs • atualização automática</div>
       </div>
       <div class="apurationgrid">
@@ -352,7 +436,7 @@ body.screenmode .candidate:first-child{padding:22px}
 
     <section class="card states">
       <div class="statehead">
-        <div><h2>★ Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
+        <div><h2>Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
         <div class="segmented">
           <button class="btn on" data-s="uf">A–Z</button>
           <button class="btn" data-s="l">Maior % Lula</button>
@@ -363,9 +447,10 @@ body.screenmode .candidate:first-child{padding:22px}
       <div id="list" class="list"></div>
     </section>
   </main>
+  </div>
 
   <footer class="footer">
-    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. O histórico de até 50 lotes fica salvo localmente neste aparelho. Este painel exibe resultados parciais e não faz projeções.</span>
+    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a publicação dos resultados, o aplicativo consulta o TSE em intervalos de 1 segundo e salva até 50 lotes no aparelho. Não há projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -601,10 +686,11 @@ function draw(){
 }
 function showWaiting(){
   secondRoundLive=false;
+  document.querySelector(".mast .live").classList.remove("is-live");
   $("err").className="err waiting";
-  $("err").textContent="2º turno confirmado para 25/10. O painel está preparado e ativa a apuração automaticamente a partir das 17h (horário de Brasília), usando a base oficial do TSE.";
+  $("err").textContent=Date.now()<RESULTS_START?"2º turno em 25/10. A apuração oficial começa a partir das 17h (Brasília), quando este painel passa a consultar o TSE.":"A base oficial do TSE ainda não está disponível neste endereço. Nova tentativa automática, sem publicar números não verificados.";
   $("err").style.display="block";
-  $("cd").textContent="Aguardando 2º turno";
+  $("cd").textContent=Date.now()<RESULTS_START?"Aguardando 2º turno":"Aguardando dados oficiais";
   $("lead").textContent="2º turno em 25/10 • aguardando apuração oficial";
   $("apur").textContent="A divulgação oficial começa a partir das 17h";
   $("upd").textContent="—";
@@ -618,10 +704,12 @@ async function go(){
   $("err").style.display="none";
   $("err").className="err";
   try{
-    const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
+    const national=await one("BR");
+     const r=[national,...await Promise.all(U.map(async uf=>({uf,...await one(uf)})))];
     const n=r[0];
     secondRoundLive=true;
-    $("cd").textContent="Atualiza a cada 1s";
+    $("cd").textContent="TSE · consulta a cada 1s";
+    document.querySelector(".mast .live").classList.add("is-live");
 
     // NATIONAL: compare only when the TSE publishes a genuinely different batch.
     const oldN=prev?.n||null;
@@ -671,6 +759,7 @@ async function go(){
     localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
   }catch(e){
     secondRoundLive=false;
+    document.querySelector(".mast .live").classList.remove("is-live");
     const unavailable=/HTTP (403|404)/.test(e.message);
     if(unavailable){
       showWaiting();
@@ -716,6 +805,33 @@ $("installBtn").addEventListener("click",async()=>{
   $("installHelp").classList.toggle("show");
 });
 if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+
+const editorialFacts=[{"id":1,"debate":"Globo","who":"Flávio","type":"falso","tag":"Segurança","claim":"Lula teria dito que ladrão de celular rouba para tomar cerveja.","why":"O trecho original era sobre torcidas de futebol e reconciliação entre rivais, não sobre justificar crimes.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":2,"debate":"Globo","who":"Lula","type":"falso","tag":"Economia","claim":"O PIB só voltou a crescer mais de 3% após 2023.","why":"O crescimento brasileiro já havia superado 3% em 2011 e em 2021, entre outros anos.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":3,"debate":"Globo","who":"Flávio","type":"fato","tag":"Dívida pública","claim":"A dívida bruta do governo alcançou R$ 11 trilhões em 2026.","why":"O Banco Central registrou aproximadamente R$ 11,1 trilhões em agosto, para a dívida bruta do governo geral.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":4,"debate":"Globo","who":"Lula","type":"fato","tag":"Exportações","claim":"As exportações brasileiras foram recordes em 2025.","why":"O MDIC registrou US$ 348,27 bilhões em exportações naquele ano, acima do recorde anterior.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":5,"debate":"Globo","who":"Flávio","type":"falso","tag":"Obras","claim":"O TCU apontaria hoje mais de 11.500 obras públicas paradas.","why":"O painel atualizado do TCU indicava 4.215 obras paralisadas em julho de 2026.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":6,"debate":"Globo","who":"Lula","type":"impreciso","tag":"Fome","claim":"O Brasil teria acabado com a fome em 2012.","why":"A saída do Mapa da Fome ocorreu em 2014 e não significou que toda a fome deixou de existir.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"}]},{"id":7,"debate":"Globo","who":"Flávio","type":"enganoso","tag":"Apostas","claim":"Lula seria o único responsável pela liberação do 'tigrinho'.","why":"A legalização das apostas de quota fixa começou em 2018, com Temer; regras posteriores envolveram governo e Congresso.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":8,"debate":"Globo","who":"Lula","type":"fato","tag":"Fome","claim":"Havia cerca de 33 milhões de pessoas passando fome no início de 2023.","why":"O inquérito sobre insegurança alimentar grave apontou cerca de 33,1 milhões de pessoas nessa situação.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":9,"debate":"Globo","who":"Flávio","type":"enganoso","tag":"Benefícios","claim":"Bolsonaro teria consolidado permanentemente benefício mínimo de R$ 600.","why":"O Auxílio Brasil chegou a R$ 600 em 2022, mas o aumento era temporário; a proposta orçamentária seguinte não o mantinha.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":10,"debate":"Globo","who":"Lula","type":"impreciso","tag":"Obras","claim":"O governo Lula herdou 6.000 obras paralisadas.","why":"Em abril de 2023 o TCU apontava 8.603 obras nessa situação, acima do número citado.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":11,"debate":"Globo","who":"Flávio","type":"falso","tag":"Rio Grande do Sul","claim":"O governo federal não teria ajudado o RS após as enchentes de 2024.","why":"Houve transferências, apoio financeiro direto e recursos para reconstrução. Autorizações não equivalem automaticamente à execução integral.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"}]},{"id":12,"debate":"Globo","who":"Lula","type":"enganoso","tag":"Argentina","claim":"A pobreza argentina de 40% teria surgido só no governo Milei.","why":"O indicador já era de 41,7% no segundo semestre de 2023, antes da posse de Milei.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":13,"debate":"Globo","who":"Flávio","type":"fato","tag":"Argentina","claim":"Milei assumiu após inflação anual de aproximadamente 211%.","why":"O índice argentino fechou 2023 em 211,4%, confirmado na checagem do UOL.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"}]},{"id":14,"debate":"Globo","who":"Lula","type":"impreciso","tag":"Patrimônio","claim":"Flávio teria comprado uma mansão em Brasília por R$ 10 milhões.","why":"O imóvel do Lago Sul foi comprado por cerca de R$ 6 milhões em 2021, segundo a apuração citada.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"}]},{"id":15,"debate":"Globo","who":"Flávio","type":"fato","tag":"Internet","claim":"O programa Wi-Fi Brasil instalou 21,3 mil pontos de internet até 2022.","why":"Dados da pasta de Comunicações confirmam cerca de 21,3 mil instalações até dezembro de 2022.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":16,"debate":"Globo","who":"Lula","type":"fato","tag":"Agronegócio","claim":"O Brasil abriu 700 novos mercados para produtos agropecuários.","why":"Aos Fatos e UOL confirmaram a marca divulgada pelo Ministério da Agricultura desde 2023.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":17,"debate":"Globo","who":"Flávio","type":"falso","tag":"Investigações","claim":"A Polícia Federal teria atestado a ausência de dinheiro público em 'Dark Horse'.","why":"A PF não divulgou relatório com tal conclusão; a investigação do financiamento ainda estava em curso.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":18,"debate":"Globo","who":"Lula","type":"fato","tag":"Salário mínimo","claim":"Sem valorização real, o salário mínimo poderia estar próximo de R$ 900.","why":"Uma simulação corrigindo o valor de 2003 apenas pelo IGP-M chega a cerca de R$ 905. O resultado depende do índice usado.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"},{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":19,"debate":"Globo","who":"Flávio","type":"enganoso","tag":"Constituição","claim":"O voto de Lula contra a redação de 1988 significaria rejeição ao SUS.","why":"Os constituintes do PT votaram contra o texto final, mas o assinaram na promulgação, inclusive Lula. Não se pode concluir oposição ao SUS.","sources":[{"name":"UOL Confere","url":"https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm"}]},{"id":20,"debate":"Globo","who":"Lula","type":"impreciso","tag":"Meio ambiente","claim":"A retomada do Fundo Amazônia só teria sido determinada após Lula voltar.","why":"O fundo ficou bloqueado no governo Bolsonaro, mas o STF já determinara sua reativação em 2022.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"}]},{"id":21,"debate":"Band","who":"Flávio","type":"falso","tag":"Viagens oficiais","claim":"Lula e Janja teriam gasto R$ 7 bilhões com viagens.","why":"O valor associado ao casal abrange viagens de órgãos e servidores federais, não apenas deslocamentos de Lula e Janja.","sources":[{"name":"Folha","url":"https://www1.folha.uol.com.br/poder/2026/10/debate-entre-lula-e-flavio-bolsonaro-teve-distorcoes-e-dados-falsos-veja-checagem.shtml"},{"name":"Agência Lupa","url":"https://www.agencialupa.org/checagem/2026/10/18/ao-vivo-checagem-do-debate-entre-lula-e-flavio-bolsonaro-na-band/"}]},{"id":22,"debate":"Band","who":"Lula","type":"falso","tag":"Crescimento","claim":"O PIB só voltou a crescer acima de 3% com seu retorno em 2023.","why":"A série do IBGE registra expansões acima dessa marca em governos anteriores.","sources":[{"name":"Folha","url":"https://www1.folha.uol.com.br/poder/2026/10/debate-entre-lula-e-flavio-bolsonaro-teve-distorcoes-e-dados-falsos-veja-checagem.shtml"},{"name":"Agência Lupa","url":"https://www.agencialupa.org/checagem/2026/10/18/ao-vivo-checagem-do-debate-entre-lula-e-flavio-bolsonaro-na-band/"}]},{"id":23,"debate":"Band","who":"Flávio","type":"falso","tag":"Tarifas","claim":"O governo Lula nada teria feito contra o tarifaço dos EUA.","why":"Aos Fatos identificou ações do governo em resposta às tarifas americanas.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":24,"debate":"Band","who":"Lula","type":"fato","tag":"INSS","claim":"O governo já havia devolvido R$ 3,5 bilhões a aposentados por descontos indevidos.","why":"Aos Fatos confirmou o volume devolvido. Isso é diferente da recuperação judicial de recursos dos responsáveis.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":25,"debate":"Band","who":"Flávio","type":"falso","tag":"Diplomacia","claim":"Lula teria viajado aos EUA para defender organizações criminosas.","why":"Aos Fatos classificou como falsa essa interpretação da agenda e das declarações do presidente.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":26,"debate":"Band","who":"Lula","type":"enganoso","tag":"Banco Master","claim":"A prisão de Daniel Vorcaro teria sido uma decisão pessoal do presidente.","why":"Prisões decorrem de atos das autoridades competentes, e não de ordem direta do presidente.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":27,"debate":"Band","who":"Flávio","type":"falso","tag":"Segurança","claim":"O governo trataria abusadores sexuais de crianças apenas como doentes, não criminosos.","why":"Aos Fatos não encontrou respaldo para a alegação atribuída ao governo federal.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":28,"debate":"Band","who":"Lula","type":"fato","tag":"Armas","claim":"Mais de um milhão de armas teriam sido liberadas no governo Bolsonaro.","why":"Aos Fatos confirmou o número mencionado na discussão sobre políticas de armas.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":29,"debate":"Band","who":"Lula","type":"falso","tag":"Terras indígenas","claim":"Governos do PT teriam feito a maior demarcação de terras indígenas da história.","why":"A série histórica não sustenta a afirmação superlativa, segundo Aos Fatos.","sources":[{"name":"Aos Fatos","url":"https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"}]},{"id":30,"debate":"Band","who":"Flávio","type":"enganoso","tag":"Execução penal","claim":"O governo Lula buscaria liberar indiscriminadamente as 'saidinhas'.","why":"A discussão envolve regras legais específicas. A leitura de liberação indiscriminada foi considerada enganosa pela Lupa.","sources":[{"name":"Agência Lupa","url":"https://www.agencialupa.org/checagem/2026/10/18/ao-vivo-checagem-do-debate-entre-lula-e-flavio-bolsonaro-na-band/"}]}];
+const editorialEscape=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const editorialLabels={fato:"FATO",falso:"FALSO",enganoso:"ENGANOSO",impreciso:"IMPRECISO"};
+function renderEditorial(){
+  const d=document.getElementById("edDebate").value,w=document.getElementById("edWho").value,v=document.getElementById("edType").value,q=document.getElementById("edSearch").value.trim().toLocaleLowerCase("pt-BR");
+  const rows=editorialFacts.filter(f=>(d==="todos"||f.debate===d)&&(w==="todos"||f.who===w)&&(v==="todos"||f.type===v)&&(!q||[f.claim,f.why,f.tag,f.who,f.debate].join(" ").toLocaleLowerCase("pt-BR").includes(q)));
+  document.getElementById("edCount").textContent=rows.length+" de "+editorialFacts.length+" checagens";
+  document.getElementById("edFacts").innerHTML=rows.length?rows.map(f=>'<article class="ed-fact"><div class="ed-meta"><span class="ed-mark '+f.type+'">'+editorialLabels[f.type]+'</span><span>'+editorialEscape(f.who)+' · '+editorialEscape(f.debate)+' · '+(f.debate==="Globo"?"23/10":"18/10")+'</span><span>· '+editorialEscape(f.tag)+'</span></div><h4>'+editorialEscape(f.claim)+'</h4><p>'+editorialEscape(f.why)+'</p><div class="ed-source">'+f.sources.map(s=>'<a href="'+editorialEscape(s.url)+'" target="_blank" rel="noopener noreferrer">Ler checagem · '+editorialEscape(s.name)+' ↗</a>').join("")+'</div></article>').join(""):'<p style="padding:25px 0;color:#817669">Nenhuma checagem encontrada com os filtros selecionados.</p>';
+}
+["edDebate","edWho","edType"].forEach(id=>document.getElementById(id).addEventListener("change",renderEditorial));
+document.getElementById("edSearch").addEventListener("input",renderEditorial);
+renderEditorial();
+const editorialPages={debates:"debatesView",results:"resultsView",guide:"guideView"};
+function showEdition(page,fromHash=false){
+ const key=editorialPages[page]?page:"debates";
+ Object.entries(editorialPages).forEach(([k,id])=>document.getElementById(id).hidden=(k!==key));
+ document.querySelectorAll(".ed-tab").forEach(b=>{const on=b.dataset.edPage===key;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});
+ if(!fromHash)history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
+ if(key!=="results"&&document.body.classList.contains("screenmode")){document.body.classList.remove("screenmode");document.getElementById("screenBtn").textContent="◫ Modo telão"}
+ window.scrollTo({top:0,behavior:"auto"});
+}
+function editionFromHash(){const h=location.hash.replace("#","");return h==="apuracao"?"results":h==="votar"?"guide":h==="debates"?"debates":null}
+document.querySelectorAll(".ed-tab").forEach(b=>b.addEventListener("click",()=>showEdition(b.dataset.edPage)));
+window.addEventListener("hashchange",()=>{const p=editionFromHash();if(p)showEdition(p,true)});
+showEdition(editionFromHash()||(Date.now()>=RESULTS_START?"results":"debates"),true);
+
 go().finally(scheduleNext);
 </script>
 </body>

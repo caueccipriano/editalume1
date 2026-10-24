@@ -1,4 +1,4 @@
-const CACHE="apuracao-2026-v2";
+const CACHE="eleicoes-2026-v3-editorial";
 const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
@@ -8,9 +8,10 @@ self.addEventListener("activate",event=>{
 });
 self.addEventListener("fetch",event=>{
   const url=new URL(event.request.url);
-  if(url.hostname==="resultados.tse.jus.br") return;
-  if(event.request.method!=="GET") return;
+  if(url.hostname==="resultados.tse.jus.br")return;
+  if(event.request.method!=="GET"||url.origin!==self.location.origin)return;
   event.respondWith(fetch(event.request).then(response=>{
+    if(!response.ok)return response;
     const copy=response.clone();
     caches.open(CACHE).then(c=>c.put(event.request,copy));
     return response;
