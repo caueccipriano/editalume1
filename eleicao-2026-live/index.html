@@ -296,6 +296,19 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
 .ed-sources-more a{font:800 11px Arial,sans-serif;color:#463a31;text-decoration:underline;margin:5px 12px 5px 0;display:inline-block}
 @media(max-width:700px){.ed-stats{grid-template-columns:repeat(2,1fr)}.ed-charts{grid-template-columns:1fr}.ed-chart.wide{grid-column:span 1}.ed-topics{grid-template-columns:1fr}.ed-analysis-head{display:block}.ed-analysis-number{border-left:0;border-top:1px solid #cabeb0;padding:12px 0;display:flex;gap:12px;align-items:center}.ed-analysis-number b{font-size:35px}.ed-chartrow{grid-template-columns:77px minmax(0,1fr) 24px}.ed-chart{padding:14px}}
 
+
+.ed-numbers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.ed-numeric{border:1px solid #e0d7cb;padding:15px;background:#fffdfa}
+.ed-numeric .ed-kicker{font-size:9px}
+.ed-numeric h5{font:700 19px/1.2 Georgia,serif;margin:8px 0 8px}
+.ed-numeric p{font:11px/1.5 Arial,sans-serif;color:#746c60;margin:4px 0 12px;min-height:43px}
+.ed-numeric-line{display:grid;grid-template-columns:100px 1fr 67px;gap:8px;align-items:center;margin:9px 0;font:700 11px Arial,sans-serif}
+.ed-numeric-line .ed-track{height:15px}.ed-numeric-line em{text-align:right;font-style:normal;color:#423d35}
+.ed-numeric-line .ed-track i{background:#a99b88}
+.ed-numeric-line.official .ed-track i{background:#405d58}
+.ed-numeric a{color:#44372c;font:700 11px Arial,sans-serif;text-underline-offset:3px}
+@media(max-width:690px){.ed-numbers{grid-template-columns:1fr}.ed-numeric-line{grid-template-columns:93px minmax(0,1fr) 65px}}
+
 </style>
 </head>
 <body>
@@ -482,6 +495,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
   <div class="ed-charts">
     <article class="ed-chart"><h4>Classificações por candidato</h4><p>Contagem de afirmações verificadas, sem inferir desempenho eleitoral.</p><div class="ed-legend" id="edLegend"></div><div id="edVerdicts"></div></article>
     <article class="ed-chart"><h4>Declarações por debate</h4><p>Quantidade checada nos encontros da Band e da Globo.</p><div id="edByDebate"></div></article>
+    <article class="ed-chart wide"><h4>Números em disputa: fala × dado apurado</h4><p>Comparações selecionadas na mesma unidade, acompanhadas da origem e do período. As barras não indicam intenção de voto.</p><div id="edNumbers" class="ed-numbers"></div></article>
     <article class="ed-chart wide"><h4>Assuntos mais checados</h4><p>Contagens por assunto e candidato no recorte selecionado.</p><div id="edByTopic" class="ed-topics"></div></article>
   </div>
   <div class="ed-charts-footer">Os totais indicam somente falas que constam deste arquivo editorial. As agências escolhem quais frases verificar; por isso as contagens não medem qual candidato mentiu mais no conjunto dos debates. Não há notas nem porcentagens de confiabilidade calculadas pelo aplicativo.</div>
@@ -872,7 +886,28 @@ const edColors={fato:"#32674f",falso:"#a54e44",enganoso:"#b18a43",impreciso:"#99
 const edTypes=["fato","falso","enganoso","impreciso","nao_comprovado"];
 const edN=x=>(Number(x)||0).toLocaleString("pt-BR");
 const edCount=(rows,field,val)=>rows.filter(r=>r[field]===val).length;
+
+const edNumericalCases=[
+ {id:5,title:"Obras paralisadas em 2026",unit:"obras",claim:11500,confirmed:4215,claimLabel:"Flávio citou",confirmedLabel:"TCU · jul/26",displayClaim:"11.500",displayConfirmed:"4.215",note:"O número de 11.500 se relaciona a levantamento anterior, não ao painel atualizado de julho de 2026."},
+ {id:10,title:"Obras herdadas no início de 2023",unit:"obras",claim:6000,confirmed:8603,claimLabel:"Lula citou",confirmedLabel:"TCU · abr/23",displayClaim:"6.000",displayConfirmed:"8.603",note:"Na atualização de abril de 2023, o TCU registrava mais de 8,6 mil obras paralisadas."},
+ {id:14,title:"Preço de mansão no Lago Sul",unit:"R$ milhões",claim:10,confirmed:6,claimLabel:"Lula citou",confirmedLabel:"Valor em 2021",displayClaim:"R$ 10 mi",displayConfirmed:"R$ 6 mi",note:"A cifra referente a esse imóvel não se confunde com outra disputa imobiliária, mencionada nas checagens."},
+ {id:47,title:"Poder de compra do salário mínimo",unit:"cestas básicas",claim:2.2,confirmed:1.8,claimLabel:"Lula citou",confirmedLabel:"Estudo · ago/26",displayClaim:"2,2",displayConfirmed:"1,8",note:"A pesquisa usa preços da cesta de São Paulo; não é uma média nacional."},
+ {id:51,title:"Reservas internacionais em 2010",unit:"US$ bilhões",claim:270,confirmed:288.575,claimLabel:"Lula citou",confirmedLabel:"BC · dez/10",displayClaim:"US$ 270 bi",displayConfirmed:"US$ 288,6 bi",note:"O número citado é menor do que o estoque registrado ao fim do segundo mandato."},
+ {id:56,title:"Roubos de celulares no país",unit:"registros",claim:492905,confirmed:308723,claimLabel:"Ano de 2022",confirmedLabel:"Ano de 2025",displayClaim:"492.905",displayConfirmed:"308.723",note:"O Anuário de Segurança Pública apurou queda de 37,4% entre 2022 e 2025. Aqui as barras representam anos, não uma comparação fala × dado."}
+];
+function renderNumericComparisons(rows){
+ const visible=edNumericalCases.filter(x=>rows.some(f=>f.id===x.id));
+ document.getElementById("edNumbers").innerHTML=visible.length?visible.map(x=>{
+  const max=Math.max(x.claim,x.confirmed)||1;const f=editorialFacts.find(r=>r.id===x.id);
+  return '<div class="ed-numeric"><span class="ed-kicker">'+editorialEscape(f.debate+' · '+f.who+' · '+x.unit)+'</span><h5>'+editorialEscape(x.title)+'</h5><p>'+editorialEscape(x.note)+'</p>'+
+    [[x.claimLabel,x.displayClaim,x.claim,false],[x.confirmedLabel,x.displayConfirmed,x.confirmed,true]].map(([label,display,v,official])=>
+      '<div class="ed-numeric-line'+(official?" official":"")+'"><span>'+editorialEscape(label)+'</span><div class="ed-track" role="img" aria-label="'+editorialEscape(label+': '+display)+'"><i style="width:'+(v/max*100)+'%"></i></div><em>'+editorialEscape(display)+'</em></div>').join("")+
+    '<a href="'+editorialEscape(f.sources[0].url)+'" target="_blank" rel="noopener noreferrer">Conferir a checagem ↗</a></div>';
+ }).join(""):'<p class="ed-charts-footer">Não há comparativos numéricos selecionados nestes filtros.</p>';
+}
+
 function renderEdCharts(rows){
+  renderNumericComparisons(rows);
   const total=rows.length;
   document.getElementById("edTotalCases").textContent=edN(total);
   const metrics=[["Declarações",total],["Lula",edCount(rows,"who","Lula")],["Flávio",edCount(rows,"who","Flávio")],["Temas distintos",new Set(rows.map(f=>f.tag)).size]];
