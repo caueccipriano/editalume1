@@ -1,12 +1,12 @@
 {
-  "name": "Eleições 2026 — Debates e Apuração",
-  "short_name": "Eleições 2026",
+  "name": "Apuração 2026 — Lula × Flávio",
+  "short_name": "Apuração 2026",
   "description": "Checagem de fatos dos debates e apuração oficial do segundo turno presidencial de 2026.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f6f3ed",
-  "theme_color": "#292620",
+  "background_color": "#fff7f5",
+  "theme_color": "#b00020",
   "icons": [
     {
       "src": "icon.svg",
