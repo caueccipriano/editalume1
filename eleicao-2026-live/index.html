@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#b00020">
+<meta name="theme-color" content="#292620">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Apuração 2026">
+<meta name="apple-mobile-web-app-title" content="Eleições 2026">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
-<title>Apuração 2026 — Lula × Flávio Bolsonaro</title>
+<title>Eleições 2026 — Debates, Checagem e Apuração</title>
 <style>
 :root{
   --red:#b00020;--red2:#d7193f;--red3:#ef476f;--ink:#231f20;--muted:#746c6e;
@@ -262,7 +262,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
         <div class="brandline"><span class="brand">ELEIÇÕES 2026 · CADERNO ESPECIAL</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
         <h1>Lula <span style="opacity:.55">×</span> Flávio Bolsonaro</h1>
         <div class="subtitle">Os debates checados e a apuração oficial de 25 de outubro</div>
-        <div class="starline">★ ★ ★ ★ ★</div>
+        
       </div>
       <div class="livebox">
         <div class="live"><span class="dot"></span><span id="cd">Aguardando TSE</span></div>
@@ -317,7 +317,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
   <main class="grid">
     <section class="card hero">
       <div class="herohead">
-        <div class="sectiontitle">★ Resultado nacional <span style="color:#b00020">13</span></div>
+        <div class="sectiontitle">Resultado nacional · 2º turno</div>
         <div class="sourcepill">Parcial oficial • sem projeção</div>
       </div>
 
@@ -367,7 +367,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
     </section>
 
     <section class="card kpi">
-      <div class="kpihead"><span>Lula lidera</span><span class="icon">★</span></div>
+      <div class="kpihead"><span>Lula lidera</span><span class="icon">13</span></div>
       <div><div id="ls" class="big red">—</div><div class="kpisub">unidades da federação</div></div>
     </section>
 
@@ -386,7 +386,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
       <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
       <div class="batchrow">
         <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O painel consulta a cada 1 s, mas só compara quando os números oficiais mudam.</div></div>
-        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">★</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">13</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
         <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
       </div>
     </section>
@@ -409,7 +409,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
     <section class="card rankpanel analytics">
       <div class="paneltitle"><div><div class="eyebrow">Último lote</div><h3>Onde a apuração mexeu mais</h3></div></div>
       <div class="rankgrid">
-        <div class="rankbox"><h4>★ Maior variação do Lula</h4><div id="rankLula"></div></div>
+        <div class="rankbox"><h4>Maior variação do Lula</h4><div id="rankLula"></div></div>
         <div class="rankbox"><h4>Maior variação do Flávio</h4><div id="rankFlavio"></div></div>
         <div class="rankbox"><h4>Mais votos válidos adicionados</h4><div id="rankWeight"></div></div>
       </div>
@@ -418,7 +418,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
 
     <section class="card apurationpanel analytics">
       <div class="paneltitle">
-        <div><div class="eyebrow">★ Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
+        <div><div class="eyebrow">Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
         <div class="sourcepill">27 UFs • atualização automática</div>
       </div>
       <div class="apurationgrid">
@@ -436,7 +436,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
 
     <section class="card states">
       <div class="statehead">
-        <div><h2>★ Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
+        <div><h2>Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
         <div class="segmented">
           <button class="btn on" data-s="uf">A–Z</button>
           <button class="btn" data-s="l">Maior % Lula</button>
@@ -450,7 +450,7 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
   </div>
 
   <footer class="footer">
-    <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. O histórico de até 50 lotes fica salvo localmente neste aparelho. Este painel exibe resultados parciais e não faz projeções.</span>
+    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a publicação dos resultados, o aplicativo consulta o TSE em intervalos de 1 segundo e salva até 50 lotes no aparelho. Não há projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -825,7 +825,7 @@ function showEdition(page,fromHash=false){
  document.querySelectorAll(".ed-tab").forEach(b=>{const on=b.dataset.edPage===key;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});
  if(!fromHash)history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
  if(key!=="results"&&document.body.classList.contains("screenmode")){document.body.classList.remove("screenmode");document.getElementById("screenBtn").textContent="◫ Modo telão"}
- window.scrollTo({top:0,behavior:"instant"});
+ window.scrollTo({top:0,behavior:"auto"});
 }
 function editionFromHash(){const h=location.hash.replace("#","");return h==="apuracao"?"results":h==="votar"?"guide":h==="debates"?"debates":null}
 document.querySelectorAll(".ed-tab").forEach(b=>b.addEventListener("click",()=>showEdition(b.dataset.edPage)));
