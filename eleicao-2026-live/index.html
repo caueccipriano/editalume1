@@ -252,6 +252,50 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
 @media(max-width:700px){.mast .header{flex-direction:column}.mast .livebox{align-items:flex-start}.mast .topactions{justify-content:flex-start}.ed-head{grid-template-columns:1fr}.ed-head h2{font-size:clamp(47px,11vw,74px)}.ed-date{text-align:left;border-top:1px solid var(--line);padding-top:11px}.ed-feature{grid-template-columns:1fr;gap:4px}.ed-feature aside{border-left:0;border-top:1px solid var(--line);padding:14px 0 0}.ed-facts,.guide-cards{grid-template-columns:1fr}.ed-tab{padding:13px 12px;font-size:10px}}
 @media print{.ed-nav,.ed-filters,.livebox{display:none!important}body{background:white!important}.ed-facts{grid-template-columns:1fr 1fr}.ed-fact{break-inside:avoid}}
 
+
+/* Especial jornalístico: comparações e evidências */
+.ed-analysis{border-top:3px double #332e29;border-bottom:1px solid #bcb1a2;padding:24px 0 22px;margin:28px 0 10px}
+.ed-analysis-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.ed-analysis-head h3{font:700 clamp(28px,4vw,44px)/1.08 Georgia,serif;letter-spacing:-.045em;margin:7px 0}
+.ed-analysis-head p{font:12px/1.55 Arial,sans-serif;color:#73695f;max-width:675px}
+.ed-analysis-number{border-left:1px solid #c7bbab;padding-left:18px;min-width:140px}
+.ed-analysis-number b{font:700 53px Georgia,serif;display:block}.ed-analysis-number span{font:10px/1.5 Arial,sans-serif;color:#746d62}
+.ed-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:16px 0}
+.ed-stat{background:#fffdfa;border:1px solid #d6cbbd;padding:15px}.ed-stat small{font:800 10px Arial,sans-serif;color:#7a7165;letter-spacing:.08em;text-transform:uppercase}
+.ed-stat b{display:block;font:700 35px Georgia,serif;margin-top:7px}
+.ed-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ed-chart{background:#fffdfa;border:1px solid #d5caba;padding:20px;min-width:0}
+.ed-chart.wide{grid-column:span 2}
+.ed-chart h4{font:700 21px Georgia,serif;margin:0 0 7px}.ed-chart p{font:12px/1.55 Arial,sans-serif;color:#7b7165;margin:0 0 17px}
+.ed-legend{display:flex;flex-wrap:wrap;gap:7px 13px;margin:10px 0 17px}
+.ed-legend span{display:flex;align-items:center;gap:6px;font:10px Arial,sans-serif;color:#62594e}
+.ed-legend i{display:inline-block;width:10px;height:10px}
+.ed-chartrow{display:grid;grid-template-columns:105px minmax(0,1fr) 25px;gap:8px;align-items:center;margin:10px 0;font:700 11px Arial,sans-serif}
+.ed-chartrow b{text-align:right;font:700 12px Arial,sans-serif}
+.ed-stack{display:flex;height:24px;width:100%;background:#eae4db;overflow:hidden}
+.ed-stack span{height:100%;display:block;min-width:0}
+.ed-track{height:14px;background:#ebe6dc;display:block;overflow:hidden}
+.ed-track i{height:100%;display:block;background:#aa554b;transition:width .25s}
+.ed-track i.flavio{background:#627485}
+.ed-topics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 17px}
+.ed-topic{border-bottom:1px solid #e5ded1;padding:10px 0}
+.ed-topic b{display:block;font:700 12px Arial,sans-serif;margin-bottom:8px}
+.ed-topicline{display:grid;grid-template-columns:41px 1fr 23px;gap:8px;align-items:center;margin:4px 0;font:700 10px Arial,sans-serif}
+.ed-topicline em{font-style:normal;text-align:right}
+.ed-charts-footer{font:11px/1.6 Arial,sans-serif;color:#756a5e;margin:14px 0 0}
+.ed-mark.nao_comprovado{background:#6f6778;border-color:#6f6778;color:#fff}
+.ed-fact-detail{border-top:1px solid #e1d9cd;margin:12px 0 0}
+.ed-fact-detail summary{cursor:pointer;list-style:none;padding:12px 0;font:800 11px Arial,sans-serif;letter-spacing:.06em;color:#5e4b3b;display:flex;justify-content:space-between;gap:10px}
+.ed-fact-detail summary::-webkit-details-marker{display:none}
+.ed-fact-detail summary:after{content:"+";font:normal 20px Georgia,serif}.ed-fact-detail[open] summary:after{content:"−"}
+.ed-fact-detail strong{font:800 10px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7b7164;display:block;margin:13px 0 5px}
+.ed-fact-detail p{margin:0 0 12px;font-size:13px;color:#5c544c}
+.ed-sources-more{margin:18px 0;background:#fffaf0;padding:17px;border:1px solid #dbd0bc}
+.ed-sources-more h4{font:700 19px Georgia,serif;margin:0 0 8px}
+.ed-sources-more p{font:12px/1.6 Arial,sans-serif;color:#74695d}
+.ed-sources-more a{font:800 11px Arial,sans-serif;color:#463a31;text-decoration:underline;margin:5px 12px 5px 0;display:inline-block}
+@media(max-width:700px){.ed-stats{grid-template-columns:repeat(2,1fr)}.ed-charts{grid-template-columns:1fr}.ed-chart.wide{grid-column:span 1}.ed-topics{grid-template-columns:1fr}.ed-analysis-head{display:block}.ed-analysis-number{border-left:0;border-top:1px solid #cabeb0;padding:12px 0;display:flex;gap:12px;align-items:center}.ed-analysis-number b{font-size:35px}.ed-chartrow{grid-template-columns:77px minmax(0,1fr) 24px}.ed-chart{padding:14px}}
+
 </style>
 </head>
 <body>
@@ -431,7 +475,18 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
       <div><div class="ed-kicker">A manchete · 23 de outubro</div><h3>Dois debates. Muitos números. As evidências valem mais do que as frases de efeito.</h3><p>Selecionamos declarações verificáveis dos debates da Band (18/10) e da Globo (23/10). Os vereditos abaixo são baseados em publicações de UOL Confere, Aos Fatos, Agência Lupa e Folha.</p></div>
       <aside><div class="ed-kicker">Guia dos selos</div><p><b>Fato</b>: sustentado por evidências. <b>Falso</b>: contrariado pelas evidências. <b>Enganoso</b>: contém omissões decisivas. <b>Impreciso</b>: dado exagerado ou incorreto em parte. <b>Não comprovado</b>: faltam evidências suficientes para concluir.</p><p>As falas estão resumidas, não transcritas integralmente. O conjunto é uma seleção editorial; não permite calcular uma taxa geral de mentiras de cada candidato.</p></aside>
     </div>
-    <div class="ed-filter-head"><div><div class="ed-kicker">Arquivo de declarações</div><h3>Checagem fala a fala</h3></div><span id="edCount" class="ed-count" aria-live="polite">Carregando</span></div>
+    
+<section class="ed-analysis" aria-label="Gráficos comparativos das declarações verificadas">
+  <div class="ed-analysis-head"><div><div class="ed-kicker">Caderno de dados · comparação</div><h3>Um olhar sobre os fatos.</h3><p>Compare as afirmações verificadas por candidato, debate, assunto e classificação. Os gráficos reagem aos filtros abaixo e exibem apenas a seleção documentada neste app.</p></div><div class="ed-analysis-number"><b id="edTotalCases">—</b><span>declarações com checagem<br>nesta seleção</span></div></div>
+  <div id="edStats" class="ed-stats"></div>
+  <div class="ed-charts">
+    <article class="ed-chart"><h4>Classificações por candidato</h4><p>Contagem de afirmações verificadas, sem inferir desempenho eleitoral.</p><div class="ed-legend" id="edLegend"></div><div id="edVerdicts"></div></article>
+    <article class="ed-chart"><h4>Declarações por debate</h4><p>Quantidade checada nos encontros da Band e da Globo.</p><div id="edByDebate"></div></article>
+    <article class="ed-chart wide"><h4>Assuntos mais checados</h4><p>Contagens por assunto e candidato no recorte selecionado.</p><div id="edByTopic" class="ed-topics"></div></article>
+  </div>
+  <div class="ed-charts-footer">Os totais indicam somente falas que constam deste arquivo editorial. As agências escolhem quais frases verificar; por isso as contagens não medem qual candidato mentiu mais no conjunto dos debates. Não há notas nem porcentagens de confiabilidade calculadas pelo aplicativo.</div>
+</section>
+<div class="ed-filter-head"><div><div class="ed-kicker">Arquivo de declarações</div><h3>Checagem fala a fala</h3></div><span id="edCount" class="ed-count" aria-live="polite">Carregando</span></div>
     <div class="ed-filters">
       <select id="edDebate" aria-label="Debate"><option value="todos">Band + Globo</option><option value="Globo">Globo · 23/10</option><option value="Band">Band · 18/10</option></select>
       <select id="edWho" aria-label="Candidato"><option value="todos">Lula + Flávio</option><option value="Lula">Lula</option><option value="Flávio">Flávio Bolsonaro</option></select>
@@ -439,7 +494,9 @@ body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after
       <input id="edSearch" type="search" placeholder="Buscar: economia, INSS, obras…" aria-label="Buscar falas">
     </div>
     <div id="edFacts" class="ed-facts"></div>
-    <div class="ed-note"><b>Transparência:</b> checagens baseadas nas publicações dos veículos indicados em cada item, consultadas em 24/10/2026. Rótulos e explicações são resumos editoriais; as classificações originais e a documentação completa estão nas fontes. As checagens não são atualizadas automaticamente.</div>
+    
+<div class="ed-sources-more"><h4>Leia as checagens na íntegra</h4><p>Esta é uma coleção editorial de afirmações verificadas, não uma transcrição exaustiva de tudo o que foi dito. As matérias originais trazem documentos, exceções e outras falas além das exibidas neste aplicativo.</p><div><a target="_blank" rel="noopener noreferrer" href="https://noticias.uol.com.br/confere/ultimas-noticias/2026/10/24/debate-globo-checagem-flavio-lula.ghtm">UOL · Globo ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/">Aos Fatos · Globo ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.agencialupa.org/checagem/2026/10/18/ao-vivo-checagem-do-debate-entre-lula-e-flavio-bolsonaro-na-band/">Lupa · Band ↗</a><a target="_blank" rel="noopener noreferrer" href="https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/">Aos Fatos · Band ↗</a></div></div>
+<div class="ed-note"><b>Transparência:</b> checagens baseadas nas publicações dos veículos indicados em cada item, consultadas em 24/10/2026. Rótulos e explicações são resumos editoriais; as classificações originais e a documentação completa estão nas fontes. As checagens não são atualizadas automaticamente.</div>
   </section>
   <section id="guideView" hidden aria-labelledby="guideTitle">
     <header class="guide-head"><div class="ed-kicker">Serviço · TRE-SP e TSE</div><h2 id="guideTitle">Seu voto, sem dúvida.</h2><p>Domingo, 25 de outubro de 2026. Segundo turno presidencial das 8h às 17h, horário de Brasília.</p></header>
