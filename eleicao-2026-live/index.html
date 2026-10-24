@@ -203,6 +203,55 @@ body.screenmode .candidate:first-child{padding:22px}
   .states{padding:13px}.statehead{align-items:flex-start;flex-direction:column}.segmented{width:100%}.list{grid-template-columns:1fr}.footer{flex-direction:column}.state{padding:12px}.apurationgrid{grid-template-columns:1fr}
   .topactions{justify-content:flex-end}.batchrow{grid-template-columns:1fr}.chartpanel,.mappanel,.rankpanel,.historypanel,.apurationpanel{grid-column:span 12}.apurationgrid{grid-template-columns:1fr 1fr}.maplayout{grid-template-columns:1fr}.chartbox{height:165px}.batchmain .headline{font-size:17px}
 }
+
+/* Edição editorial — debates & segundo turno */
+:root{--paper:#f6f3ed;--white:#fffdfa;--line:#d6d0c4;--ink:#292620;--muted:#756e65;--shadow:0 3px 14px rgba(25,20,12,.04)}
+html,body{background:#f6f3ed}body{background:linear-gradient(#f8f6f1,#f2eee5);font-family:Arial,Helvetica,sans-serif}
+body:before,.mast:before,.mast:after,.hero:after,.states:before,.analytics:after,.candidate:first-child:after{display:none!important}
+.wrap{max-width:1200px;padding:18px 17px 40px}.mast{background:none!important;border:0;border-radius:0;border-top:4px double #282520;border-bottom:1px solid #b6ac9d;box-shadow:none;color:#292620;padding:13px 0 16px;margin-bottom:12px}
+.mast .brand{font-size:11px;color:#292620;letter-spacing:.18em}.mast .brand:before{content:"26";background:#292620;color:#fffdf6;border-radius:2px;box-shadow:none}
+.mast .datechip{border-radius:2px;border-color:var(--line);background:transparent;color:#555047}.mast h1{font:700 clamp(31px,5.2vw,60px)/1.02 Georgia,serif;letter-spacing:-.055em;margin:12px 0}
+.mast .subtitle,.mast .refreshhint{color:#6a6259}.mast .starline{display:none}
+.mast .live{color:#49423b;border:1px solid #ccc4b8;border-radius:2px;background:#fdfaf3}
+.mast .dot{background:#9a9187;animation:none;box-shadow:none}.mast .live.is-live .dot{background:#21815c;animation:pulse 1.7s infinite}
+.mast .actionbtn{color:#312d27;border-color:#cdc5b9;border-radius:2px;background:#fffdfa}
+.card{border-color:var(--line);background:#fffdfa;border-radius:5px;box-shadow:var(--shadow)}
+.candidate:first-child,.candidate:last-child{border:1px solid var(--line);border-radius:4px;padding:14px;background:#fffdfa;box-shadow:none}
+.hero:before{height:2px;background:#292620}.sectiontitle,.statehead h2,.paneltitle h3{font-family:Georgia,serif}
+.ed-nav{display:flex;align-items:center;border-top:1px solid #282520;border-bottom:1px solid #282520;margin:13px 0 23px;overflow-x:auto;scrollbar-width:none}
+.ed-tab{border:0;border-right:1px solid var(--line);padding:14px 19px;font-size:11px;letter-spacing:.06em;font-weight:850;text-transform:uppercase;white-space:nowrap;color:#6b645c;background:transparent;cursor:pointer;min-height:46px}
+.ed-tab.on{background:#292620;color:#fffdf6}.ed-tab:hover:not(.on){background:#e8e2d8;color:#292620}
+.ed-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:800;color:#867b6e}
+.ed-head{display:grid;grid-template-columns:1fr auto;gap:25px;padding:5px 0 21px;border-bottom:3px double #3c362d}
+.ed-head h2,.guide-head h2{font:700 clamp(45px,7vw,85px)/.95 Georgia,serif;letter-spacing:-.07em;margin:12px 0}
+.ed-head p,.guide-head p{font:14px/1.55 Arial,sans-serif;color:#6b6258;max-width:650px;margin:0}
+.ed-date{font:12px/1.55 Arial,sans-serif;min-width:158px;color:#5d554b;text-align:right;align-self:end}
+.ed-date b{display:block;font:34px/1.05 Georgia,serif;color:#292620}
+.ed-feature{display:grid;grid-template-columns:1.4fr .8fr;gap:35px;padding:27px 0;border-bottom:1px solid #a9a092}
+.ed-feature h3{font:700 clamp(28px,3.1vw,42px)/1.07 Georgia,serif;letter-spacing:-.035em;margin:12px 0}
+.ed-feature p,.ed-feature aside{color:#686057;font:13px/1.55 Arial,sans-serif}
+.ed-feature aside{border-left:1px solid #cfc6b8;padding-left:23px}.ed-feature aside b{color:#302b25}
+.ed-filter-head{display:flex;justify-content:space-between;align-items:end;gap:16px;padding:24px 0 10px}
+.ed-filter-head h3{font:700 26px Georgia,serif;margin:3px 0}
+.ed-count{font:700 11px Arial,sans-serif;color:#756e64}
+.ed-filters{display:flex;flex-wrap:wrap;gap:9px;padding:12px 0 17px;border-bottom:1px solid #d8d0c4}
+.ed-filters select,.ed-filters input{min-height:44px;padding:10px 12px;border:1px solid #cdc3b4;background:#fffdfa;border-radius:2px;color:#342f28;font:700 12px Arial,sans-serif}
+.ed-filters select{flex:1 1 140px}.ed-filters input{flex:2 1 230px;min-width:165px}
+.ed-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 26px;padding:0 0 10px}
+.ed-fact{border-bottom:1px solid #cfc5b5;padding:19px 0;min-width:0}.ed-fact h4{font:700 clamp(21px,2.2vw,29px)/1.12 Georgia,serif;letter-spacing:-.025em;margin:13px 0 10px}
+.ed-fact p{font:13px/1.55 Arial,sans-serif;color:#645d53;margin:0 0 12px}
+.ed-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#766e65;text-transform:uppercase;letter-spacing:.07em;font-size:10px;font-weight:800}
+.ed-mark{font-size:10px;font-weight:850;letter-spacing:.09em;background:#ece5d6;color:#534b3d;padding:5px 8px;border:1px solid #d4c7b4}
+.ed-mark.falso{color:#fff;background:#923f36;border-color:#923f36}.ed-mark.fato{color:#fff;background:#2f6653;border-color:#2f6653}.ed-mark.enganoso{color:#fff;background:#a47525;border-color:#a47525}
+.ed-source{display:flex;flex-wrap:wrap;gap:12px}.ed-source a,.guide-card a{color:#2f2a24;font-size:11px;font-weight:850;border-bottom:1px solid #7c7366;padding:4px 0;text-decoration:none}.ed-source a:hover,.guide-card a:hover{color:#9b473d;border-color:#9b473d}
+.ed-note{border-top:3px double #3e382f;border-bottom:1px solid #bdb3a6;padding:17px 0;color:#6d6257;font:12px/1.6 Arial,sans-serif;margin:15px 0 30px}
+.guide-head{padding:8px 0 21px;border-bottom:3px double #3c362d}.guide-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:23px 0}
+.guide-card{background:#fffdfa;border:1px solid var(--line);padding:22px}.guide-card span{font:42px Georgia,serif;color:#aba18f}
+.guide-card h3{font:700 25px Georgia,serif;margin:7px 0}.guide-card p{font:13px/1.6 Arial,sans-serif;color:#6a6258}
+#resultsView[hidden],#debatesView[hidden],#guideView[hidden]{display:none!important}
+@media(max-width:700px){.mast .header{flex-direction:column}.mast .livebox{align-items:flex-start}.mast .topactions{justify-content:flex-start}.ed-head{grid-template-columns:1fr}.ed-head h2{font-size:clamp(47px,11vw,74px)}.ed-date{text-align:left;border-top:1px solid var(--line);padding-top:11px}.ed-feature{grid-template-columns:1fr;gap:4px}.ed-feature aside{border-left:0;border-top:1px solid var(--line);padding:14px 0 0}.ed-facts,.guide-cards{grid-template-columns:1fr}.ed-tab{padding:13px 12px;font-size:10px}}
+@media print{.ed-nav,.ed-filters,.livebox{display:none!important}body{background:white!important}.ed-facts{grid-template-columns:1fr 1fr}.ed-fact{break-inside:avoid}}
+
 </style>
 </head>
 <body>
@@ -210,13 +259,13 @@ body.screenmode .candidate:first-child{padding:22px}
   <section class="mast">
     <header class="header">
       <div>
-        <div class="brandline"><span class="brand">★ Apuração 2026</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
+        <div class="brandline"><span class="brand">ELEIÇÕES 2026 · CADERNO ESPECIAL</span><span class="datechip">Presidente • 2º turno • 25/10</span></div>
         <h1>Lula <span style="opacity:.55">×</span> Flávio Bolsonaro</h1>
-        <div class="subtitle">Acompanhamento em tempo real com dados oficiais do TSE</div>
+        <div class="subtitle">Os debates checados e a apuração oficial de 25 de outubro</div>
         <div class="starline">★ ★ ★ ★ ★</div>
       </div>
       <div class="livebox">
-        <div class="live"><span class="dot"></span><span id="cd">Atualiza a cada 1s</span></div>
+        <div class="live"><span class="dot"></span><span id="cd">Aguardando TSE</span></div>
         <div class="refreshhint">Atualização automática</div>
         <div class="topactions">
           <button id="screenBtn" class="actionbtn" type="button">◫ Modo telão</button>
@@ -227,7 +276,42 @@ body.screenmode .candidate:first-child{padding:22px}
     </header>
   </section>
 
-  <div id="err" class="err"></div>
+  
+  <nav class="ed-nav" aria-label="Navegação eleitoral">
+    <button class="ed-tab on" type="button" data-ed-page="debates">01 · Debates &amp; fatos</button>
+    <button class="ed-tab" type="button" data-ed-page="results">02 · Apuração ao vivo</button>
+    <button class="ed-tab" type="button" data-ed-page="guide">03 · Guia do eleitor</button>
+  </nav>
+  <section id="debatesView" aria-labelledby="debatesTitle">
+    <header class="ed-head">
+      <div><div class="ed-kicker">Edição especial · Presidência · Segundo turno</div><h2 id="debatesTitle">O debate sob exame.</h2><p>O que é fato, falso ou precisa de contexto nas falas de Lula (PT) e Flávio Bolsonaro (PL). Informação verificada, com as fontes à vista e sem torcida.</p></div>
+      <div class="ed-date"><b>25.out</b>Domingo · dia de votar<br>08h–17h (Brasília)<br><br><b>24/10</b>Edição de hoje<br>Após a Globo</div>
+    </header>
+    <div class="ed-feature">
+      <div><div class="ed-kicker">A manchete · 23 de outubro</div><h3>Dois debates. Muitos números. As evidências valem mais do que as frases de efeito.</h3><p>Selecionamos declarações verificáveis dos debates da Band (18/10) e da Globo (23/10). Os vereditos abaixo são baseados em publicações de UOL Confere, Aos Fatos, Agência Lupa e Folha.</p></div>
+      <aside><div class="ed-kicker">Guia dos selos</div><p><b>Fato</b>: sustentado por evidências. <b>Falso</b>: contrariado pelas evidências. <b>Enganoso</b>: contém omissões decisivas. <b>Impreciso</b>: arredondamento, erro ou exagero que requer correção.</p><p>As falas estão resumidas, não transcritas integralmente. O conjunto é uma seleção editorial; não permite calcular uma taxa geral de mentiras de cada candidato.</p></aside>
+    </div>
+    <div class="ed-filter-head"><div><div class="ed-kicker">Arquivo de declarações</div><h3>Checagem fala a fala</h3></div><span id="edCount" class="ed-count" aria-live="polite">Carregando</span></div>
+    <div class="ed-filters">
+      <select id="edDebate" aria-label="Debate"><option value="todos">Band + Globo</option><option value="Globo">Globo · 23/10</option><option value="Band">Band · 18/10</option></select>
+      <select id="edWho" aria-label="Candidato"><option value="todos">Lula + Flávio</option><option value="Lula">Lula</option><option value="Flávio">Flávio Bolsonaro</option></select>
+      <select id="edType" aria-label="Veredito"><option value="todos">Todos os vereditos</option><option value="fato">Fato</option><option value="falso">Falso</option><option value="enganoso">Enganoso</option><option value="impreciso">Impreciso</option></select>
+      <input id="edSearch" type="search" placeholder="Buscar: economia, INSS, obras…" aria-label="Buscar falas">
+    </div>
+    <div id="edFacts" class="ed-facts"></div>
+    <div class="ed-note"><b>Transparência:</b> checagens baseadas nas publicações dos veículos indicados em cada item, consultadas em 24/10/2026. Rótulos e explicações são resumos editoriais; as classificações originais e a documentação completa estão nas fontes. As checagens não são atualizadas automaticamente.</div>
+  </section>
+  <section id="guideView" hidden aria-labelledby="guideTitle">
+    <header class="guide-head"><div class="ed-kicker">Serviço · TRE-SP e TSE</div><h2 id="guideTitle">Seu voto, sem dúvida.</h2><p>Domingo, 25 de outubro de 2026. Segundo turno presidencial das 8h às 17h, horário de Brasília.</p></header>
+    <div class="guide-cards">
+      <article class="guide-card"><span>01</span><h3>Quando votar</h3><p>Domingo, 25/10, das 8h às 17h. Quem estiver na fila às 17h poderá concluir a votação.</p><a href="https://www.tre-sp.jus.br/comunicacao/noticias/2026/Outubro/como-votar-no-2o-turno-das-eleicoes-2026-horario-local-justificativa-e-resultados" target="_blank" rel="noopener noreferrer">Ler guia TRE-SP ↗</a></article>
+      <article class="guide-card"><span>02</span><h3>Quem pode votar</h3><p>Quem faltou ao primeiro turno ainda pode votar no segundo, desde que o título esteja regular.</p><a href="https://www.tse.jus.br/" target="_blank" rel="noopener noreferrer">Consultar TSE ↗</a></article>
+      <article class="guide-card"><span>03</span><h3>Quando sai a apuração</h3><p>Dados oficiais a partir das 17h. O app já usa o código federal 6258, exclusivo do segundo turno.</p><a href="https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados" target="_blank" rel="noopener noreferrer">Parâmetros oficiais ↗</a></article>
+      <article class="guide-card"><span>04</span><h3>Como acompanhar</h3><p>Abra “Apuração ao vivo” para ver resultado nacional, evolução histórica e o panorama das UFs, sem projeções.</p><a href="https://www.tse.jus.br/eleicoes/eleicoes-2026-content/divulgacao-dos-resultados-das-eleicoes-2026" target="_blank" rel="noopener noreferrer">Resultados no TSE ↗</a></article>
+    </div>
+  </section>
+  <div id="resultsView" hidden>
+<div id="err" class="err"></div>
   <div id="ticker" class="batchticker"><span class="tstar">★</span><span id="tickerText">Novo lote do TSE</span></div>
 
   <main class="grid">
@@ -363,6 +447,7 @@ body.screenmode .candidate:first-child{padding:22px}
       <div id="list" class="list"></div>
     </section>
   </main>
+  </div>
 
   <footer class="footer">
     <span>Fonte: Tribunal Superior Eleitoral (TSE). Consulta automática a cada 1 segundo; os números mudam apenas quando o TSE publica nova totalização. O histórico de até 50 lotes fica salvo localmente neste aparelho. Este painel exibe resultados parciais e não faz projeções.</span>
@@ -601,10 +686,11 @@ function draw(){
 }
 function showWaiting(){
   secondRoundLive=false;
+  document.querySelector(".mast .live").classList.remove("is-live");
   $("err").className="err waiting";
-  $("err").textContent="2º turno confirmado para 25/10. O painel está preparado e ativa a apuração automaticamente a partir das 17h (horário de Brasília), usando a base oficial do TSE.";
+  $("err").textContent=Date.now()<RESULTS_START?"2º turno em 25/10. A apuração oficial começa a partir das 17h (Brasília), quando este painel passa a consultar o TSE.":"A base oficial do TSE ainda não está disponível neste endereço. Nova tentativa automática, sem publicar números não verificados.";
   $("err").style.display="block";
-  $("cd").textContent="Aguardando 2º turno";
+  $("cd").textContent=Date.now()<RESULTS_START?"Aguardando 2º turno":"Aguardando dados oficiais";
   $("lead").textContent="2º turno em 25/10 • aguardando apuração oficial";
   $("apur").textContent="A divulgação oficial começa a partir das 17h";
   $("upd").textContent="—";
@@ -618,10 +704,12 @@ async function go(){
   $("err").style.display="none";
   $("err").className="err";
   try{
-    const r=await Promise.all([one("BR"),...U.map(async uf=>({uf,...await one(uf)}))]);
+    const national=await one("BR");
+     const r=[national,...await Promise.all(U.map(async uf=>({uf,...await one(uf)})))];
     const n=r[0];
     secondRoundLive=true;
-    $("cd").textContent="Atualiza a cada 1s";
+    $("cd").textContent="TSE · consulta a cada 1s";
+    document.querySelector(".mast .live").classList.add("is-live");
 
     // NATIONAL: compare only when the TSE publishes a genuinely different batch.
     const oldN=prev?.n||null;
@@ -671,6 +759,7 @@ async function go(){
     localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
   }catch(e){
     secondRoundLive=false;
+    document.querySelector(".mast .live").classList.remove("is-live");
     const unavailable=/HTTP (403|404)/.test(e.message);
     if(unavailable){
       showWaiting();
