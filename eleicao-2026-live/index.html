@@ -787,7 +787,7 @@ body.screenmode .candidate:first-child{padding:22px}
     </div>
   </section>
     <footer class="footer">
-    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a divulgação, o aplicativo consulta o TSE a cada 1 segundo para o resultado nacional e a cada 5 segundos para os 27 estados e a totalização oficial do exterior, enquanto as conexões estiverem disponíveis. O histórico local salva até 50 lotes nacionais. Os dados por país são uma prévia jornalística fixa. Não há projeções.</span>
+    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a divulgação, o aplicativo consulta o TSE a cada 1 segundo para o resultado nacional e a cada 5 segundos para os 27 estados e a totalização oficial do exterior, enquanto as conexões estiverem disponíveis. O histórico local salva até 50 lotes nacionais. O 1º turno usa os arquivos oficiais 6257 quando disponíveis; Brasil, UFs e exterior consolidado podem ser selecionados no gráfico. O gráfico guarda apenas lotes vistos neste aparelho. Dados por país são prévia jornalística fixa, sem 1º turno equivalente verificado. Não há projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -880,6 +880,7 @@ function renderBatch(){
 function renderCharts(){
   $("shareChart").innerHTML=lineSvg(history,["lp","fp"],["#c9002b","#2d67d8"],v=>fpct(v));
   $("gapChart").innerHTML=lineSvg(history,["lead"],["#b00020"],v=>(v>=0?"+":"")+compact(v)+" votos",true);
+  renderRoundComparison();
 }
 function rankHtml(arr,valueFn,subFn){
   if(!arr.length)return'<div class="kpisub">Aguardando um novo lote por UF…</div>';
@@ -947,7 +948,7 @@ function renderMap(){
   const d=byUf.get(selectedUF)||states[0];
   if(!d){$("mapDetail").textContent="Carregando UFs…";return}
   const lead=who(d)==="l"?"Lula à frente":who(d)==="f"?"Flávio à frente":"Empate";
-  $("mapDetail").innerHTML='<h4>'+d.uf+'</h4><div class="leadline">'+lead+' • '+fpct(d.a)+' apurado</div><div class="mapnumbers"><div class="mapnum l"><span class="lab">Lula</span><b>'+fpct(d.l.p)+'</b><span class="sm">'+fi(d.l.v)+' votos</span></div><div class="mapnum f"><span class="lab">Flávio</span><b>'+fpct(d.f.p)+'</b><span class="sm">'+fi(d.f.v)+' votos</span></div></div><div class="mapfoot">Diferença: <b>'+fi(Math.abs(d.l.v-d.f.v))+' votos</b> • '+Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.<br>Lula no último lote: '+batchDeltaText(d.dlv,d.dlp)+'<br>Flávio no último lote: '+batchDeltaText(d.dfv,d.dfp)+'</div>';
+  $("mapDetail").innerHTML='<h4>'+d.uf+'</h4><div class="leadline">'+lead+' • '+fpct(d.a)+' apurado</div><div class="mapnumbers"><div class="mapnum l"><span class="lab">Lula</span><b>'+fpct(d.l.p)+'</b><span class="sm">'+fi(d.l.v)+' votos</span></div><div class="mapnum f"><span class="lab">Flávio</span><b>'+fpct(d.f.p)+'</b><span class="sm">'+fi(d.f.v)+' votos</span></div></div><div class="mapfoot">Diferença: <b>'+fi(Math.abs(d.l.v-d.f.v))+' votos</b> • '+Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.<br>Lula no último lote: '+batchDeltaText(d.dlv,d.dlp)+'<br>Flávio no último lote: '+batchDeltaText(d.dfv,d.dfp)+'</div>'+firstLineForMap(d);
 }
 function renderHistory(){
   $("historyCount").textContent=history.length+" lote"+(history.length===1?"":"s");
@@ -1014,8 +1015,8 @@ function draw(){
     const label=w==="l"?"Lula à frente":w==="f"?"Flávio à frente":"Empate";
     return '<article class="state">'+
       '<div class="sttop"><div class="uf">'+d.uf+'</div><span class="lead '+w+'">'+label+'</span></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv??0,d.dlp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dlv,d.dlp)+'</div></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv??0,d.dfp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dfv,d.dfp)+'</div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv??0,d.dlp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dlv,d.dlp)+'</div>'+firstLineForState(d.uf,'l',d.l)+'</div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv??0,d.dfp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dfv,d.dfp)+'</div>'+firstLineForState(d.uf,'f',d.f)+'</div>'+
       '<div class="stmeta"><span>Diferença: '+gv+' votos • '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
     '</article>'
   }).join("");
@@ -1055,6 +1056,7 @@ function scheduleStates(){
 function saveElectionSnapshot(){
  try{
   localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}));
+  localStorage.setItem("e26-round-history",JSON.stringify(scopeHistory));
  }catch(_){/* Persistent storage may be unavailable; live polling must continue. */}
 }
 // Independent fast lane: ONLY the national BR file, one request per second when online.
@@ -1085,6 +1087,7 @@ async function go(){
         showTicker("Novo lote TSE • "+lastBatchSummary.headline+" • Lula "+fpp(natDelta.lp)+" • Flávio "+fpp(natDelta.fp));
       }
       pushHistory(n);
+      captureHistory('BR',n);
       if(!prev)prev={n:null,states:[]};
       prev.n=n;
     }
@@ -1127,6 +1130,7 @@ async function pollStates(){
   const baseline=new Map((prev.states||[]).map(s=>[s.uf,s]));
   const latest=new Map(states.map(s=>[s.uf,s]));
   for(const s of incoming){
+   captureHistory(s.uf,s);
    const o=baseline.get(s.uf);
    const changed=!o||s.dt!==o.dt||s.l.v!==o.l.v||s.f.v!==o.f.v||s.l.p!==o.l.p||s.f.p!==o.f.p;
    if(changed&&o){
@@ -1317,6 +1321,8 @@ async function pollExteriorOfficial(manual=false){
  try{
   const d=await one("ZZ");
   if(!(d.l.v>0&&d.f.v>0))throw Error("Totalização exterior ainda não publicada");
+  exteriorCurrent=d;
+  captureHistory("ZZ",d);
   extEl("extOfficialL").textContent=extNumber(d.l.v)+" votos";
   extEl("extOfficialF").textContent=extNumber(d.f.v)+" votos";
   const total=d.l.v+d.f.v;
@@ -1325,6 +1331,9 @@ async function pollExteriorOfficial(manual=false){
   extEl("extOfficialSections").textContent=d.ts>0?extPercent(d.st,d.ts)+" das seções":"Em atualização";
   extEl("extOfficialUpdate").textContent=d.dt?"Atualização TSE: "+d.dt:"Parcial oficial";
   extEl("extOfficialData").hidden=false;
+  renderExteriorFirst();
+  renderRoundComparison();
+  saveElectionSnapshot();
   extLastSuccess=Date.now();extErrorCount=0;extRetryNotBefore=0;
   extOfficialMessage("Totalização oficial de votos no exterior publicada pelo TSE. Dados atualizados no painel; a prévia por país acima continua identificada como levantamento jornalístico de 10h07.",true);
  }catch(e){
