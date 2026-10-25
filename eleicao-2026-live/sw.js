@@ -1,5 +1,5 @@
-const CACHE="eleicoes-2026-v8-turno-dentro-card";
-const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg"];
+const CACHE="eleicoes-2026-v9-ios-icon-png";
+const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg","./icon-180.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
 });
