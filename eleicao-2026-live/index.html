@@ -464,6 +464,37 @@ body.screenmode .candidate:first-child{padding:22px}
 @media(max-width:800px){.ext-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.exterior-card{padding:15px 12px}.ext-head{flex-direction:column;gap:10px}.ext-sources{align-items:flex-start;flex-direction:column}.ext-countries{grid-template-columns:1fr}.ext-official-data{grid-template-columns:repeat(2,minmax(0,1fr))}.ext-official-data>div:last-child{grid-column:span 2}.ext-official-head{align-items:flex-start}.ext-refresh{white-space:nowrap}}
 
+
+/* Quadro de consulta: dados registrados no 1º e no 2º turno */
+.turns-compare{grid-column:span 12;padding:20px 21px;min-width:0}
+.turns-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.turns-top h2{font-size:clamp(25px,3.5vw,39px);line-height:1.1;letter-spacing:-.045em;margin:6px 0;color:#422631}
+.turns-top p{font-size:11px;color:#806d73;line-height:1.6;max-width:700px;margin:6px 0 12px}
+.turns-picker{display:flex;align-items:flex-start;gap:6px;flex-direction:column}
+.turns-picker label{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8a6670}
+.turns-picker select{background:#fff8f9;border:1px solid #edd3da;padding:11px 32px 11px 13px;border-radius:12px;color:#6e283e;font-weight:900;font-size:12px;max-width:240px;cursor:pointer}
+.turns-status{font-size:11px;color:#876c77;margin:6px 0 14px;line-height:1.6}
+.turns-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.turns-person{border:1px solid #ecdae0;border-radius:17px;padding:16px;background:linear-gradient(160deg,#fff,#fff8f9);min-width:0}
+.turns-person .tp-head{display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap}
+.turns-person .tp-no{font-size:10px;font-weight:900;border-radius:8px;border:1px solid #efd2db;padding:5px 8px;background:#fff0f3;color:#a91a40}
+.turns-person.flavio .tp-no{color:#315fa7;background:#f1f5ff;border-color:#d7e5ff}
+.turns-person .tp-name{font-size:14px;font-weight:950;letter-spacing:-.02em}
+.turns-turns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.turns-data{background:#fff;border:1px solid #efe3e5;border-radius:12px;padding:12px 10px;min-width:0}
+.turns-data .t-label{display:block;font-size:9px;color:#806970;font-weight:900;margin-bottom:7px;letter-spacing:.04em}
+.turns-data .t-perc{display:block;font-size:clamp(20px,2.6vw,30px);font-weight:1000;letter-spacing:-.055em;line-height:1.1;font-variant-numeric:tabular-nums}
+.turns-data .t-votes{display:block;font-size:10px;color:#806d73;font-weight:750;margin-top:5px;line-height:1.5}
+.turns-data .t-progress{height:5px;background:#f4e9ed;border-radius:99px;margin-top:11px;overflow:hidden}
+.turns-data .t-progress span{display:block;height:100%;background:#bd3554;border-radius:99px}
+.turns-person.flavio .t-progress span{background:#557dca}
+.turns-delta{font-size:10px;line-height:1.55;font-weight:850;color:#725960;margin-top:11px;padding:9px 11px;border:1px dashed #ead4db;border-radius:10px}
+.turns-disclaimer{font-size:10px;line-height:1.65;color:#857279;margin:14px 0 8px}
+.turns-sources{font-size:10px;font-weight:800;display:flex;gap:16px;flex-wrap:wrap}
+.turns-sources a{color:#a71b42;text-underline-offset:3px}
+@media(max-width:720px){.turns-compare{padding:16px 13px}.turns-top{flex-direction:column}.turns-grid{grid-template-columns:1fr}.turns-picker select{max-width:100%;width:100%}}
+@media(max-width:385px){.turns-data{padding:9px 7px}.turns-data .t-perc{font-size:20px}.turns-data .t-votes{font-size:9px}}
+
 </style>
 </head>
 <body>
@@ -546,6 +577,30 @@ body.screenmode .candidate:first-child{padding:22px}
       </div>
     </section>
 
+
+
+    <section class="card turns-compare" id="turnCompare" aria-labelledby="turnCompareTitle">
+      <div class="turns-top">
+        <div>
+          <div class="ed-kicker">SÉRIE HISTÓRICA · PRESIDÊNCIA 2026</div>
+          <h2 id="turnCompareTitle">1º turno <span style="color:#c65a74">×</span> 2º turno</h2>
+          <p>Consulte, para cada candidato, os votos registrados em 4 e 25 de outubro. Os percentuais correspondem aos votos válidos de cada turno e abrangência.</p>
+        </div>
+        <div class="turns-picker">
+          <label for="turnRegion">Abrangência</label>
+          <select id="turnRegion" aria-label="Selecionar abrangência da consulta">
+            <option value="BR">Brasil · nacional</option>
+          </select>
+        </div>
+      </div>
+      <div id="turnCompareStatus" class="turns-status" role="status">Consultando os dados do primeiro turno no TSE…</div>
+      <div class="turns-grid" id="turnCompareData" aria-live="polite">
+        <div class="turns-person"><strong>Luiz Inácio Lula da Silva</strong><p class="turns-status">Carregando dados…</p></div>
+        <div class="turns-person"><strong>Flávio Bolsonaro</strong><p class="turns-status">Carregando dados…</p></div>
+      </div>
+      <p class="turns-disclaimer">A apuração do 2º turno pode estar parcial. Diferenças observadas nessa etapa não são projeções e podem mudar com a entrada de novas seções. Não se devem somar os percentuais dos candidatos de turnos distintos.</p>
+      <div class="turns-sources"><a id="turnFirstSource" href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer">Fonte · TSE, 1º turno ↗</a><a href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer">Fonte · TSE, 2º turno ↗</a></div>
+    </section>
 
     <section class="card exterior-card" aria-labelledby="exteriorTitle">
       <div class="ext-head">
@@ -893,7 +948,7 @@ function renderHistory(){
   $("historyCount").textContent=history.length+" lote"+(history.length===1?"":"s");
   $("historyStrip").innerHTML=[...history].reverse().slice(0,20).map(h=>'<div class="histitem"><div class="time">'+(h.dt||"—")+'</div><b>Lula '+fpct(h.lp)+'</b><span>Flávio '+fpct(h.fp)+'<br>Diferença '+fi(Math.abs(h.lead))+' votos</span></div>').join("")||'<div class="kpisub">O histórico começa a ser salvo neste aparelho a partir de agora.</div>';
 }
-function renderAnalytics(){renderBatch();renderCharts();renderRanks();renderApurationRadar();renderMap();renderHistory()}
+function renderAnalytics(){renderBatch();renderCharts();renderRanks();renderApurationRadar();renderMap();renderHistory();updateRoundCompare()}
 
 function walk(n,o=[]){
   if(!n)return o;
@@ -1283,6 +1338,68 @@ extEl("extRefresh").addEventListener("click",()=>pollExteriorOfficial(true));
 setInterval(()=>pollExteriorOfficial(),REGIONAL_POLL_MS);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollExteriorOfficial()});
 pollExteriorOfficial();
+
+
+/* 1º turno: busca única por recorte; o 2º continua no ciclo existente de 1 s / 5 s. */
+const FIRST_TURN_ID="6257";
+const firstTurnStore=new Map(),firstTurnRequests=new Map();
+let turnRegion="BR";
+const finalBR2026={l:{v:53879538,p:45.16},f:{v:56104503,p:47.03},a:100,st:499248,ts:499248,dt:"05/10/2026 12:51:47",copy:true};
+const firstTurnPath=scope=>{
+ const x=scope.toLowerCase();
+ return "https://resultados.tse.jus.br/oficial/ele2026/"+FIRST_TURN_ID+"/dados/"+x+"/"+x+"-c0001-e006257-u.json";
+};
+const percentageForTurn=n=>n!=null?fpct(n):"—";
+const numForTurn=n=>n!=null?fi(n)+" votos":"Aguardando dados";
+const turnValueCell=(d,label)=>'<div class="turns-data"><span class="t-label">'+label+'</span><strong class="t-perc">'+percentageForTurn(d?.p)+'</strong><span class="t-votes">'+numForTurn(d?.v)+'</span><div class="t-progress"><span style="width:'+Math.max(0,Math.min(100,d?.p||0))+'%"></span></div></div>';
+function updateRoundCompare(){
+ const base=firstTurnStore.get(turnRegion), old=base?.data||null;
+ const current=turnRegion==="BR"?prev?.n:states.find(x=>x.uf===turnRegion);
+ const status=$("turnCompareStatus");
+ if(!status)return;
+ const regionText=turnRegion==="BR"?"Brasil":turnRegion;
+ const firstMsg=base?.error?"1º turno: fonte indisponível nesta consulta":old?(old.copy?"1º turno: cópia datada da totalização oficial":"1º turno: fonte oficial consultada"):"1º turno: consultando TSE";
+ const secondMsg=current?.l?.v>0&&current?.f?.v>0?"2º turno: "+fpct(current.a)+" das seções totalizadas":"2º turno: aguardando totalização oficial";
+ status.textContent=regionText+" · "+firstMsg+" · "+secondMsg;
+ const view=[{key:"l",name:"Lula",number:"13 · PT",kind:"lula"},{key:"f",name:"Flávio Bolsonaro",number:"22 · PL",kind:"flavio"}];
+ $("turnCompareData").innerHTML=view.map(c=>{
+   const a=old?.[c.key],b=current?.l?.v>0&&current?.f?.v>0?current[c.key]:null;
+   let delta='Variação entre turnos: disponível após a publicação do 2º turno.';
+   if(a&&b){
+     const pp=b.p-a.p,v=b.v-a.v;
+     const signed=n=>n>0?"+":n<0?"−":"";
+     delta='Diferença registrada: '+signed(pp)+Math.abs(pp).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p. · '+signed(v)+fi(Math.abs(v))+' votos';
+   }
+   return '<article class="turns-person '+c.kind+'"><div class="tp-head"><span class="tp-no">'+c.number+'</span><strong class="tp-name">'+c.name+'</strong></div><div class="turns-turns">'+turnValueCell(a,"1º TURNO · 04/10")+turnValueCell(b,"2º TURNO · 25/10")+'</div><div class="turns-delta">'+delta+'</div></article>';
+ }).join("");
+ $("turnFirstSource").href=firstTurnPath(turnRegion);
+}
+async function loadFirstRound(region){
+ if(firstTurnStore.has(region)){updateRoundCompare();return}
+ if(firstTurnRequests.has(region))return firstTurnRequests.get(region);
+ const task=(async()=>{
+  try{
+   const response=await fetch(firstTurnPath(region),{cache:"default"});
+   if(!response.ok)throw Error("TSE HTTP "+response.status);
+   const d=parse(await response.json());
+   if(!(d.l.v>0&&d.f.v>0))throw Error("Votação ainda indisponível");
+   firstTurnStore.set(region,{data:d});
+  }catch(error){
+   if(region==="BR")firstTurnStore.set(region,{data:finalBR2026});
+   else firstTurnStore.set(region,{error:String(error?.message||error)});
+  }finally{
+   firstTurnRequests.delete(region);
+   if(turnRegion===region)updateRoundCompare();
+  }
+ })();
+ firstTurnRequests.set(region,task);
+ return task;
+}
+const compareSelect=$("turnRegion");
+U.forEach(uf=>{const o=document.createElement("option");o.value=uf;o.textContent=uf;compareSelect.appendChild(o)});
+compareSelect.addEventListener("change",()=>{turnRegion=compareSelect.value;updateRoundCompare();loadFirstRound(turnRegion)});
+updateRoundCompare();
+loadFirstRound("BR");
 
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
