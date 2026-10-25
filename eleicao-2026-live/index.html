@@ -1343,7 +1343,7 @@ pollExteriorOfficial();
 /* 1º turno: busca única por recorte; o 2º continua no ciclo existente de 1 s / 5 s. */
 const FIRST_TURN_ID="6257";
 const firstTurnStore=new Map(),firstTurnRequests=new Map();
-let turnRegion="BR";
+let turnRegion="BR",lastTurnSignature="";
 const finalBR2026={l:{v:53879538,p:45.16},f:{v:56104503,p:47.03},a:100,st:499248,ts:499248,dt:"05/10/2026 12:51:47",copy:true};
 const firstTurnPath=scope=>{
  const x=scope.toLowerCase();
@@ -1357,6 +1357,9 @@ function updateRoundCompare(){
  const current=turnRegion==="BR"?prev?.n:states.find(x=>x.uf===turnRegion);
  const status=$("turnCompareStatus");
  if(!status)return;
+ const turnSignature=JSON.stringify([turnRegion,old?.l?.v,old?.l?.p,old?.f?.v,old?.f?.p,base?.error,current?.l?.v,current?.l?.p,current?.f?.v,current?.f?.p,current?.a]);
+ if(turnSignature===lastTurnSignature)return;
+ lastTurnSignature=turnSignature;
  const regionText=turnRegion==="BR"?"Brasil":turnRegion;
  const firstMsg=base?.error?"1º turno: fonte indisponível nesta consulta":old?(old.copy?"1º turno: cópia datada da totalização oficial":"1º turno: fonte oficial consultada"):"1º turno: consultando TSE";
  const secondMsg=current?.l?.v>0&&current?.f?.v>0?"2º turno: "+fpct(current.a)+" das seções totalizadas":"2º turno: aguardando totalização oficial";
