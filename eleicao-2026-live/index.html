@@ -475,6 +475,38 @@ body.screenmode .candidate:first-child{padding:22px}
 .first-round-note b{font-weight:900;color:#65545b}
 .first-round-note a{color:inherit;text-underline-offset:2px}
 
+
+/* Painel histórico discreto, no mesmo estilo visual */
+.round-panel{grid-column:span 12;padding:19px 20px;overflow:hidden}
+.round-head{display:flex;justify-content:space-between;align-items:start;gap:17px;flex-wrap:wrap}
+.round-head h2{font-size:clamp(25px,3.6vw,40px);line-height:1.12;letter-spacing:-.05em;margin:7px 0}
+.round-head p{color:#846f77;font-size:11px;line-height:1.6;max-width:640px}
+.round-select{display:flex;flex-direction:column;gap:6px;min-width:165px}
+.round-select label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;color:#7e6770}
+.round-select select{background:#fff9fa;border:1px solid #ead4da;border-radius:12px;color:#632a3d;font-size:12px;font-weight:850;padding:12px}
+.round-legend{display:flex;gap:8px 18px;flex-wrap:wrap;color:#76616a;font-size:10px;font-weight:850;margin:11px 0}
+.round-legend i{display:inline-block;width:19px;border-top:3px solid #c9002b;vertical-align:middle;margin-right:5px}
+.round-legend i.blue{border-color:#2d67d8}.round-legend i.dashed{border-top-style:dashed}
+.round-status{color:#88727b;font-size:10px;line-height:1.6;margin:10px 0}
+.round-chart{border:1px solid #efdee3;border-radius:13px;background:white;min-height:170px;padding:10px}
+.round-chart svg{width:100%;max-height:280px;height:auto;display:block}
+.round-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.round-person{border:1px solid #eddde2;border-radius:14px;padding:13px;background:#fffafa}
+.round-person h3{font-size:12px;margin:0 0 10px;color:#4d2c37}
+.round-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.round-fields>div{border:1px solid #eee0e4;border-radius:10px;background:#fff;padding:10px}
+.round-fields small{display:block;font-size:9px;color:#8b7079;font-weight:850}
+.round-fields b{display:block;font-size:clamp(21px,3vw,30px);font-weight:1000;margin:6px 0}
+.round-fields span{font-size:9px;color:#88747a;line-height:1.4}
+.round-delta{color:#7c5969;font-size:10px;font-weight:850;line-height:1.6;margin:10px 1px 0}
+.round-foot{color:#88747e;font-size:10px;line-height:1.6;margin:14px 0 0}
+.round-foot a{color:#ae2149;text-underline-offset:3px}
+.state-ref{font-size:9px;color:#875e6d;line-height:1.5;font-weight:750;margin-top:6px}
+.state-ref b{color:#6c394c}
+.map-ref{padding-top:9px;border-top:1px dashed #eed6dd;margin-top:10px;font-size:10px;line-height:1.6;color:#8e6878}
+.ext-first-ref{font-size:10px;color:#8a6471;line-height:1.6;border-radius:10px;background:#fff;padding:11px;margin-top:10px}
+@media(max-width:640px){.round-panel{padding:15px 12px}.round-head{flex-direction:column}.round-select{width:100%}.round-select select{width:100%}.round-pair{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -528,7 +560,7 @@ body.screenmode .candidate:first-child{padding:22px}
           </div>
           <div id="lp" class="share l loading">—</div>
           <div class="voteinfo"><span id="lv" class="votes">— votos</span><span id="ld" class="delta">Δ —</span></div>
-          <div class="first-round-note"><a href="https://resultados.tse.jus.br/oficial/app/index.html#/eleicao/6257/uf/br/cargo/1/vis/nominal/resultados" target="_blank" rel="noopener noreferrer" aria-label="Consultar 1º turno no TSE">1º turno</a><span>·</span><b>45,16%</b><span>· 53.879.538 votos</span></div>
+          <div class="first-round-note" id="firstRoundL">1º turno · consultando TSE…</div>
         </div>
 
         <div class="divider"></div>
@@ -543,7 +575,7 @@ body.screenmode .candidate:first-child{padding:22px}
           </div>
           <div id="fp" class="share f loading">—</div>
           <div class="voteinfo"><span id="fv" class="votes">— votos</span><span id="fd" class="delta">Δ —</span></div>
-          <div class="first-round-note"><a href="https://resultados.tse.jus.br/oficial/app/index.html#/eleicao/6257/uf/br/cargo/1/vis/nominal/resultados" target="_blank" rel="noopener noreferrer" aria-label="Consultar 1º turno no TSE">1º turno</a><span>·</span><b>47,03%</b><span>· 56.104.503 votos</span></div>
+          <div class="first-round-note" id="firstRoundF">1º turno · consultando TSE…</div>
         </div>
       </div>
 
@@ -561,6 +593,19 @@ body.screenmode .candidate:first-child{padding:22px}
 
 
 
+
+    <section class="card round-panel" aria-labelledby="roundTitle">
+      <div class="round-head"><div><div class="ed-kicker">Série histórica · TSE</div><h2 id="roundTitle">1º turno × 2º turno</h2>
+        <p>Resultados do primeiro turno (04/10) e lotes oficiais disponíveis do segundo turno (25/10). As linhas tracejadas mostram os percentuais anteriores.</p></div>
+        <div class="round-select"><label for="roundScope">Localidade</label><select id="roundScope">
+          <option value="BR">Brasil · nacional</option><option value="ZZ">Exterior · total oficial</option><optgroup id="roundUFOptions" label="Estados e DF"></optgroup>
+        </select></div></div>
+      <div id="roundStatus" class="round-status" role="status">Consultando resultados oficiais do 1º turno…</div>
+      <div class="round-legend"><span><i></i>Lula · 2º</span><span><i class="blue"></i>Flávio · 2º</span><span><i class="dashed"></i>Lula · 1º</span><span><i class="blue dashed"></i>Flávio · 1º</span></div>
+      <div id="roundChart" class="round-chart" aria-live="polite"></div>
+      <div id="roundPersonCards" class="round-pair" aria-live="polite"></div>
+      <p class="round-foot">O 1º turno é resultado final; o 2º pode estar parcial. Diferenças não são projeções. O histórico do gráfico começa quando este aparelho recebe lotes do TSE e fica salvo localmente. <a href="https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados" target="_blank" rel="noopener noreferrer">Metodologia e arquivos do TSE ↗</a></p>
+    </section>
     <section class="card exterior-card" aria-labelledby="exteriorTitle">
       <div class="ext-head">
         <div>
@@ -596,7 +641,7 @@ body.screenmode .candidate:first-child{padding:22px}
         </select>
       </div>
       <div id="extCountries" class="ext-countries" aria-live="polite"></div>
-      <div class="ext-countries-foot">Percentuais calculados somente sobre votos válidos de Lula e Flávio no país exibido. A prévia não é uma tendência nacional e não inclui os países ainda sem boletins na fonte. As cifras por país não são atualizadas automaticamente neste painel; consulte a reportagem para dados mais recentes.</div>
+      <div class="ext-countries-foot">Percentuais calculados somente sobre votos válidos de Lula e Flávio no país exibido. A prévia não é uma tendência nacional e não inclui os países ainda sem boletins na fonte. As cifras por país não são atualizadas automaticamente neste painel; consulte a reportagem para dados mais recentes. Sem fonte comparável verificada para o 1º turno por país, não exibimos diferenças por país.</div>
       <div class="ext-official">
         <div class="ext-official-head"><div><span class="ext-official-kicker">FONTE OFICIAL · TSE</span><h3>Exterior · totalização do 2º turno</h3></div><button id="extRefresh" class="ext-refresh" type="button">↻ Consultar TSE</button></div>
         <p id="extOfficialStatus" class="ext-official-status" role="status">O TSE começa a divulgar a totalização oficial a partir das 17h (Brasília). Até lá, os dados acima são uma prévia extraída de boletins de urna pela imprensa.</p>
@@ -605,6 +650,7 @@ body.screenmode .candidate:first-child{padding:22px}
           <div><span>Flávio Bolsonaro · PL</span><b id="extOfficialF">—</b><small id="extOfficialFP">—</small></div>
           <div><span>Seções totalizadas no exterior</span><b id="extOfficialSections">—</b><small id="extOfficialUpdate">—</small></div>
         </div>
+        <div id="extFirstCompare" class="ext-first-ref">1º turno · consultando TSE…</div>
         <a href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer">Conferir resultados diretamente no TSE ↗</a>
       </div>
     </section>
