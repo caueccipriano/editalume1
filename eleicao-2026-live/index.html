@@ -509,6 +509,7 @@ body.screenmode .candidate:first-child{padding:22px}
 
 .ext-historical{font-size:9px;line-height:1.65;color:#8a6573;margin-top:9px;border-top:1px dashed #eedbdf;padding-top:9px}.ext-historical a{color:#9e2851;font-weight:850;text-underline-offset:2px}
 </style>
+<link rel="stylesheet" href="election-enhancements.css?v=12">
 </head>
 <body>
 <div class="wrap">
@@ -607,6 +608,96 @@ body.screenmode .candidate:first-child{padding:22px}
       <div id="roundPersonCards" class="round-pair" aria-live="polite"></div>
       <p class="round-foot">O 1º turno é resultado final; o 2º pode estar parcial. Diferenças não são projeções. O histórico do gráfico começa quando este aparelho recebe lotes do TSE e fica salvo localmente. <a href="https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados" target="_blank" rel="noopener noreferrer">Metodologia e arquivos do TSE ↗</a></p>
     </section>
+    <section class="card kpi">
+      <div class="kpihead"><span>Diferença nacional</span><span class="icon">↔</span></div>
+      <div><div id="gap" class="big">—</div><div class="kpisub"><span>p.p.</span> • <strong id="gapVotes">— votos</strong></div></div>
+    </section>
+
+    <section class="card kpi">
+      <div class="kpihead"><span>Lula lidera</span><span class="icon">13</span></div>
+      <div><div id="ls" class="big red">—</div><div class="kpisub">unidades da federação</div></div>
+    </section>
+
+    <section class="card kpi">
+      <div class="kpihead"><span>Flávio lidera</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div>
+      <div><div id="fs" class="big blue">—</div><div class="kpisub">unidades da federação</div></div>
+    </section>
+
+    <section class="card kpi">
+      <div class="kpihead"><span>Totalização</span><div id="ring" class="progressring"><span id="ringtxt">—</span></div></div>
+      <div><div id="nationalA" class="big">—</div><div class="kpisub">das seções no país</div></div>
+    </section>
+
+
+    <section class="card batchcard analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
+      <div class="batchrow">
+        <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O placar nacional é consultado a cada 1 s; as UFs são consultadas a cada 5 s. Só comparamos quando o TSE muda os valores.</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">13</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
+        <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
+      </div>
+    </section>
+
+    <section class="card chartpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Evolução dos percentuais</h3></div><div class="chartlegend"><span><i class="legenddot" style="background:#c9002b"></i>Lula</span><span><i class="legenddot" style="background:#2d67d8"></i>Flávio</span></div></div>
+      <div id="shareChart" class="chartbox"></div>
+    </section>
+
+    <section class="card chartpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Diferença em votos</h3></div><div class="chartlegend"><span>Acima de zero = Lula à frente</span></div></div>
+      <div id="gapChart" class="chartbox"></div>
+    </section>
+
+    <section class="card region-panel analytics" id="regionPanel" aria-labelledby="regionTitle">
+      <div class="region-top"><div><div class="ed-kicker">Recorte territorial · TSE</div><h2 id="regionTitle">O Brasil por região<span style="color:#ba153c">.</span></h2><p>Toque na região para abrir seus estados. Somatórios regionais usam votos oficiais recebidos, não médias de percentuais.</p></div><button class="region-clear" id="regionClear" type="button" hidden>Ver todo o Brasil</button></div>
+      <div id="regionCards" class="region-grid" aria-live="polite"><p>Consultando UFs…</p></div>
+      <p>Os dados do 1º turno são finais; os do 2º podem estar parciais. A comparação só aparece quando todas as UFs da região tiverem o 1º turno carregado.</p>
+    </section>
+    <section class="card mappanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Mapa geográfico interativo</div><h3>Brasil · toque nos estados</h3></div><div class="sourcepill">Toque em um estado</div></div>
+      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div><div id="geoStatus" class="geo-status" role="status">Carregando mapa geográfico…</div><div class="geo-legend"><span><i style="background:#c91b41"></i>Lula</span><span><i style="background:#4776ce"></i>Flávio</span><span><i style="background:#e5dfe1"></i>Sem dados</span></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
+    </section>
+
+    <section class="card rankpanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Último lote</div><h3>Onde a apuração mexeu mais</h3></div></div>
+      <div class="rankgrid">
+        <div class="rankbox"><h4>Maior variação do Lula</h4><div id="rankLula"></div></div>
+        <div class="rankbox"><h4>Maior variação do Flávio</h4><div id="rankFlavio"></div></div>
+        <div class="rankbox"><h4>Mais votos válidos adicionados</h4><div id="rankWeight"></div></div>
+      </div>
+    </section>
+
+
+    <section class="card apurationpanel analytics">
+      <div class="paneltitle">
+        <div><div class="eyebrow">Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
+        <div class="sourcepill">27 UFs • atualização automática</div>
+      </div>
+      <div class="apurationgrid">
+        <div class="aprank"><h4>Mais apurados agora</h4><div id="rankMostCounted"></div></div>
+        <div class="aprank"><h4>Menos apurados agora</h4><div id="rankLeastCounted"></div></div>
+        <div class="aprank"><h4>Mais seções no último lote</h4><div id="rankNewSections"></div></div>
+        <div class="aprank"><h4>Maior peso nos votos já contados</h4><div id="rankVoteWeight"></div></div>
+      </div>
+    </section>
+
+    <section class="card historypanel analytics">
+      <div class="paneltitle"><div><div class="eyebrow">Até 50 lotes salvos neste aparelho</div><h3>Linha do tempo da apuração</h3></div><div id="historyCount" class="sourcepill">0 lotes</div></div>
+      <div id="historyStrip" class="historystrip"></div>
+    </section>
+
+    <section class="card states" id="statesSection">
+      <div class="statehead">
+        <div><div class="ed-kicker">Drill-down · região → UF</div><h2 id="statesTitle">Panorama por estado</h2><p id="regionDescription">Percentuais, votos, variação e comparação com o 1º turno por UF.</p><p id="stateSync" class="kpisub" role="status">Consultas aos 27 estados a cada 5 segundos após a liberação pelo TSE.</p></div>
+        <div class="segmented">
+          <button class="btn on" data-s="uf">A–Z</button>
+          <button class="btn" data-s="l">Maior % Lula</button>
+          <button class="btn" data-s="f">Maior % Flávio</button>
+          <button class="btn" data-s="a">Mais apurado</button>
+        </div>
+      </div>
+      <div id="list" class="list"></div>
+    </section>
     <section class="card exterior-card" aria-labelledby="exteriorTitle">
       <div class="ext-head">
         <div>
@@ -656,91 +747,6 @@ body.screenmode .candidate:first-child{padding:22px}
       </div>
     </section>
 
-    <section class="card kpi">
-      <div class="kpihead"><span>Diferença nacional</span><span class="icon">↔</span></div>
-      <div><div id="gap" class="big">—</div><div class="kpisub"><span>p.p.</span> • <strong id="gapVotes">— votos</strong></div></div>
-    </section>
-
-    <section class="card kpi">
-      <div class="kpihead"><span>Lula lidera</span><span class="icon">13</span></div>
-      <div><div id="ls" class="big red">—</div><div class="kpisub">unidades da federação</div></div>
-    </section>
-
-    <section class="card kpi">
-      <div class="kpihead"><span>Flávio lidera</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div>
-      <div><div id="fs" class="big blue">—</div><div class="kpisub">unidades da federação</div></div>
-    </section>
-
-    <section class="card kpi">
-      <div class="kpihead"><span>Totalização</span><div id="ring" class="progressring"><span id="ringtxt">—</span></div></div>
-      <div><div id="nationalA" class="big">—</div><div class="kpisub">das seções no país</div></div>
-    </section>
-
-
-    <section class="card batchcard analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
-      <div class="batchrow">
-        <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O placar nacional é consultado a cada 1 s; as UFs são consultadas a cada 5 s. Só comparamos quando o TSE muda os valores.</div></div>
-        <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">13</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
-        <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
-      </div>
-    </section>
-
-    <section class="card chartpanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Evolução dos percentuais</h3></div><div class="chartlegend"><span><i class="legenddot" style="background:#c9002b"></i>Lula</span><span><i class="legenddot" style="background:#2d67d8"></i>Flávio</span></div></div>
-      <div id="shareChart" class="chartbox"></div>
-    </section>
-
-    <section class="card chartpanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Histórico local</div><h3>Diferença em votos</h3></div><div class="chartlegend"><span>Acima de zero = Lula à frente</span></div></div>
-      <div id="gapChart" class="chartbox"></div>
-    </section>
-
-    <section class="card mappanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Mapa esquemático</div><h3>Brasil por UF</h3></div><div class="sourcepill">Toque em um estado</div></div>
-      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
-    </section>
-
-    <section class="card rankpanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Último lote</div><h3>Onde a apuração mexeu mais</h3></div></div>
-      <div class="rankgrid">
-        <div class="rankbox"><h4>Maior variação do Lula</h4><div id="rankLula"></div></div>
-        <div class="rankbox"><h4>Maior variação do Flávio</h4><div id="rankFlavio"></div></div>
-        <div class="rankbox"><h4>Mais votos válidos adicionados</h4><div id="rankWeight"></div></div>
-      </div>
-    </section>
-
-
-    <section class="card apurationpanel analytics">
-      <div class="paneltitle">
-        <div><div class="eyebrow">Radar da apuração por UF</div><h3>Quanto já foi contado — e onde a totalização está andando</h3></div>
-        <div class="sourcepill">27 UFs • atualização automática</div>
-      </div>
-      <div class="apurationgrid">
-        <div class="aprank"><h4>Mais apurados agora</h4><div id="rankMostCounted"></div></div>
-        <div class="aprank"><h4>Menos apurados agora</h4><div id="rankLeastCounted"></div></div>
-        <div class="aprank"><h4>Mais seções no último lote</h4><div id="rankNewSections"></div></div>
-        <div class="aprank"><h4>Maior peso nos votos já contados</h4><div id="rankVoteWeight"></div></div>
-      </div>
-    </section>
-
-    <section class="card historypanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Até 50 lotes salvos neste aparelho</div><h3>Linha do tempo da apuração</h3></div><div id="historyCount" class="sourcepill">0 lotes</div></div>
-      <div id="historyStrip" class="historystrip"></div>
-    </section>
-
-    <section class="card states">
-      <div class="statehead">
-        <div><h2>Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p><p id="stateSync" class="kpisub" role="status">Consultas aos 27 estados a cada 5 segundos após a liberação pelo TSE.</p></div>
-        <div class="segmented">
-          <button class="btn on" data-s="uf">A–Z</button>
-          <button class="btn" data-s="l">Maior % Lula</button>
-          <button class="btn" data-s="f">Maior % Flávio</button>
-          <button class="btn" data-s="a">Mais apurado</button>
-        </div>
-      </div>
-      <div id="list" class="list"></div>
-    </section>
   </main>
   </div>
 
@@ -1005,7 +1011,7 @@ function nat(d,delta){
   $("ringtxt").textContent=Math.round(d.a)+"%"
 }
 function draw(){
-  let a=[...states];
+  let a=states.filter(d=>typeof electionRegion==="undefined"||electionRegion==="ALL"||ELECTION_REGIONS[electionRegion]?.includes(d.uf));
   if(mode==="uf")a.sort((x,y)=>x.uf.localeCompare(y.uf));
   if(mode==="l")a.sort((x,y)=>y.l.p-x.l.p);
   if(mode==="f")a.sort((x,y)=>y.f.p-x.f.p);
@@ -1521,5 +1527,6 @@ setTimeout(()=>U.filter(uf=>uf!=="SP").forEach(uf=>loadFirstScope(uf)),2000);
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
 </script>
+<script src="election-enhancements.js?v=12"></script>
 </body>
 </html>
