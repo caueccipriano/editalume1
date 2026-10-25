@@ -1345,6 +1345,166 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollExteri
 pollExteriorOfficial();
 
 
+
+/* Histórico oficial do primeiro turno e gráfico do segundo por localidade.
+   Dados de 6257 somente mediante consulta ao TSE; sem números inventados. */
+const FIRST_TSE_ELECTION="6257";
+const firstRoundResults=Object.create(null),firstRoundErrors=Object.create(null);
+const scopeHistory=Object.create(null),firstInFlight=new Map(),firstQueue=[];
+let roundScope="BR",exteriorCurrent=null,firstActive=0,firstCooldown=0,lastRoundFingerprint="";
+const MAX_FIRST_CONCURRENT=2;
+const firstTSEUrl=scope=>{
+ const x=scope.toLowerCase();
+ return "https://resultados.tse.jus.br/oficial/ele2026/"+FIRST_TSE_ELECTION+"/dados/"+x+"/"+x+"-c0001-e006257-u.json";
+};
+const hasResult=d=>!!(d&&d.l?.v>0&&d.f?.v>0);
+const currScope=scope=>scope==="BR"?prev?.n:scope==="ZZ"?exteriorCurrent:states.find(x=>x.uf===scope);
+const ppSigned=n=>(n>0?"+":n<0?"−":"")+Math.abs(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p.";
+const numSigned=n=>(n>0?"+":n<0?"−":"")+fi(Math.abs(n))+" votos";
+const firstCompact=d=>({l:{p:d.l.p,v:d.l.v},f:{p:d.f.p,v:d.f.v},a:d.a,dt:d.dt});
+function captureHistory(scope,d){
+ if(!hasResult(d))return;
+ const rows=scopeHistory[scope]||(scopeHistory[scope]=[]);
+ const p={dt:d.dt||"—",lp:d.l.p,fp:d.f.p,lv:d.l.v,fv:d.f.v,a:d.a};
+ const last=rows[rows.length-1];
+ if(!last||p.dt!==last.dt||p.lv!==last.lv||p.fv!==last.fv){
+  rows.push(p);if(rows.length>100)rows.splice(0,rows.length-100);
+ }
+}
+function loadFirstScope(scope,priority=false){
+ if(firstRoundResults[scope])return Promise.resolve(firstRoundResults[scope]);
+ if(firstInFlight.has(scope))return firstInFlight.get(scope);
+ const promise=new Promise(resolve=>{firstQueue[priority?"unshift":"push"]({scope,resolve});pumpFirstQueue()});
+ firstInFlight.set(scope,promise);
+ return promise;
+}
+function pumpFirstQueue(){
+ if(firstActive>=MAX_FIRST_CONCURRENT||!firstQueue.length)return;
+ if(Date.now()<firstCooldown){setTimeout(pumpFirstQueue,Math.max(1200,firstCooldown-Date.now()));return}
+ const job=firstQueue.shift();
+ firstActive++;
+ (async()=>{
+  try{
+   const response=await fetch(firstTSEUrl(job.scope),{cache:"default"});
+   if(!response.ok)throw Error("TSE HTTP "+response.status);
+   const data=parse(await response.json());
+   if(!hasResult(data))throw Error("Dados não encontrados no arquivo oficial");
+   firstRoundResults[job.scope]=firstCompact(data);
+   delete firstRoundErrors[job.scope];
+   try{localStorage.setItem("e26-first-final",JSON.stringify(firstRoundResults))}catch(_){}
+   job.resolve(firstRoundResults[job.scope]);
+  }catch(error){
+   const info=String(error?.message||error);
+   firstRoundErrors[job.scope]=info;
+   if(/HTTP (403|429|503)/.test(info))firstCooldown=Date.now()+60000;
+   job.resolve(null);
+  }finally{
+   firstInFlight.delete(job.scope);
+   firstActive--;
+   if(job.scope==="BR")renderHeroFirst();
+   if(job.scope==="ZZ")renderExteriorFirst();
+   if(U.includes(job.scope)&&states.length){draw();renderMap()}
+   lastRoundFingerprint="";
+   renderRoundComparison();
+   setTimeout(pumpFirstQueue,1100);
+  }
+ })();
+ if(firstActive<MAX_FIRST_CONCURRENT&&firstQueue.length)setTimeout(pumpFirstQueue,1100);
+}
+function renderHeroFirst(){
+ for(const [key,id] of [["l","firstRoundL"],["f","firstRoundF"]]){
+  const el=$(id),first=firstRoundResults.BR;
+  if(!el)continue;
+  if(!first){el.textContent="1º turno · "+(firstRoundErrors.BR?"TSE indisponível":"consultando TSE…");continue}
+  const current=currScope("BR")?.[key];
+  el.textContent="1º turno · "+fpct(first[key].p)+" · "+fi(first[key].v)+" votos"+
+   (current?.v>0?" · "+ppSigned(current.p-first[key].p)+" vs 1º":"");
+ }
+}
+function renderExteriorFirst(){
+ const el=$("extFirstCompare"),first=firstRoundResults.ZZ,now=exteriorCurrent;
+ if(!el)return;
+ if(!first){el.textContent="1º turno no exterior: "+(firstRoundErrors.ZZ?"consulta TSE indisponível":"consultando TSE…");return}
+ el.textContent="1º turno oficial · Lula "+fpct(first.l.p)+" ("+fi(first.l.v)+" votos) · Flávio "+fpct(first.f.p)+" ("+fi(first.f.v)+" votos)"+
+ (hasResult(now)?" · Variações parciais: "+ppSigned(now.l.p-first.l.p)+" / "+ppSigned(now.f.p-first.f.p):" · aguardando 2º turno");
+}
+function firstLineForState(uf,key,current){
+ const first=firstRoundResults[uf];
+ if(!first)return '<div class="state-ref">1º turno: '+(firstRoundErrors[uf]?"dado indisponível":"consultando TSE…")+'</div>';
+ return '<div class="state-ref">1º turno: <b>'+fpct(first[key].p)+'</b> · '+fi(first[key].v)+' votos · '+ppSigned(current.p-first[key].p)+' vs 1º</div>';
+}
+function firstLineForMap(d){
+ const first=firstRoundResults[d.uf];
+ if(!first)return '<div class="map-ref">1º turno: '+(firstRoundErrors[d.uf]?"dado indisponível":"consultando TSE…")+'</div>';
+ return '<div class="map-ref">1º turno · Lula '+fpct(first.l.p)+' ('+fi(first.l.v)+' votos), Flávio '+fpct(first.f.p)+' ('+fi(first.f.v)+' votos)'+
+  '<div>Variação parcial em p.p.: Lula '+ppSigned(d.l.p-first.l.p)+' · Flávio '+ppSigned(d.f.p-first.f.p)+'</div></div>';
+}
+function roundChartSVG(rows,first){
+ if(!rows.length)return '<div class="round-status" style="text-align:center;padding:42px 10px">Aguardando lotes oficiais do 2º turno nesta localidade. O histórico é salvo neste aparelho, sem reconstrução artificial.</div>';
+ const W=730,H=235,L=34,R=27,T=17,B=32;
+ const values=rows.flatMap(x=>[x.lp,x.fp]).concat(first?[first.l.p,first.f.p]:[]);
+ let min=Math.max(0,Math.floor(Math.min(...values)-5)),max=Math.min(100,Math.ceil(Math.max(...values)+5));
+ if(min===max){min=Math.max(0,min-1);max=Math.min(100,max+1)}
+ const x=i=>rows.length===1?W/2:L+i*(W-L-R)/(rows.length-1);
+ const y=v=>H-B-(v-min)*(H-T-B)/(max-min);
+ let out='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Evolução do segundo turno com referências horizontais do primeiro turno">';
+ for(let i=0;i<=4;i++){
+  const val=min+(max-min)*i/4,py=y(val);
+  out+='<line x1="'+L+'" y1="'+py+'" x2="'+(W-R)+'" y2="'+py+'" stroke="#f0e3e6"/>'+
+   '<text x="'+(L-5)+'" y="'+(py+3)+'" text-anchor="end" fill="#98848b" font-size="9">'+val.toFixed(0)+'%</text>';
+ }
+ if(first)for(const [key,color] of [["l","#c9002b"],["f","#2d67d8"]]){
+  const py=y(first[key].p);
+  out+='<line x1="'+L+'" y1="'+py+'" x2="'+(W-R)+'" y2="'+py+'" stroke="'+color+'" stroke-width="2" stroke-dasharray="7 6" opacity=".65"/>';
+ }
+ for(const [key,color] of [["lp","#c9002b"],["fp","#2d67d8"]]){
+  const points=rows.map((r,i)=>x(i)+','+y(r[key])).join(' ');
+  out+='<polyline points="'+points+'" stroke="'+color+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
+  '<circle cx="'+x(rows.length-1)+'" cy="'+y(rows[rows.length-1][key])+'" r="3.5" fill="'+color+'"/>';
+ }
+ const esc=txt=>String(txt||"—").replace(/[&<>]/g,"");
+ out+='<text x="'+L+'" y="'+(H-8)+'" fill="#9c8990" font-size="9">'+esc(rows[0].dt)+'</text>'+
+  '<text x="'+(W-R)+'" y="'+(H-8)+'" text-anchor="end" fill="#9c8990" font-size="9">'+esc(rows[rows.length-1].dt)+'</text></svg>';
+ return out;
+}
+function candidateRoundCard(label,key,first,now){
+ const p=first?.[key],n=hasResult(now)?now[key]:null;
+ const delta=p&&n?'<div class="round-delta">Variação observada: '+ppSigned(n.p-p.p)+' · '+numSigned(n.v-p.v)+'</div>':
+ '<div class="round-delta">Aguardando informações oficiais de ambos os turnos.</div>';
+ return '<article class="round-person"><h3>'+label+'</h3><div class="round-fields">'+
+ '<div><small>1º TURNO · FINAL</small><b>'+(p?fpct(p.p):"—")+'</b><span>'+(p?fi(p.v)+" votos":"Aguardando")+'</span></div>'+
+ '<div><small>2º TURNO · PARCIAL</small><b>'+(n?fpct(n.p):"—")+'</b><span>'+(n?fi(n.v)+" votos · "+fpct(now.a)+" seções":"Aguardando")+'</span></div>'+
+ '</div>'+delta+'</article>';
+}
+function renderRoundComparison(){
+ const first=firstRoundResults[roundScope],current=currScope(roundScope);
+ const rows=roundScope==="BR"?(scopeHistory.BR?.length?scopeHistory.BR:history):(scopeHistory[roundScope]||[]);
+ const fp=JSON.stringify([roundScope,first?.l?.p,first?.f?.p,firstRoundErrors[roundScope],current?.l?.v,current?.f?.v,current?.l?.p,current?.f?.p,current?.a,rows.length,rows[rows.length-1]?.dt]);
+ if(fp===lastRoundFingerprint)return;
+ lastRoundFingerprint=fp;
+ $("roundStatus").textContent=(roundScope==="BR"?"Brasil":roundScope==="ZZ"?"Exterior consolidado":roundScope)+
+ " · 1º turno: "+(first?"TSE consultado":firstRoundErrors[roundScope]?"fonte temporariamente indisponível":"consultando TSE")+
+ " · 2º turno: "+(hasResult(current)?fpct(current.a)+" das seções":"aguardando TSE");
+ $("roundChart").innerHTML=roundChartSVG(rows,first);
+ $("roundPersonCards").innerHTML=candidateRoundCard("Lula · 13","l",first,current)+candidateRoundCard("Flávio Bolsonaro · 22","f",first,current);
+ renderHeroFirst();
+}
+try{
+ const cache=JSON.parse(localStorage.getItem("e26-first-final")||"{}");
+ for(const [scope,d] of Object.entries(cache)){if(["BR","ZZ",...U].includes(scope)&&hasResult(d))firstRoundResults[scope]=d}
+ const cacheH=JSON.parse(localStorage.getItem("e26-round-history")||"{}");
+ for(const [scope,list] of Object.entries(cacheH)){if(["BR","ZZ",...U].includes(scope)&&Array.isArray(list))scopeHistory[scope]=list.slice(-100)}
+}catch(_){}
+for(const uf of U){const opt=document.createElement("option");opt.value=uf;opt.textContent=uf;$("roundUFOptions").appendChild(opt)}
+$("roundScope").addEventListener("change",e=>{roundScope=e.target.value;lastRoundFingerprint="";renderRoundComparison();loadFirstScope(roundScope,true)});
+renderRoundComparison();
+renderExteriorFirst();
+loadFirstScope("BR",true);
+loadFirstScope("ZZ",true);
+loadFirstScope("SP",true);
+// Apenas histórico final: duas requisições simultâneas, com espaçamento e cache.
+setTimeout(()=>U.filter(uf=>uf!=="SP").forEach(uf=>loadFirstScope(uf)),2000);
+
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
 </script>
