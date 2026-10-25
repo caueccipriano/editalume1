@@ -1092,9 +1092,6 @@ async function go(){
       if(!prev)prev={n:null,states:[]};
       prev.n=n;
     }
-    nat(n,natDelta);
-
-
   nat(n,natDelta);
   renderAnalytics();
   saveElectionSnapshot();
@@ -1264,7 +1261,7 @@ function showEdition(page,fromHash=false){
  const key=editorialPages[page]?page:"results";
  Object.entries(editorialPages).forEach(([k,id])=>document.getElementById(id).hidden=(k!==key));
  document.querySelectorAll(".ed-tab").forEach(b=>{const on=b.dataset.edPage===key;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});
- if(!fromHash)history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
+ if(!fromHash)window.history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
  if(key!=="results"&&document.body.classList.contains("screenmode")){document.body.classList.remove("screenmode");document.getElementById("screenBtn").textContent="◫ Modo telão"}
  window.scrollTo({top:0,behavior:"auto"});
 }
