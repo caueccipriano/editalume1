@@ -1,4 +1,4 @@
-const CACHE="eleicoes-2026-v11-rounds-regions-countries";
+const CACHE="eleicoes-2026-v12-region-drilldown-geography";
 const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg","./icon-180.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
