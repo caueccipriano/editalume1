@@ -404,6 +404,66 @@ body.screenmode .candidate:first-child{padding:22px}
  .ed-filter-head{align-items:flex-start}
  .ed-filters{padding:9px}
 }
+
+/* Exterior, segundo turno — estilo vermelho e rosa original */
+.exterior-card{grid-column:span 12;padding:19px 20px 20px;overflow:hidden;position:relative}
+.exterior-card:before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#b00020 0%,#ee476c 56%,#7b9be6 56%,#2d67d8 100%)}
+.ext-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:5px 0 16px}
+.ext-head h2{font-size:clamp(24px,3.5vw,40px);letter-spacing:-.055em;font-weight:1000;line-height:1.08;margin:7px 0 6px;color:#3c1a28}
+.ext-dot{color:var(--red2)}.ext-head p{font-size:12px;line-height:1.6;color:#846b74;margin:0;max-width:730px}
+.ext-kicker,.ext-official-kicker{color:#a20732;font-size:10px;font-weight:1000;letter-spacing:.075em}
+.ext-pill{font-size:10px;font-weight:900;border:1px solid #efc9d1;border-radius:999px;background:#fff2f5;padding:7px 11px;white-space:nowrap;color:#a20c30}
+.ext-pill.official{background:#e4f6ed;border-color:#bfe7d0;color:#177348}
+.ext-sources{background:#fff7f8;border:1px solid #f0dce1;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:10px;color:#826872;line-height:1.5}
+.ext-sources strong{color:#a20e32}.ext-sources a,.ext-official a{color:#b00735;font-weight:900;text-decoration:none;white-space:nowrap}
+.ext-sources a:hover,.ext-official a:hover{text-decoration:underline}
+.ext-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:13px 0 10px}
+.ext-stat{background:#fff9fa;border:1px solid #f0dce2;border-radius:14px;padding:13px 12px;min-width:0}
+.ext-stat>span{display:block;color:#9a7c87;text-transform:uppercase;letter-spacing:.04em;font-size:9px;font-weight:950;line-height:1.3}
+.ext-stat b{display:block;font-size:clamp(20px,2.6vw,30px);letter-spacing:-.04em;font-weight:1000;margin:7px 0 4px}
+.ext-red{color:var(--red2)}.ext-blue{color:var(--blue)}
+.ext-stat small{display:block;color:#947f85;font-size:9px;font-weight:750;line-height:1.4}
+.ext-compare{margin:8px 0 15px}
+.ext-compare-label{display:flex;justify-content:space-between;font-size:10px;font-weight:850;color:#77656d;margin-bottom:6px}
+.ext-compare-bar{height:15px;display:flex;overflow:hidden;border-radius:999px;background:#f1e5e8}
+.ext-progress-l{background:linear-gradient(90deg,#af062c,#e53b61);height:100%}
+.ext-progress-f{background:linear-gradient(90deg,#779de9,#2c65d4);height:100%}
+.ext-filters{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 11px}
+.ext-filters input,.ext-filters select{border:1px solid #e8d2d8;background:white;border-radius:11px;padding:11px 12px;color:#584149;font-size:11px;font-weight:800;min-height:43px}
+.ext-filters input{flex:1 1 190px}.ext-filters select{flex:0 1 220px}
+.ext-sr{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+.ext-countries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ext-country{padding:14px;border:1px solid #f0dae0;border-radius:14px;background:#fffafb;min-width:0}
+.ext-country-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ext-country-name{font-size:14px;font-weight:1000;color:#432a33}
+.ext-country-name .flag{font-size:17px;margin-right:5px}
+.ext-country-city{display:block;margin:4px 0 8px;color:#948089;font-size:9px;font-weight:700;line-height:1.5}
+.ext-country-lead{font-size:9px;line-height:1.3;font-weight:900;border-radius:7px;padding:6px 7px;background:#fff0f3;color:#af0e36;white-space:nowrap}
+.ext-country-lead.f{background:#eef4ff;color:#2d67d8}
+.ext-country-row{display:flex;justify-content:space-between;gap:8px;font-size:10px;font-weight:850;margin-top:9px;color:#77666c}
+.ext-country-row .l{color:var(--red2)}.ext-country-row .f{color:var(--blue)}
+.ext-country-track{height:9px;background:#f0e8ec;border-radius:999px;overflow:hidden;display:flex;margin:6px 0}
+.ext-country-track>i{height:100%;display:block}
+.ext-country-track .l{background:linear-gradient(90deg,#c41440,#ea4168)}
+.ext-country-track .f{background:linear-gradient(90deg,#7fa2ed,#2b64d3)}
+.ext-country-foot{font-size:9px;font-weight:800;color:#9a848b}
+.ext-countries-foot{font-size:10px;color:#978089;line-height:1.6;margin:12px 0 18px}
+.ext-official{border:1px solid #e9d4db;background:linear-gradient(135deg,#fff6f7,#fff);border-radius:17px;padding:16px}
+.ext-official-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ext-official h3{font-weight:1000;font-size:16px;letter-spacing:-.035em;margin:6px 0;color:#593145}
+.ext-refresh{background:#b00020;border:1px solid #b00020;border-radius:9px;color:#fff;font-size:10px;font-weight:900;padding:9px 10px;cursor:pointer}
+.ext-refresh:disabled{opacity:.65;cursor:wait}
+.ext-official-status{font-size:11px;color:#8a717c;line-height:1.6;margin:10px 0}
+.ext-official-data{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
+.ext-official-data[hidden]{display:none}
+.ext-official-data>div{background:white;border:1px solid #eddce1;border-radius:12px;padding:12px;min-width:0}
+.ext-official-data span{display:block;font-size:9px;color:#947d84;font-weight:900}
+.ext-official-data b{display:block;font-size:22px;color:#4b3540;margin:8px 0 4px}
+.ext-official-data small{font-size:10px;font-weight:850;color:#a4173a}
+.ext-official a{font-size:10px;display:inline-block;margin-top:8px}
+@media(max-width:800px){.ext-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.exterior-card{padding:15px 12px}.ext-head{flex-direction:column;gap:10px}.ext-sources{align-items:flex-start;flex-direction:column}.ext-countries{grid-template-columns:1fr}.ext-official-data{grid-template-columns:repeat(2,minmax(0,1fr))}.ext-official-data>div:last-child{grid-column:span 2}.ext-official-head{align-items:flex-start}.ext-refresh{white-space:nowrap}}
+
 </style>
 </head>
 <body>
@@ -483,6 +543,55 @@ body.screenmode .candidate:first-child{padding:22px}
         <div class="infobox"><div class="k">Situação atual</div><div id="lead" class="v">Carregando apuração…</div></div>
         <div class="infobox"><div class="k">Seções totalizadas</div><div id="apur" class="v">—</div></div>
         <div class="infobox"><div class="k">Última atualização TSE</div><div id="upd" class="v">—</div></div>
+      </div>
+    </section>
+
+
+    <section class="card exterior-card" aria-labelledby="exteriorTitle">
+      <div class="ext-head">
+        <div>
+          <div class="ext-kicker">★ ELEIÇÕES 2026 · VOTO DOS BRASILEIROS NO EXTERIOR</div>
+          <h2 id="exteriorTitle">O voto pelo mundo<span class="ext-dot">.</span></h2>
+          <p>Como Lula e Flávio Bolsonaro aparecem nos boletins já divulgados em outros países — e o total oficial quando o TSE liberar a apuração.</p>
+        </div>
+        <span id="extStatus" class="ext-pill">Prévia por boletins de urna</span>
+      </div>
+      <div class="ext-sources">
+        <span><strong>PRÉVIA JORNALÍSTICA</strong> · boletins de urna divulgados em 25/10, levantamento publicado até 10h07 (Brasília)</span>
+        <a href="https://exame.com/brasil/votacao-no-exterior-quem-venceu-no-japao-china-e-coreia-do-sul-no-2o-turno/" target="_blank" rel="noopener noreferrer">Abrir fonte · EXAME ↗</a>
+      </div>
+      <div class="ext-stats">
+        <div class="ext-stat"><span>Votos para Lula · 13</span><b id="extPreviewL" class="ext-red">—</b><small id="extPreviewLP">— do recorte</small></div>
+        <div class="ext-stat"><span>Votos para Flávio · 22</span><b id="extPreviewF" class="ext-blue">—</b><small id="extPreviewFP">— do recorte</small></div>
+        <div class="ext-stat"><span>Países / locais apresentados</span><b id="extPreviewCountries">—</b><small>Não representa todos os países</small></div>
+        <div class="ext-stat"><span>Votos válidos neste recorte</span><b id="extPreviewTotal">—</b><small>Boletins citados pela fonte</small></div>
+      </div>
+      <div class="ext-compare" aria-label="Distribuição dos votos válidos publicados para os países listados">
+        <div class="ext-compare-label"><span>Lula</span><span>Flávio Bolsonaro</span></div>
+        <div class="ext-compare-bar"><div id="extOverallL" class="ext-progress-l" style="width:50%"></div><div id="extOverallF" class="ext-progress-f" style="width:50%"></div></div>
+      </div>
+      <div class="ext-filters">
+        <label for="extSearch" class="ext-sr">Buscar país</label>
+        <input id="extSearch" type="search" placeholder="Buscar país ou cidade…" aria-label="Buscar país ou cidade">
+        <label for="extSort" class="ext-sr">Ordenação</label>
+        <select id="extSort" aria-label="Ordenar países">
+          <option value="total">Mais votos contabilizados</option>
+          <option value="lula">Maior percentual Lula</option>
+          <option value="flavio">Maior percentual Flávio</option>
+          <option value="name">Países A–Z</option>
+        </select>
+      </div>
+      <div id="extCountries" class="ext-countries" aria-live="polite"></div>
+      <div class="ext-countries-foot">Percentuais calculados somente sobre votos válidos de Lula e Flávio no país exibido. A prévia não é uma tendência nacional e não inclui os países ainda sem boletins na fonte. As cifras por país não são atualizadas automaticamente neste painel; consulte a reportagem para dados mais recentes.</div>
+      <div class="ext-official">
+        <div class="ext-official-head"><div><span class="ext-official-kicker">FONTE OFICIAL · TSE</span><h3>Exterior · totalização do 2º turno</h3></div><button id="extRefresh" class="ext-refresh" type="button">↻ Consultar TSE</button></div>
+        <p id="extOfficialStatus" class="ext-official-status" role="status">O TSE começa a divulgar a totalização oficial a partir das 17h (Brasília). Até lá, os dados acima são uma prévia extraída de boletins de urna pela imprensa.</p>
+        <div id="extOfficialData" class="ext-official-data" hidden>
+          <div><span>Lula · PT</span><b id="extOfficialL">—</b><small id="extOfficialLP">—</small></div>
+          <div><span>Flávio Bolsonaro · PL</span><b id="extOfficialF">—</b><small id="extOfficialFP">—</small></div>
+          <div><span>Seções totalizadas no exterior</span><b id="extOfficialSections">—</b><small id="extOfficialUpdate">—</small></div>
+        </div>
+        <a href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer">Conferir resultados diretamente no TSE ↗</a>
       </div>
     </section>
 
@@ -1060,6 +1169,82 @@ function editionFromHash(){const h=location.hash.replace("#","");return h==="apu
 document.querySelectorAll(".ed-tab").forEach(b=>b.addEventListener("click",()=>showEdition(b.dataset.edPage)));
 window.addEventListener("hashchange",()=>{const p=editionFromHash();if(p)showEdition(p,true)});
 showEdition(editionFromHash()||"results",true);
+
+
+/* Prévia editorial datada: EXAME, 25/10/2026 às 10h07 (BRT), boletins de urna.
+   Não é totalização oficial nem atualização automática por país. */
+const EXTERIOR_PREVIEW=[{"country":"Austrália","flag":"🇦🇺","l":6017,"f":3465,"location":"Canberra e Sydney"},{"country":"China","flag":"🇨🇳","l":502,"f":267,"location":"Pequim, Cantão, Xangai e Hong Kong"},{"country":"Coreia do Sul","flag":"🇰🇷","l":148,"f":82,"location":"Seul"},{"country":"Filipinas","flag":"🇵🇭","l":27,"f":39,"location":"Manila"},{"country":"Indonésia","flag":"🇮🇩","l":15,"f":23,"location":"Jacarta"},{"country":"Japão","flag":"🇯🇵","l":7098,"f":28538,"location":"Hamamatsu, Nagóia e Tóquio"},{"country":"Malásia","flag":"🇲🇾","l":41,"f":44,"location":"Kuala Lumpur"},{"country":"Nova Zelândia","flag":"🇳🇿","l":418,"f":101,"location":"Wellington"},{"country":"Singapura","flag":"🇸🇬","l":213,"f":121,"location":"Singapura"},{"country":"Tailândia","flag":"🇹🇭","l":56,"f":60,"location":"Bangkok"},{"country":"Taiwan","flag":"🇹🇼","l":94,"f":130,"location":"Taipé"}];
+const EXTERIOR_SOURCE="https://exame.com/brasil/votacao-no-exterior-quem-venceu-no-japao-china-e-coreia-do-sul-no-2o-turno/";
+const extEl=id=>document.getElementById(id);
+const extNumber=n=>Number(n||0).toLocaleString("pt-BR");
+const extPercent=(a,b)=>b>0?(100*a/b).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%":"—";
+const extEsc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function renderExteriorPreview(){
+ const l=EXTERIOR_PREVIEW.reduce((s,c)=>s+c.l,0),f=EXTERIOR_PREVIEW.reduce((s,c)=>s+c.f,0),t=l+f;
+ extEl("extPreviewL").textContent=extNumber(l);extEl("extPreviewF").textContent=extNumber(f);
+ extEl("extPreviewLP").textContent=extPercent(l,t)+" dos votos listados";extEl("extPreviewFP").textContent=extPercent(f,t)+" dos votos listados";
+ extEl("extPreviewCountries").textContent=EXTERIOR_PREVIEW.length;extEl("extPreviewTotal").textContent=extNumber(t);
+ extEl("extOverallL").style.width=(l/t*100)+"%";extEl("extOverallF").style.width=(f/t*100)+"%";
+ const q=extEl("extSearch").value.trim().toLocaleLowerCase("pt-BR"),sort=extEl("extSort").value;
+ const visible=EXTERIOR_PREVIEW.filter(c=>(c.country+" "+c.location).toLocaleLowerCase("pt-BR").includes(q));
+ visible.sort((a,b)=>sort==="lula"?b.l/(b.l+b.f)-a.l/(a.l+a.f):sort==="flavio"?b.f/(b.l+b.f)-a.f/(a.l+a.f):sort==="name"?a.country.localeCompare(b.country,"pt-BR"):(b.l+b.f)-(a.l+a.f));
+ extEl("extCountries").innerHTML=visible.length?visible.map(c=>{
+ const total=c.l+c.f,pl=c.l/total*100,pf=c.f/total*100,w=c.l===c.f?"Empate":c.l>c.f?"Lula à frente":"Flávio à frente";
+ return '<article class="ext-country"><div class="ext-country-top"><div><div class="ext-country-name"><span class="flag" aria-hidden="true">'+c.flag+'</span>'+extEsc(c.country)+'</div><small class="ext-country-city">'+extEsc(c.location)+'</small></div><span class="ext-country-lead '+(c.f>c.l?"f":"")+'">'+w+'</span></div>'+
+  '<div class="ext-country-row"><span class="l">Lula · '+extPercent(c.l,total)+'</span><span class="f">Flávio · '+extPercent(c.f,total)+'</span></div>'+
+  '<div class="ext-country-track" role="img" aria-label="'+extEsc(c.country+': Lula '+extNumber(c.l)+' votos, Flávio '+extNumber(c.f)+' votos')+'"><i class="l" style="width:'+pl+'%"></i><i class="f" style="width:'+pf+'%"></i></div>'+
+  '<div class="ext-country-foot">'+extNumber(c.l)+' votos Lula · '+extNumber(c.f)+' votos Flávio · '+extNumber(total)+' válidos</div></article>';
+ }).join(""):'<p class="ext-country" style="grid-column:1/-1">Nenhum país ou local corresponde à busca.</p>';
+}
+extEl("extSearch").addEventListener("input",renderExteriorPreview);
+extEl("extSort").addEventListener("change",renderExteriorPreview);
+renderExteriorPreview();
+
+/* O arquivo ZZ é o consolidado oficial dos eleitores no exterior, distinto do BR;
+   só será consultado a partir de 17h BRT e não substitui a prévia por país. */
+let extFetching=false,extLastSuccess=0,extRetryNotBefore=0,extErrorCount=0;
+function extOfficialMessage(message,valid){
+ extEl("extOfficialStatus").textContent=message;
+ extEl("extStatus").textContent=valid?"Total exterior · TSE oficial":"Prévia por boletins de urna";
+ extEl("extStatus").classList.toggle("official",!!valid);
+}
+async function pollExteriorOfficial(manual=false){
+ if(Date.now()<RESULTS_START){
+  extOfficialMessage("O TSE publica a totalização oficial a partir das 17h (Brasília). Até lá, os números por país acima são uma prévia jornalística datada, não um resultado oficial.",false);
+  return;
+ }
+ if(extFetching||Date.now()<extRetryNotBefore)return;
+ if(!manual&&extLastSuccess&&Date.now()-extLastSuccess<90000)return;
+ extFetching=true;extEl("extRefresh").disabled=true;
+ try{
+  const d=await one("ZZ");
+  if(!(d.l.v>0&&d.f.v>0))throw Error("Totalização exterior ainda não publicada");
+  extEl("extOfficialL").textContent=extNumber(d.l.v)+" votos";
+  extEl("extOfficialF").textContent=extNumber(d.f.v)+" votos";
+  const total=d.l.v+d.f.v;
+  extEl("extOfficialLP").textContent=extPercent(d.l.v,total)+" dos dois candidatos";
+  extEl("extOfficialFP").textContent=extPercent(d.f.v,total)+" dos dois candidatos";
+  extEl("extOfficialSections").textContent=d.ts>0?extPercent(d.st,d.ts)+" das seções":"Em atualização";
+  extEl("extOfficialUpdate").textContent=d.dt?"Atualização TSE: "+d.dt:"Parcial oficial";
+  extEl("extOfficialData").hidden=false;
+  extLastSuccess=Date.now();extErrorCount=0;extRetryNotBefore=0;
+  extOfficialMessage("Totalização oficial de votos no exterior publicada pelo TSE. Dados atualizados no painel; a prévia por país acima continua identificada como levantamento jornalístico de 10h07.",true);
+ }catch(e){
+  extErrorCount=Math.min(extErrorCount+1,5);
+  const blocked=/HTTP (403|429)/.test(String(e.message));
+  extRetryNotBefore=Date.now()+(blocked?600000:Math.min(240000,30000*Math.pow(2,extErrorCount-1)));
+  const hadOfficial=!extEl("extOfficialData").hidden;
+  extOfficialMessage(hadOfficial?
+   "A última totalização oficial continua visível. Não foi possível buscar uma atualização agora; confira diretamente no TSE.":
+   "Totalização oficial do exterior ainda indisponível neste painel. Nova tentativa automática; nenhum resultado oficial foi presumido.",hadOfficial);
+ }finally{
+  extFetching=false;extEl("extRefresh").disabled=false;
+ }
+}
+extEl("extRefresh").addEventListener("click",()=>pollExteriorOfficial(true));
+setInterval(()=>pollExteriorOfficial(),90000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollExteriorOfficial()});
+pollExteriorOfficial();
 
 go().finally(scheduleNext);
 </script>
