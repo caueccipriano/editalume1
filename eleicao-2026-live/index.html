@@ -1062,7 +1062,7 @@ async function pollStates(){
   if(!incoming.length)throw Error(errors[0]||"Nenhuma UF respondeu");
   if(errors.some(x=>/HTTP (403|429|503)/.test(x)))stateRetryAt=Date.now()+RETRY_403_429_MS;
   else stateRetryAt=0;
-  statesLive=errors.length===0;
+  statesLive=true; // Partial responses still keep the five-second cycle unless throttled.
   if(!prev)prev={n:null,states:[]};
   const baseline=new Map((prev.states||[]).map(s=>[s.uf,s]));
   const latest=new Map(states.map(s=>[s.uf,s]));
