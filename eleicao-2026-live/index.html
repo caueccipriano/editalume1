@@ -475,6 +475,39 @@ body.screenmode .candidate:first-child{padding:22px}
 .first-round-note b{font-weight:900;color:#65545b}
 .first-round-note a{color:inherit;text-underline-offset:2px}
 
+
+/* Painel histórico discreto, no mesmo estilo visual */
+.round-panel{grid-column:span 12;padding:19px 20px;overflow:hidden}
+.round-head{display:flex;justify-content:space-between;align-items:start;gap:17px;flex-wrap:wrap}
+.round-head h2{font-size:clamp(25px,3.6vw,40px);line-height:1.12;letter-spacing:-.05em;margin:7px 0}
+.round-head p{color:#846f77;font-size:11px;line-height:1.6;max-width:640px}
+.round-select{display:flex;flex-direction:column;gap:6px;min-width:165px}
+.round-select label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;color:#7e6770}
+.round-select select{background:#fff9fa;border:1px solid #ead4da;border-radius:12px;color:#632a3d;font-size:12px;font-weight:850;padding:12px}
+.round-legend{display:flex;gap:8px 18px;flex-wrap:wrap;color:#76616a;font-size:10px;font-weight:850;margin:11px 0}
+.round-legend i{display:inline-block;width:19px;border-top:3px solid #c9002b;vertical-align:middle;margin-right:5px}
+.round-legend i.blue{border-color:#2d67d8}.round-legend i.dashed{border-top-style:dashed}
+.round-status{color:#88727b;font-size:10px;line-height:1.6;margin:10px 0}
+.round-chart{border:1px solid #efdee3;border-radius:13px;background:white;min-height:170px;padding:10px}
+.round-chart svg{width:100%;max-height:280px;height:auto;display:block}
+.round-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.round-person{border:1px solid #eddde2;border-radius:14px;padding:13px;background:#fffafa}
+.round-person h3{font-size:12px;margin:0 0 10px;color:#4d2c37}
+.round-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.round-fields>div{border:1px solid #eee0e4;border-radius:10px;background:#fff;padding:10px}
+.round-fields small{display:block;font-size:9px;color:#8b7079;font-weight:850}
+.round-fields b{display:block;font-size:clamp(21px,3vw,30px);font-weight:1000;margin:6px 0}
+.round-fields span{font-size:9px;color:#88747a;line-height:1.4}
+.round-delta{color:#7c5969;font-size:10px;font-weight:850;line-height:1.6;margin:10px 1px 0}
+.round-foot{color:#88747e;font-size:10px;line-height:1.6;margin:14px 0 0}
+.round-foot a{color:#ae2149;text-underline-offset:3px}
+.state-ref{font-size:9px;color:#875e6d;line-height:1.5;font-weight:750;margin-top:6px}
+.state-ref b{color:#6c394c}
+.map-ref{padding-top:9px;border-top:1px dashed #eed6dd;margin-top:10px;font-size:10px;line-height:1.6;color:#8e6878}
+.ext-first-ref{font-size:10px;color:#8a6471;line-height:1.6;border-radius:10px;background:#fff;padding:11px;margin-top:10px}
+@media(max-width:640px){.round-panel{padding:15px 12px}.round-head{flex-direction:column}.round-select{width:100%}.round-select select{width:100%}.round-pair{grid-template-columns:1fr}}
+
+.ext-historical{font-size:9px;line-height:1.65;color:#8a6573;margin-top:9px;border-top:1px dashed #eedbdf;padding-top:9px}.ext-historical a{color:#9e2851;font-weight:850;text-underline-offset:2px}
 </style>
 </head>
 <body>
@@ -528,7 +561,7 @@ body.screenmode .candidate:first-child{padding:22px}
           </div>
           <div id="lp" class="share l loading">—</div>
           <div class="voteinfo"><span id="lv" class="votes">— votos</span><span id="ld" class="delta">Δ —</span></div>
-          <div class="first-round-note"><a href="https://resultados.tse.jus.br/oficial/app/index.html#/eleicao/6257/uf/br/cargo/1/vis/nominal/resultados" target="_blank" rel="noopener noreferrer" aria-label="Consultar 1º turno no TSE">1º turno</a><span>·</span><b>45,16%</b><span>· 53.879.538 votos</span></div>
+          <div class="first-round-note" id="firstRoundL">1º turno · consultando TSE…</div>
         </div>
 
         <div class="divider"></div>
@@ -543,7 +576,7 @@ body.screenmode .candidate:first-child{padding:22px}
           </div>
           <div id="fp" class="share f loading">—</div>
           <div class="voteinfo"><span id="fv" class="votes">— votos</span><span id="fd" class="delta">Δ —</span></div>
-          <div class="first-round-note"><a href="https://resultados.tse.jus.br/oficial/app/index.html#/eleicao/6257/uf/br/cargo/1/vis/nominal/resultados" target="_blank" rel="noopener noreferrer" aria-label="Consultar 1º turno no TSE">1º turno</a><span>·</span><b>47,03%</b><span>· 56.104.503 votos</span></div>
+          <div class="first-round-note" id="firstRoundF">1º turno · consultando TSE…</div>
         </div>
       </div>
 
@@ -561,6 +594,19 @@ body.screenmode .candidate:first-child{padding:22px}
 
 
 
+
+    <section class="card round-panel" aria-labelledby="roundTitle">
+      <div class="round-head"><div><div class="ed-kicker">Série histórica · TSE</div><h2 id="roundTitle">1º turno × 2º turno</h2>
+        <p>Resultados do primeiro turno (04/10) e lotes oficiais disponíveis do segundo turno (25/10). As linhas tracejadas mostram os percentuais anteriores.</p></div>
+        <div class="round-select"><label for="roundScope">Localidade</label><select id="roundScope">
+          <option value="BR">Brasil · nacional</option><option value="ZZ">Exterior · total oficial</option><optgroup id="roundUFOptions" label="Estados e DF"></optgroup>
+        </select></div></div>
+      <div id="roundStatus" class="round-status" role="status">Consultando resultados oficiais do 1º turno…</div>
+      <div class="round-legend"><span><i></i>Lula · 2º</span><span><i class="blue"></i>Flávio · 2º</span><span><i class="dashed"></i>Lula · 1º</span><span><i class="blue dashed"></i>Flávio · 1º</span></div>
+      <div id="roundChart" class="round-chart" aria-live="polite"></div>
+      <div id="roundPersonCards" class="round-pair" aria-live="polite"></div>
+      <p class="round-foot">O 1º turno é resultado final; o 2º pode estar parcial. Diferenças não são projeções. O histórico do gráfico começa quando este aparelho recebe lotes do TSE e fica salvo localmente. <a href="https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados" target="_blank" rel="noopener noreferrer">Metodologia e arquivos do TSE ↗</a></p>
+    </section>
     <section class="card exterior-card" aria-labelledby="exteriorTitle">
       <div class="ext-head">
         <div>
@@ -571,8 +617,8 @@ body.screenmode .candidate:first-child{padding:22px}
         <span id="extStatus" class="ext-pill">Prévia por boletins de urna</span>
       </div>
       <div class="ext-sources">
-        <span><strong>PRÉVIA JORNALÍSTICA</strong> · boletins de urna divulgados em 25/10, levantamento publicado até 10h07 (Brasília)</span>
-        <a href="https://exame.com/brasil/votacao-no-exterior-quem-venceu-no-japao-china-e-coreia-do-sul-no-2o-turno/" target="_blank" rel="noopener noreferrer">Abrir fonte · EXAME ↗</a>
+        <span><strong>PRÉVIA JORNALÍSTICA</strong> · boletins de urna divulgados em 25/10, fontes publicadas em 25/10 (horário de Brasília)</span>
+        <a href="https://exame.com/brasil/votacao-no-exterior-quem-venceu-no-japao-china-e-coreia-do-sul-no-2o-turno/" target="_blank" rel="noopener noreferrer">Fonte · EXAME ↗</a><a href="https://www.poder360.com.br/poder-eleicoes-2026/compare-as-votacoes-de-lula-e-flavio-no-1o-e-no-2o-turno-no-exterior/" target="_blank" rel="noopener noreferrer">Comparativo · Poder360 ↗</a>
       </div>
       <div class="ext-stats">
         <div class="ext-stat"><span>Votos para Lula · 13</span><b id="extPreviewL" class="ext-red">—</b><small id="extPreviewLP">— do recorte</small></div>
@@ -596,7 +642,7 @@ body.screenmode .candidate:first-child{padding:22px}
         </select>
       </div>
       <div id="extCountries" class="ext-countries" aria-live="polite"></div>
-      <div class="ext-countries-foot">Percentuais calculados somente sobre votos válidos de Lula e Flávio no país exibido. A prévia não é uma tendência nacional e não inclui os países ainda sem boletins na fonte. As cifras por país não são atualizadas automaticamente neste painel; consulte a reportagem para dados mais recentes.</div>
+      <div class="ext-countries-foot">Percentuais calculados somente sobre votos válidos de Lula e Flávio no país exibido. A prévia não é uma tendência nacional e não inclui os países ainda sem boletins na fonte. As cifras por país não são atualizadas automaticamente neste painel; consulte a reportagem para dados mais recentes. A votação histórica por país é citada pelo Poder360 em 25/10. As diferenças são em votos; os percentuais do 1º turno não foram calculados a partir apenas dos dois candidatos.</div>
       <div class="ext-official">
         <div class="ext-official-head"><div><span class="ext-official-kicker">FONTE OFICIAL · TSE</span><h3>Exterior · totalização do 2º turno</h3></div><button id="extRefresh" class="ext-refresh" type="button">↻ Consultar TSE</button></div>
         <p id="extOfficialStatus" class="ext-official-status" role="status">O TSE começa a divulgar a totalização oficial a partir das 17h (Brasília). Até lá, os dados acima são uma prévia extraída de boletins de urna pela imprensa.</p>
@@ -605,6 +651,7 @@ body.screenmode .candidate:first-child{padding:22px}
           <div><span>Flávio Bolsonaro · PL</span><b id="extOfficialF">—</b><small id="extOfficialFP">—</small></div>
           <div><span>Seções totalizadas no exterior</span><b id="extOfficialSections">—</b><small id="extOfficialUpdate">—</small></div>
         </div>
+        <div id="extFirstCompare" class="ext-first-ref">1º turno · consultando TSE…</div>
         <a href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer">Conferir resultados diretamente no TSE ↗</a>
       </div>
     </section>
@@ -741,7 +788,7 @@ body.screenmode .candidate:first-child{padding:22px}
     </div>
   </section>
     <footer class="footer">
-    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a divulgação, o aplicativo consulta o TSE a cada 1 segundo para o resultado nacional e a cada 5 segundos para os 27 estados e a totalização oficial do exterior, enquanto as conexões estiverem disponíveis. O histórico local salva até 50 lotes nacionais. Os dados por país são uma prévia jornalística fixa. Não há projeções.</span>
+    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a divulgação, o aplicativo consulta o TSE a cada 1 segundo para o resultado nacional e a cada 5 segundos para os 27 estados e a totalização oficial do exterior, enquanto as conexões estiverem disponíveis. O histórico local salva até 50 lotes nacionais. O 1º turno usa os arquivos oficiais 6257 quando disponíveis; Brasil, UFs e exterior consolidado podem ser selecionados no gráfico. O gráfico guarda apenas lotes vistos neste aparelho. Dados por país: prévias jornalísticas de 25/10 com comparações dos votos do primeiro turno publicadas pelo Poder360, sem totalização oficial país a país em tempo real. Não há projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -834,6 +881,7 @@ function renderBatch(){
 function renderCharts(){
   $("shareChart").innerHTML=lineSvg(history,["lp","fp"],["#c9002b","#2d67d8"],v=>fpct(v));
   $("gapChart").innerHTML=lineSvg(history,["lead"],["#b00020"],v=>(v>=0?"+":"")+compact(v)+" votos",true);
+  renderRoundComparison();
 }
 function rankHtml(arr,valueFn,subFn){
   if(!arr.length)return'<div class="kpisub">Aguardando um novo lote por UF…</div>';
@@ -901,7 +949,7 @@ function renderMap(){
   const d=byUf.get(selectedUF)||states[0];
   if(!d){$("mapDetail").textContent="Carregando UFs…";return}
   const lead=who(d)==="l"?"Lula à frente":who(d)==="f"?"Flávio à frente":"Empate";
-  $("mapDetail").innerHTML='<h4>'+d.uf+'</h4><div class="leadline">'+lead+' • '+fpct(d.a)+' apurado</div><div class="mapnumbers"><div class="mapnum l"><span class="lab">Lula</span><b>'+fpct(d.l.p)+'</b><span class="sm">'+fi(d.l.v)+' votos</span></div><div class="mapnum f"><span class="lab">Flávio</span><b>'+fpct(d.f.p)+'</b><span class="sm">'+fi(d.f.v)+' votos</span></div></div><div class="mapfoot">Diferença: <b>'+fi(Math.abs(d.l.v-d.f.v))+' votos</b> • '+Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.<br>Lula no último lote: '+batchDeltaText(d.dlv,d.dlp)+'<br>Flávio no último lote: '+batchDeltaText(d.dfv,d.dfp)+'</div>';
+  $("mapDetail").innerHTML='<h4>'+d.uf+'</h4><div class="leadline">'+lead+' • '+fpct(d.a)+' apurado</div><div class="mapnumbers"><div class="mapnum l"><span class="lab">Lula</span><b>'+fpct(d.l.p)+'</b><span class="sm">'+fi(d.l.v)+' votos</span></div><div class="mapnum f"><span class="lab">Flávio</span><b>'+fpct(d.f.p)+'</b><span class="sm">'+fi(d.f.v)+' votos</span></div></div><div class="mapfoot">Diferença: <b>'+fi(Math.abs(d.l.v-d.f.v))+' votos</b> • '+Math.abs(d.l.p-d.f.p).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.<br>Lula no último lote: '+batchDeltaText(d.dlv,d.dlp)+'<br>Flávio no último lote: '+batchDeltaText(d.dfv,d.dfp)+'</div>'+firstLineForMap(d);
 }
 function renderHistory(){
   $("historyCount").textContent=history.length+" lote"+(history.length===1?"":"s");
@@ -968,8 +1016,8 @@ function draw(){
     const label=w==="l"?"Lula à frente":w==="f"?"Flávio à frente":"Empate";
     return '<article class="state">'+
       '<div class="sttop"><div class="uf">'+d.uf+'</div><span class="lead '+w+'">'+label+'</span></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv??0,d.dlp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dlv,d.dlp)+'</div></div>'+
-      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv??0,d.dfp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dfv,d.dfp)+'</div></div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Lula</span><span class="stpct l">'+fpct(d.l.p)+'</span></div><div class="mini"><div class="fill l" style="width:'+Math.max(0,Math.min(100,d.l.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dlv??0,d.dlp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dlv,d.dlp)+'</div>'+firstLineForState(d.uf,'l',d.l)+'</div>'+
+      '<div class="statecand"><div class="strow"><span class="stname">Flávio Bolsonaro</span><span class="stpct f">'+fpct(d.f.p)+'</span></div><div class="mini"><div class="fill f" style="width:'+Math.max(0,Math.min(100,d.f.p))+'%"></div></div><div class="stdelta '+deltaClass(d.dfv??0,d.dfp??0)+'">Vs. lote anterior: '+batchDeltaText(d.dfv,d.dfp)+'</div>'+firstLineForState(d.uf,'f',d.f)+'</div>'+
       '<div class="stmeta"><span>Diferença: '+gv+' votos • '+g+' p.p.</span><span>'+fpct(d.a)+' apurado</span></div>'+
     '</article>'
   }).join("");
@@ -1009,6 +1057,7 @@ function scheduleStates(){
 function saveElectionSnapshot(){
  try{
   localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}));
+  localStorage.setItem("e26-round-history",JSON.stringify(scopeHistory));
  }catch(_){/* Persistent storage may be unavailable; live polling must continue. */}
 }
 // Independent fast lane: ONLY the national BR file, one request per second when online.
@@ -1039,12 +1088,10 @@ async function go(){
         showTicker("Novo lote TSE • "+lastBatchSummary.headline+" • Lula "+fpp(natDelta.lp)+" • Flávio "+fpp(natDelta.fp));
       }
       pushHistory(n);
+      captureHistory('BR',n);
       if(!prev)prev={n:null,states:[]};
       prev.n=n;
     }
-    nat(n,natDelta);
-
-
   nat(n,natDelta);
   renderAnalytics();
   saveElectionSnapshot();
@@ -1081,6 +1128,7 @@ async function pollStates(){
   const baseline=new Map((prev.states||[]).map(s=>[s.uf,s]));
   const latest=new Map(states.map(s=>[s.uf,s]));
   for(const s of incoming){
+   captureHistory(s.uf,s);
    const o=baseline.get(s.uf);
    const changed=!o||s.dt!==o.dt||s.l.v!==o.l.v||s.f.v!==o.f.v||s.l.p!==o.l.p||s.f.p!==o.f.p;
    if(changed&&o){
@@ -1213,7 +1261,7 @@ function showEdition(page,fromHash=false){
  const key=editorialPages[page]?page:"results";
  Object.entries(editorialPages).forEach(([k,id])=>document.getElementById(id).hidden=(k!==key));
  document.querySelectorAll(".ed-tab").forEach(b=>{const on=b.dataset.edPage===key;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on))});
- if(!fromHash)history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
+ if(!fromHash)window.history.replaceState(null,"","#"+(key==="results"?"apuracao":key==="guide"?"votar":"debates"));
  if(key!=="results"&&document.body.classList.contains("screenmode")){document.body.classList.remove("screenmode");document.getElementById("screenBtn").textContent="◫ Modo telão"}
  window.scrollTo({top:0,behavior:"auto"});
 }
@@ -1226,6 +1274,10 @@ showEdition(editionFromHash()||"results",true);
 /* Prévia editorial datada: EXAME, 25/10/2026 às 10h07 (BRT), boletins de urna.
    Não é totalização oficial nem atualização automática por país. */
 const EXTERIOR_PREVIEW=[{"country":"Austrália","flag":"🇦🇺","l":6017,"f":3465,"location":"Canberra e Sydney"},{"country":"China","flag":"🇨🇳","l":502,"f":267,"location":"Pequim, Cantão, Xangai e Hong Kong"},{"country":"Coreia do Sul","flag":"🇰🇷","l":148,"f":82,"location":"Seul"},{"country":"Filipinas","flag":"🇵🇭","l":27,"f":39,"location":"Manila"},{"country":"Indonésia","flag":"🇮🇩","l":15,"f":23,"location":"Jacarta"},{"country":"Japão","flag":"🇯🇵","l":7098,"f":28538,"location":"Hamamatsu, Nagóia e Tóquio"},{"country":"Malásia","flag":"🇲🇾","l":41,"f":44,"location":"Kuala Lumpur"},{"country":"Nova Zelândia","flag":"🇳🇿","l":418,"f":101,"location":"Wellington"},{"country":"Singapura","flag":"🇸🇬","l":213,"f":121,"location":"Singapura"},{"country":"Tailândia","flag":"🇹🇭","l":56,"f":60,"location":"Bangkok"},{"country":"Taiwan","flag":"🇹🇼","l":94,"f":130,"location":"Taipé"}];
+
+/* Fonte jornalística datada: Poder360 25/10/2026 (boletins, não TSE consolidado por país). */
+const FIRST_COUNTRY_COUNTS={"Austrália":{"l":4562,"f":2579},"China":{"l":367,"f":203},"Coreia do Sul":{"l":123,"f":72},"Filipinas":{"l":26,"f":33},"Indonésia":{"l":8,"f":19},"Japão":{"l":5234,"f":24601},"Malásia":{"l":44,"f":27},"Nova Zelândia":{"l":234,"f":64},"Singapura":{"l":190,"f":92},"Tailândia":{"l":40,"f":51},"Taiwan":{"l":77,"f":107},"Portugal":{"l":26401,"f":19412},"Alemanha":{"l":13525,"f":3532},"Itália":{"l":6148,"f":4386},"Espanha":{"l":7263,"f":3338},"Suíça":{"l":5194,"f":4525},"Irlanda":{"l":6025,"f":1559},"Holanda":{"l":4624,"f":1081},"Áustria":{"l":979,"f":311},"Suécia":{"l":1770,"f":505},"Dinamarca":{"l":1166,"f":195},"Reino Unido":{"l":8152,"f":5227},"Emirados Árabes Unidos":{"l":512,"f":659},"África do Sul":{"l":152,"f":230},"Israel":{"l":92,"f":523},"Palestina":{"l":1078,"f":46},"Líbano":{"l":2538,"f":1138},"Polônia":{"l":183,"f":65},"Estônia":{"l":142,"f":19},"Finlândia":{"l":475,"f":155},"Bélgica":{"l":2516,"f":1959},"Grécia":{"l":196,"f":230},"Qatar":{"l":147,"f":173},"Jordânia":{"l":675,"f":59},"Egito":{"l":46,"f":12},"Síria":{"l":97,"f":7},"Angola":{"l":147,"f":101},"Quênia":{"l":26,"f":17},"Croácia":{"l":29,"f":17},"Eslovênia":{"l":61,"f":25},"Sérvia":{"l":30,"f":13},"Arábia Saudita":{"l":52,"f":22},"Marrocos":{"l":30,"f":6}};
+EXTERIOR_PREVIEW.push(...[{"country":"Portugal","l":34319,"f":23433,"flag":"🇵🇹","location":"Portugal"},{"country":"Alemanha","l":16549,"f":4374,"flag":"🇩🇪","location":"Alemanha"},{"country":"Itália","l":7921,"f":5283,"flag":"🇮🇹","location":"Itália"},{"country":"Espanha","l":9293,"f":4289,"flag":"🇪🇸","location":"Espanha"},{"country":"Suíça","l":7089,"f":5419,"flag":"🇨🇭","location":"Suíça"},{"country":"Irlanda","l":7194,"f":1776,"flag":"🇮🇪","location":"Irlanda"},{"country":"Holanda","l":5578,"f":1383,"flag":"🇳🇱","location":"Holanda"},{"country":"Áustria","l":1178,"f":393,"flag":"🇦🇹","location":"Áustria"},{"country":"Suécia","l":2127,"f":591,"flag":"🇸🇪","location":"Suécia"},{"country":"Dinamarca","l":1383,"f":243,"flag":"🇩🇰","location":"Dinamarca"},{"country":"Reino Unido","l":10968,"f":6349,"flag":"🇬🇧","location":"Reino Unido"},{"country":"Emirados Árabes Unidos","l":643,"f":772,"flag":"🇦🇪","location":"Emirados Árabes Unidos"},{"country":"África do Sul","l":186,"f":256,"flag":"🇿🇦","location":"África do Sul"},{"country":"Israel","l":166,"f":699,"flag":"🇮🇱","location":"Israel"},{"country":"Palestina","l":1000,"f":46,"flag":"🇵🇸","location":"Palestina"},{"country":"Líbano","l":2736,"f":1276,"flag":"🇱🇧","location":"Líbano"},{"country":"Polônia","l":268,"f":89,"flag":"🇵🇱","location":"Polônia"},{"country":"Estônia","l":160,"f":33,"flag":"🇪🇪","location":"Estônia"},{"country":"Finlândia","l":550,"f":185,"flag":"🇫🇮","location":"Finlândia"},{"country":"Bélgica","l":3064,"f":2154,"flag":"🇧🇪","location":"Bélgica"},{"country":"Grécia","l":255,"f":331,"flag":"🇬🇷","location":"Grécia"},{"country":"Qatar","l":159,"f":195,"flag":"🇶🇦","location":"Qatar"},{"country":"Jordânia","l":725,"f":76,"flag":"🇯🇴","location":"Jordânia"},{"country":"Egito","l":60,"f":16,"flag":"🇪🇬","location":"Egito"},{"country":"Síria","l":106,"f":11,"flag":"🇸🇾","location":"Síria"},{"country":"Angola","l":167,"f":118,"flag":"🇦🇴","location":"Angola"},{"country":"Quênia","l":29,"f":16,"flag":"🇰🇪","location":"Quênia"},{"country":"Croácia","l":31,"f":26,"flag":"🇭🇷","location":"Croácia"},{"country":"Eslovênia","l":67,"f":28,"flag":"🇸🇮","location":"Eslovênia"},{"country":"Sérvia","l":35,"f":13,"flag":"🇷🇸","location":"Sérvia"},{"country":"Arábia Saudita","l":49,"f":31,"flag":"🇸🇦","location":"Arábia Saudita"},{"country":"Marrocos","l":31,"f":6,"flag":"🇲🇦","location":"Marrocos"}]);
 const EXTERIOR_SOURCE="https://exame.com/brasil/votacao-no-exterior-quem-venceu-no-japao-china-e-coreia-do-sul-no-2o-turno/";
 const extEl=id=>document.getElementById(id);
 const extNumber=n=>Number(n||0).toLocaleString("pt-BR");
@@ -1241,11 +1293,13 @@ function renderExteriorPreview(){
  const visible=EXTERIOR_PREVIEW.filter(c=>(c.country+" "+c.location).toLocaleLowerCase("pt-BR").includes(q));
  visible.sort((a,b)=>sort==="lula"?b.l/(b.l+b.f)-a.l/(a.l+a.f):sort==="flavio"?b.f/(b.l+b.f)-a.f/(a.l+a.f):sort==="name"?a.country.localeCompare(b.country,"pt-BR"):(b.l+b.f)-(a.l+a.f));
  extEl("extCountries").innerHTML=visible.length?visible.map(c=>{
+ const baseline=FIRST_COUNTRY_COUNTS[c.country];
+ const comparison=baseline?'<div class="ext-historical"><b>1º turno:</b> Lula '+extNumber(baseline.l)+' · Flávio '+extNumber(baseline.f)+' votos<br><b>Diferença de votos:</b> Lula '+((c.l-baseline.l)>=0?'+':'')+extNumber(c.l-baseline.l)+' · Flávio '+((c.f-baseline.f)>=0?'+':'')+extNumber(c.f-baseline.f)+' <a href="https://www.poder360.com.br/poder-eleicoes-2026/compare-as-votacoes-de-lula-e-flavio-no-1o-e-no-2o-turno-no-exterior/" target="_blank" rel="noopener noreferrer">Poder360 ↗</a></div>':'<div class="ext-historical">1º turno por país não confirmado.</div>';
  const total=c.l+c.f,pl=c.l/total*100,pf=c.f/total*100,w=c.l===c.f?"Empate":c.l>c.f?"Lula à frente":"Flávio à frente";
  return '<article class="ext-country"><div class="ext-country-top"><div><div class="ext-country-name"><span class="flag" aria-hidden="true">'+c.flag+'</span>'+extEsc(c.country)+'</div><small class="ext-country-city">'+extEsc(c.location)+'</small></div><span class="ext-country-lead '+(c.f>c.l?"f":"")+'">'+w+'</span></div>'+
   '<div class="ext-country-row"><span class="l">Lula · '+extPercent(c.l,total)+'</span><span class="f">Flávio · '+extPercent(c.f,total)+'</span></div>'+
   '<div class="ext-country-track" role="img" aria-label="'+extEsc(c.country+': Lula '+extNumber(c.l)+' votos, Flávio '+extNumber(c.f)+' votos')+'"><i class="l" style="width:'+pl+'%"></i><i class="f" style="width:'+pf+'%"></i></div>'+
-  '<div class="ext-country-foot">'+extNumber(c.l)+' votos Lula · '+extNumber(c.f)+' votos Flávio · '+extNumber(total)+' válidos</div></article>';
+  '<div class="ext-country-foot">'+extNumber(c.l)+' votos Lula · '+extNumber(c.f)+' votos Flávio · '+extNumber(total)+' válidos · prévia de 25/10</div>'+comparison+'</article>';
  }).join(""):'<p class="ext-country" style="grid-column:1/-1">Nenhum país ou local corresponde à busca.</p>';
 }
 extEl("extSearch").addEventListener("input",renderExteriorPreview);
@@ -1271,6 +1325,8 @@ async function pollExteriorOfficial(manual=false){
  try{
   const d=await one("ZZ");
   if(!(d.l.v>0&&d.f.v>0))throw Error("Totalização exterior ainda não publicada");
+  exteriorCurrent=d;
+  captureHistory("ZZ",d);
   extEl("extOfficialL").textContent=extNumber(d.l.v)+" votos";
   extEl("extOfficialF").textContent=extNumber(d.f.v)+" votos";
   const total=d.l.v+d.f.v;
@@ -1279,6 +1335,9 @@ async function pollExteriorOfficial(manual=false){
   extEl("extOfficialSections").textContent=d.ts>0?extPercent(d.st,d.ts)+" das seções":"Em atualização";
   extEl("extOfficialUpdate").textContent=d.dt?"Atualização TSE: "+d.dt:"Parcial oficial";
   extEl("extOfficialData").hidden=false;
+  renderExteriorFirst();
+  renderRoundComparison();
+  saveElectionSnapshot();
   extLastSuccess=Date.now();extErrorCount=0;extRetryNotBefore=0;
   extOfficialMessage("Totalização oficial de votos no exterior publicada pelo TSE. Dados atualizados no painel; a prévia por país acima continua identificada como levantamento jornalístico de 10h07.",true);
  }catch(e){
@@ -1298,6 +1357,166 @@ setInterval(()=>pollExteriorOfficial(),REGIONAL_POLL_MS);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollExteriorOfficial()});
 pollExteriorOfficial();
 
+
+
+/* Histórico oficial do primeiro turno e gráfico do segundo por localidade.
+   Dados de 6257 somente mediante consulta ao TSE; sem números inventados. */
+const FIRST_TSE_ELECTION="6257";
+const firstRoundResults=Object.create(null),firstRoundErrors=Object.create(null);
+const scopeHistory=Object.create(null),firstInFlight=new Map(),firstQueue=[];
+let roundScope="BR",exteriorCurrent=null,firstActive=0,firstCooldown=0,lastRoundFingerprint="";
+const MAX_FIRST_CONCURRENT=2;
+const firstTSEUrl=scope=>{
+ const x=scope.toLowerCase();
+ return "https://resultados.tse.jus.br/oficial/ele2026/"+FIRST_TSE_ELECTION+"/dados/"+x+"/"+x+"-c0001-e006257-u.json";
+};
+const hasResult=d=>!!(d&&d.l?.v>0&&d.f?.v>0);
+const currScope=scope=>scope==="BR"?prev?.n:scope==="ZZ"?exteriorCurrent:states.find(x=>x.uf===scope);
+const ppSigned=n=>(n>0?"+":n<0?"−":"")+Math.abs(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p.";
+const numSigned=n=>(n>0?"+":n<0?"−":"")+fi(Math.abs(n))+" votos";
+const firstCompact=d=>({l:{p:d.l.p,v:d.l.v},f:{p:d.f.p,v:d.f.v},a:d.a,dt:d.dt});
+function captureHistory(scope,d){
+ if(!hasResult(d))return;
+ const rows=scopeHistory[scope]||(scopeHistory[scope]=[]);
+ const p={dt:d.dt||"—",lp:d.l.p,fp:d.f.p,lv:d.l.v,fv:d.f.v,a:d.a};
+ const last=rows[rows.length-1];
+ if(!last||p.dt!==last.dt||p.lv!==last.lv||p.fv!==last.fv){
+  rows.push(p);if(rows.length>100)rows.splice(0,rows.length-100);
+ }
+}
+function loadFirstScope(scope,priority=false){
+ if(firstRoundResults[scope])return Promise.resolve(firstRoundResults[scope]);
+ if(firstInFlight.has(scope))return firstInFlight.get(scope);
+ const promise=new Promise(resolve=>{firstQueue[priority?"unshift":"push"]({scope,resolve});pumpFirstQueue()});
+ firstInFlight.set(scope,promise);
+ return promise;
+}
+function pumpFirstQueue(){
+ if(firstActive>=MAX_FIRST_CONCURRENT||!firstQueue.length)return;
+ if(Date.now()<firstCooldown){setTimeout(pumpFirstQueue,Math.max(1200,firstCooldown-Date.now()));return}
+ const job=firstQueue.shift();
+ firstActive++;
+ (async()=>{
+  try{
+   const response=await fetch(firstTSEUrl(job.scope),{cache:"default"});
+   if(!response.ok)throw Error("TSE HTTP "+response.status);
+   const data=parse(await response.json());
+   if(!hasResult(data))throw Error("Dados não encontrados no arquivo oficial");
+   firstRoundResults[job.scope]=firstCompact(data);
+   delete firstRoundErrors[job.scope];
+   try{localStorage.setItem("e26-first-final",JSON.stringify(firstRoundResults))}catch(_){}
+   job.resolve(firstRoundResults[job.scope]);
+  }catch(error){
+   const info=String(error?.message||error);
+   firstRoundErrors[job.scope]=info;
+   if(/HTTP (403|429|503)/.test(info))firstCooldown=Date.now()+60000;
+   job.resolve(null);
+  }finally{
+   firstInFlight.delete(job.scope);
+   firstActive--;
+   if(job.scope==="BR")renderHeroFirst();
+   if(job.scope==="ZZ")renderExteriorFirst();
+   if(U.includes(job.scope)&&states.length){draw();renderMap()}
+   lastRoundFingerprint="";
+   renderRoundComparison();
+   setTimeout(pumpFirstQueue,1100);
+  }
+ })();
+ if(firstActive<MAX_FIRST_CONCURRENT&&firstQueue.length)setTimeout(pumpFirstQueue,1100);
+}
+function renderHeroFirst(){
+ for(const [key,id] of [["l","firstRoundL"],["f","firstRoundF"]]){
+  const el=$(id),first=firstRoundResults.BR;
+  if(!el)continue;
+  if(!first){el.textContent="1º turno · "+(firstRoundErrors.BR?"TSE indisponível":"consultando TSE…");continue}
+  const current=currScope("BR")?.[key];
+  el.textContent="1º turno · "+fpct(first[key].p)+" · "+fi(first[key].v)+" votos"+
+   (current?.v>0?" · "+ppSigned(current.p-first[key].p)+" vs 1º":"");
+ }
+}
+function renderExteriorFirst(){
+ const el=$("extFirstCompare"),first=firstRoundResults.ZZ,now=exteriorCurrent;
+ if(!el)return;
+ if(!first){el.textContent="1º turno no exterior: "+(firstRoundErrors.ZZ?"consulta TSE indisponível":"consultando TSE…");return}
+ el.textContent="1º turno oficial · Lula "+fpct(first.l.p)+" ("+fi(first.l.v)+" votos) · Flávio "+fpct(first.f.p)+" ("+fi(first.f.v)+" votos)"+
+ (hasResult(now)?" · Variações parciais: "+ppSigned(now.l.p-first.l.p)+" / "+ppSigned(now.f.p-first.f.p):" · aguardando 2º turno");
+}
+function firstLineForState(uf,key,current){
+ const first=firstRoundResults[uf];
+ if(!first)return '<div class="state-ref">1º turno: '+(firstRoundErrors[uf]?"dado indisponível":"consultando TSE…")+'</div>';
+ return '<div class="state-ref">1º turno: <b>'+fpct(first[key].p)+'</b> · '+fi(first[key].v)+' votos · '+ppSigned(current.p-first[key].p)+' vs 1º</div>';
+}
+function firstLineForMap(d){
+ const first=firstRoundResults[d.uf];
+ if(!first)return '<div class="map-ref">1º turno: '+(firstRoundErrors[d.uf]?"dado indisponível":"consultando TSE…")+'</div>';
+ return '<div class="map-ref">1º turno · Lula '+fpct(first.l.p)+' ('+fi(first.l.v)+' votos), Flávio '+fpct(first.f.p)+' ('+fi(first.f.v)+' votos)'+
+  '<div>Variação parcial em p.p.: Lula '+ppSigned(d.l.p-first.l.p)+' · Flávio '+ppSigned(d.f.p-first.f.p)+'</div></div>';
+}
+function roundChartSVG(rows,first){
+ if(!rows.length)return '<div class="round-status" style="text-align:center;padding:42px 10px">Aguardando lotes oficiais do 2º turno nesta localidade. O histórico é salvo neste aparelho, sem reconstrução artificial.</div>';
+ const W=730,H=235,L=34,R=27,T=17,B=32;
+ const values=rows.flatMap(x=>[x.lp,x.fp]).concat(first?[first.l.p,first.f.p]:[]);
+ let min=Math.max(0,Math.floor(Math.min(...values)-5)),max=Math.min(100,Math.ceil(Math.max(...values)+5));
+ if(min===max){min=Math.max(0,min-1);max=Math.min(100,max+1)}
+ const x=i=>rows.length===1?W/2:L+i*(W-L-R)/(rows.length-1);
+ const y=v=>H-B-(v-min)*(H-T-B)/(max-min);
+ let out='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Evolução do segundo turno com referências horizontais do primeiro turno">';
+ for(let i=0;i<=4;i++){
+  const val=min+(max-min)*i/4,py=y(val);
+  out+='<line x1="'+L+'" y1="'+py+'" x2="'+(W-R)+'" y2="'+py+'" stroke="#f0e3e6"/>'+
+   '<text x="'+(L-5)+'" y="'+(py+3)+'" text-anchor="end" fill="#98848b" font-size="9">'+val.toFixed(0)+'%</text>';
+ }
+ if(first)for(const [key,color] of [["l","#c9002b"],["f","#2d67d8"]]){
+  const py=y(first[key].p);
+  out+='<line x1="'+L+'" y1="'+py+'" x2="'+(W-R)+'" y2="'+py+'" stroke="'+color+'" stroke-width="2" stroke-dasharray="7 6" opacity=".65"/>';
+ }
+ for(const [key,color] of [["lp","#c9002b"],["fp","#2d67d8"]]){
+  const points=rows.map((r,i)=>x(i)+','+y(r[key])).join(' ');
+  out+='<polyline points="'+points+'" stroke="'+color+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
+  '<circle cx="'+x(rows.length-1)+'" cy="'+y(rows[rows.length-1][key])+'" r="3.5" fill="'+color+'"/>';
+ }
+ const esc=txt=>String(txt||"—").replace(/[&<>]/g,"");
+ out+='<text x="'+L+'" y="'+(H-8)+'" fill="#9c8990" font-size="9">'+esc(rows[0].dt)+'</text>'+
+  '<text x="'+(W-R)+'" y="'+(H-8)+'" text-anchor="end" fill="#9c8990" font-size="9">'+esc(rows[rows.length-1].dt)+'</text></svg>';
+ return out;
+}
+function candidateRoundCard(label,key,first,now){
+ const p=first?.[key],n=hasResult(now)?now[key]:null;
+ const delta=p&&n?'<div class="round-delta">Variação observada: '+ppSigned(n.p-p.p)+' · '+numSigned(n.v-p.v)+'</div>':
+ '<div class="round-delta">Aguardando informações oficiais de ambos os turnos.</div>';
+ return '<article class="round-person"><h3>'+label+'</h3><div class="round-fields">'+
+ '<div><small>1º TURNO · FINAL</small><b>'+(p?fpct(p.p):"—")+'</b><span>'+(p?fi(p.v)+" votos":"Aguardando")+'</span></div>'+
+ '<div><small>2º TURNO · PARCIAL</small><b>'+(n?fpct(n.p):"—")+'</b><span>'+(n?fi(n.v)+" votos · "+fpct(now.a)+" seções":"Aguardando")+'</span></div>'+
+ '</div>'+delta+'</article>';
+}
+function renderRoundComparison(){
+ const first=firstRoundResults[roundScope],current=currScope(roundScope);
+ const rows=roundScope==="BR"?(scopeHistory.BR?.length?scopeHistory.BR:history):(scopeHistory[roundScope]||[]);
+ const fp=JSON.stringify([roundScope,first?.l?.p,first?.f?.p,firstRoundErrors[roundScope],current?.l?.v,current?.f?.v,current?.l?.p,current?.f?.p,current?.a,rows.length,rows[rows.length-1]?.dt]);
+ if(fp===lastRoundFingerprint)return;
+ lastRoundFingerprint=fp;
+ $("roundStatus").textContent=(roundScope==="BR"?"Brasil":roundScope==="ZZ"?"Exterior consolidado":roundScope)+
+ " · 1º turno: "+(first?"TSE consultado":firstRoundErrors[roundScope]?"fonte temporariamente indisponível":"consultando TSE")+
+ " · 2º turno: "+(hasResult(current)?fpct(current.a)+" das seções":"aguardando TSE");
+ $("roundChart").innerHTML=roundChartSVG(rows,first);
+ $("roundPersonCards").innerHTML=candidateRoundCard("Lula · 13","l",first,current)+candidateRoundCard("Flávio Bolsonaro · 22","f",first,current);
+ renderHeroFirst();
+}
+try{
+ const cache=JSON.parse(localStorage.getItem("e26-first-final")||"{}");
+ for(const [scope,d] of Object.entries(cache)){if(["BR","ZZ",...U].includes(scope)&&hasResult(d))firstRoundResults[scope]=d}
+ const cacheH=JSON.parse(localStorage.getItem("e26-round-history")||"{}");
+ for(const [scope,list] of Object.entries(cacheH)){if(["BR","ZZ",...U].includes(scope)&&Array.isArray(list))scopeHistory[scope]=list.slice(-100)}
+}catch(_){}
+for(const uf of U){const opt=document.createElement("option");opt.value=uf;opt.textContent=uf;$("roundUFOptions").appendChild(opt)}
+$("roundScope").addEventListener("change",e=>{roundScope=e.target.value;lastRoundFingerprint="";renderRoundComparison();loadFirstScope(roundScope,true)});
+renderRoundComparison();
+renderExteriorFirst();
+loadFirstScope("BR",true);
+loadFirstScope("ZZ",true);
+loadFirstScope("SP",true);
+// Apenas histórico final: duas requisições simultâneas, com espaçamento e cache.
+setTimeout(()=>U.filter(uf=>uf!=="SP").forEach(uf=>loadFirstScope(uf)),2000);
 
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
