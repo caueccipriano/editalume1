@@ -525,6 +525,15 @@ body.screenmode .candidate:first-child{padding:22px}
 .region-reset{background:white;border:1px solid #ecd0d7;border-radius:30px;color:#ac0b36;padding:10px 13px;font-size:10px;font-weight:900;cursor:pointer}
 @media(max-width:900px){.region-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.region-panel{padding:13px}.region-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.region-card:last-child{grid-column:span 2}}
+
+.tilemap.geobrazil{display:block;width:100%;min-width:0;grid-template-columns:none;grid-auto-rows:auto;padding:8px;background:radial-gradient(circle at 65% 20%,white,#fff3f5);border-radius:17px}
+.brazil-map-svg{display:block;width:100%;height:auto;max-height:580px;filter:drop-shadow(0 4px 8px rgba(60,20,37,.13))}
+.geo-shape{stroke:#fff;stroke-width:1.2;stroke-linejoin:round;cursor:pointer;transition:fill .18s,opacity .18s}
+.geo-shape.l{fill:#cb1c40}.geo-shape.f{fill:#4976cd}.geo-shape.t{fill:#dfd3d8}
+.geo-shape.outside{opacity:.3}.geo-shape.selected,.geo-shape:hover,.geo-shape:focus-visible{stroke:#4b2134;stroke-width:3.2;opacity:1;outline:none}
+.geo-label{text-anchor:middle;dominant-baseline:central;fill:#fff;stroke:#5f3042;stroke-width:2.2;paint-order:stroke;font-size:9px;font-weight:900;pointer-events:none}
+.geo-status,.geo-legend{font-size:9px;color:#89737b;line-height:1.5;margin:8px 2px}
+@media(max-width:620px){.tilemap.geobrazil{padding:2px}.mapscroll{overflow:visible}.brazil-map-svg{max-height:none}}
 </style>
 </head>
 <body>
@@ -671,8 +680,8 @@ body.screenmode .candidate:first-child{padding:22px}
       <button type="button" id="regionReset" class="region-reset">Ver todo o Brasil</button>
     </section>
     <section class="card mappanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Mapa esquemático</div><h3>Brasil por UF</h3></div><div class="sourcepill">Toque em um estado</div></div>
-      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
+      <div class="paneltitle"><div><div class="eyebrow">Mapa geográfico interativo</div><h3>Brasil real · 27 UFs clicáveis</h3></div><div class="sourcepill">Toque em um estado</div></div>
+      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div><div id="geoStatus" class="geo-status" role="status">Carregando mapa geográfico real…</div><div class="geo-legend">Vermelho: Lula · Azul: Flávio · Cinza: aguardando</div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
     </section>
 
     <section class="card rankpanel analytics">
@@ -996,9 +1005,51 @@ function renderApurationRadar(){
     d=>'<span>'+fi(d.vv||0)+' votos válidos</span><span>'+fpct(d.a)+' apurado</span>'
   );
 }
+
+const BRAZIL_STATES_GEOMETRY="https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/brazil-states.geojson";
+const MAP_LABELS={"AM":[-64,-5],"PA":[-52,-4],"MT":[-56,-13],"MG":[-44.5,-18.5],"BA":[-41.4,-12.5],"SP":[-48,-22.8],"RS":[-53,-30],"PR":[-51,-24.7],"GO":[-49,-16.5],"MS":[-54,-20],"RO":[-63,-11],"AC":[-70,-9.5],"TO":[-48,-10],"MA":[-45.3,-5.5],"PI":[-42.6,-7.5],"CE":[-39.5,-5],"PE":[-38,-8.4],"RJ":[-42.5,-22.8],"SC":[-50.3,-27.3],"ES":[-40.5,-19.3],"PB":[-36.6,-7],"RN":[-36,-5.8],"SE":[-37.3,-10.7],"AL":[-36.5,-9.5],"RR":[-61.4,2],"AP":[-51.5,1.4]};
+const geoX=x=>16+(x+75)*12.1,geoY=y=>12+(6-y)*12.1;
+let geoReady=false;
+function geometryToPath(geometry){
+ const polygons=geometry?.type==="MultiPolygon"?geometry.coordinates:geometry?.type==="Polygon"?[geometry.coordinates]:[];
+ return polygons.flatMap(poly=>poly.map(ring=>{
+  const points=[],step=ring.length>1800?3:1;
+  for(let i=0;i<ring.length;i+=step){
+   const p=[geoX(ring[i][0]),geoY(ring[i][1])],last=points[points.length-1];
+   if(!last||(p[0]-last[0])**2+(p[1]-last[1])**2>.65)points.push(p);
+  }
+  return points.length>=3?"M"+points.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L")+"Z":"";
+ })).filter(Boolean).join(" ");
+}
+async function initRealMap(){
+ try{
+  const result=await fetch(BRAZIL_STATES_GEOMETRY,{cache:"force-cache"});
+  if(!result.ok)throw Error("GeoJSON HTTP "+result.status);
+  const data=await result.json(),features=(data.features||[]).filter(f=>U.includes(f.properties?.sigla));
+  if(features.length!==27)throw Error("Contornos incompletos: "+features.length);
+  const shapes=features.map(f=>'<path class="geo-shape t" role="button" tabindex="0" data-uf="'+f.properties.sigla+'" aria-label="'+f.properties.name+'" d="'+geometryToPath(f.geometry)+'"><title>'+f.properties.name+'</title></path>').join("");
+  const labels=Object.entries(MAP_LABELS).map(([uf,v])=>'<text class="geo-label" x="'+geoX(v[0])+'" y="'+geoY(v[1])+'">'+uf+'</text>').join("");
+  $("tileMap").className="tilemap geobrazil";
+  $("tileMap").innerHTML='<svg class="brazil-map-svg" viewBox="0 0 575 515" aria-label="Mapa geográfico clicável dos estados brasileiros">'+shapes+labels+'<circle class="geo-shape t" role="button" tabindex="0" aria-label="Distrito Federal" data-uf="DF" cx="'+geoX(-47.85)+'" cy="'+geoY(-15.8)+'" r="6"><title>Distrito Federal</title></circle></svg>';
+  geoReady=true;$("geoStatus").textContent="Limites reais das UFs · fonte GeoJSON Click That Hood. Toque em um estado.";
+  renderMap();
+ }catch(error){
+  geoReady=false;$("geoStatus").textContent="Geometria externa indisponível; mapa esquemático alternativo.";renderMap();
+ }
+}
 function renderMap(){
   const byUf=new Map(states.map(s=>[s.uf,s]));
-  $("tileMap").innerHTML=U.map(uf=>{const d=byUf.get(uf),pos=MAP_POS[uf]||[1,1],cls=d?who(d):"t";return'<button type="button" class="maptile '+cls+(selectedUF===uf?" sel":"")+'" data-uf="'+uf+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'" aria-label="'+uf+'">'+uf+'</button>'}).join("");
+  if(geoReady){
+    $("tileMap").querySelectorAll("[data-uf]").forEach(shape=>{
+      const uf=shape.dataset.uf,d=byUf.get(uf),c=d?who(d):"t";
+      shape.classList.remove("l","f","t","selected","outside");shape.classList.add(c);
+      if(selectedUF===uf)shape.classList.add("selected");
+      if(selectedRegion!=="ALL"&&!REGIONS[selectedRegion].includes(uf))shape.classList.add("outside");
+    });
+  }else{
+    $("tileMap").className="tilemap";
+    $("tileMap").innerHTML=U.map(uf=>{const d=byUf.get(uf),pos=MAP_POS[uf]||[1,1],cls=d?who(d):"t";return '<button type="button" class="maptile '+cls+(selectedUF===uf?" sel":"")+'" data-uf="'+uf+'" style="grid-row:'+pos[0]+';grid-column:'+pos[1]+'" aria-label="'+uf+'">'+uf+'</button>'}).join("");
+  }
   const d=byUf.get(selectedUF)||states[0];
   if(!d){$("mapDetail").textContent="Carregando UFs…";return}
   const lead=who(d)==="l"?"Lula à frente":who(d)==="f"?"Flávio à frente":"Empate";
@@ -1222,8 +1273,14 @@ document.querySelectorAll(".btn").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".btn").forEach(x=>x.classList.remove("on"));
   b.classList.add("on");mode=b.dataset.s;draw()
 });
-$("tileMap").addEventListener("click",e=>{
-  const b=e.target.closest("[data-uf]");if(!b)return;selectedUF=b.dataset.uf;renderMap();
+function selectMapUF(uf){
+ if(!U.includes(uf))return;
+ selectedUF=uf;selectedRegion=UF_REGION[uf]||"ALL";draw();renderMap();
+}
+$("tileMap").addEventListener("click",e=>{const b=e.target.closest("[data-uf]");if(b)selectMapUF(b.dataset.uf)});
+$("tileMap").addEventListener("keydown",e=>{
+ const b=e.target.closest("[data-uf]");
+ if(b&&(e.key==="Enter"||e.key===" ")){e.preventDefault();selectMapUF(b.dataset.uf)}
 });
 $("screenBtn").addEventListener("click",()=>{
   document.body.classList.toggle("screenmode");
@@ -1572,6 +1629,7 @@ loadFirstScope("SP",true);
 // Apenas histórico final: duas requisições simultâneas, com espaçamento e cache.
 setTimeout(()=>U.filter(uf=>uf!=="SP").forEach(uf=>loadFirstScope(uf)),2000);
 
+initRealMap();
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
 </script>
