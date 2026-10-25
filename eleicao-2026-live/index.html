@@ -619,7 +619,7 @@ body.screenmode .candidate:first-child{padding:22px}
     <section class="card batchcard analytics">
       <div class="paneltitle"><div><div class="eyebrow">Movimento do último lote oficial</div><h3>O que mudou desde a atualização anterior?</h3></div><div id="batchClock" class="sourcepill">—</div></div>
       <div class="batchrow">
-        <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O painel consulta a cada 1 s, mas só compara quando os números oficiais mudam.</div></div>
+        <div class="batchmain"><div class="eyebrow">Saldo Lula × Flávio</div><div id="batchHeadline" class="headline">Aguardando dois lotes diferentes do TSE…</div><div id="batchDetail" class="kpisub">O placar nacional é consultado a cada 1 s; as UFs são consultadas a cada 5 s. Só comparamos quando o TSE muda os valores.</div></div>
         <div class="batchmetric"><div class="kpihead"><span>Lula no lote</span><span class="icon">13</span></div><b id="batchLula">—</b><div id="batchLulaVotes" class="kpisub">—</div></div>
         <div class="batchmetric"><div class="kpihead"><span>Flávio no lote</span><span class="icon" style="color:#2d67d8;background:#eef4ff;border-color:#d7e3fb">22</span></div><b id="batchFlavio">—</b><div id="batchFlavioVotes" class="kpisub">—</div></div>
       </div>
@@ -670,7 +670,7 @@ body.screenmode .candidate:first-child{padding:22px}
 
     <section class="card states">
       <div class="statehead">
-        <div><h2>Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p></div>
+        <div><h2>Panorama por estado</h2><p>Percentuais, votos, variação por atualização, diferença e totalização em cada UF</p><p id="stateSync" class="kpisub" role="status">Consultas aos 27 estados a cada 5 segundos após a liberação pelo TSE.</p></div>
         <div class="segmented">
           <button class="btn on" data-s="uf">A–Z</button>
           <button class="btn" data-s="l">Maior % Lula</button>
@@ -727,7 +727,7 @@ body.screenmode .candidate:first-child{padding:22px}
     </div>
   </section>
     <footer class="footer">
-    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a publicação dos resultados, o aplicativo consulta o TSE em intervalos de 1 segundo e salva até 50 lotes no aparelho. Não há projeções.</span>
+    <span>Fontes das checagens: Aos Fatos, UOL Confere, Agência Lupa e Folha. Fonte da apuração: TSE (eleição federal 6258). Após a divulgação, o aplicativo consulta o TSE a cada 1 segundo para o resultado nacional e a cada 5 segundos para os 27 estados e a totalização oficial do exterior, enquanto as conexões estiverem disponíveis. O histórico local salva até 50 lotes nacionais. Os dados por país são uma prévia jornalística fixa. Não há projeções.</span>
     <span class="credits">Fotos: Lula — Ricardo Stuckert/Lula Oficial, CC BY-SA 4.0; Flávio Bolsonaro — TSE, CC BY 4.0, via Wikimedia Commons.</span>
   </footer>
 </div>
@@ -738,8 +738,10 @@ const B="https://resultados.tse.jus.br/oficial/ele2026/"+ELECTION+"/dados/";
 const RESULTS_START=Date.parse("2026-10-25T17:00:00-03:00");
 const WAIT_I=60000;
 const U=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
-const I=1000;
-let mode="uf",states=[],prev=null,running=false,natDelta=null,stateDeltas={},history=[],lastBatchSummary=null,selectedUF="SP",installPrompt=null,tickerTimer=null,pollTimer=null,secondRoundLive=false;
+const NATIONAL_POLL_MS=1000;
+const REGIONAL_POLL_MS=5000;
+const RETRY_403_429_MS=60000;
+let mode="uf",states=[],prev=null,running=false,statesRunning=false,statesLive=false,natDelta=null,stateDeltas={},history=[],lastBatchSummary=null,selectedUF="SP",installPrompt=null,tickerTimer=null,pollTimer=null,statesTimer=null,secondRoundLive=false,nationalRetryAt=0,stateRetryAt=0;
 const $=x=>document.getElementById(x);
 const pi=n=>Number(String(n??"").replace(/\D/g,""))||0;
 const pp=x=>{let s=String(x??"").trim();if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");return Number(s)||0};
@@ -972,22 +974,42 @@ function showWaiting(){
   $("apur").textContent="A divulgação oficial começa a partir das 17h";
   $("upd").textContent="—";
 }
-function nextDelay(){return Date.now()<RESULTS_START?Math.min(WAIT_I,Math.max(1000,RESULTS_START-Date.now())):(secondRoundLive?I:10000)}
-function scheduleNext(){clearTimeout(pollTimer);pollTimer=setTimeout(async()=>{await go();scheduleNext()},nextDelay())}
+function nationalNextDelay(){
+ if(Date.now()<RESULTS_START)return Math.min(WAIT_I,Math.max(1000,RESULTS_START-Date.now()));
+ if(Date.now()<nationalRetryAt)return Math.max(1000,nationalRetryAt-Date.now());
+ return secondRoundLive?NATIONAL_POLL_MS:10000;
+}
+function regionalNextDelay(){
+ if(Date.now()<RESULTS_START)return Math.min(WAIT_I,Math.max(1000,RESULTS_START-Date.now()));
+ if(Date.now()<stateRetryAt)return Math.max(1000,stateRetryAt-Date.now());
+ return statesLive?REGIONAL_POLL_MS:10000;
+}
+function scheduleNext(){
+ clearTimeout(pollTimer);
+ pollTimer=setTimeout(async()=>{await go();scheduleNext()},nationalNextDelay());
+}
+function scheduleStates(){
+ clearTimeout(statesTimer);
+ statesTimer=setTimeout(async()=>{await pollStates();scheduleStates()},regionalNextDelay());
+}
+function saveElectionSnapshot(){
+ try{
+  localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}));
+ }catch(_){/* Persistent storage may be unavailable; live polling must continue. */}
+}
+// Independent fast lane: ONLY the national BR file, one request per second when online.
 async function go(){
-  if(running)return;
-  if(Date.now()<RESULTS_START){showWaiting();return}
-  running=true;
-  $("err").style.display="none";
-  $("err").className="err";
-  try{
-    const national=await one("BR");
-     const r=[national,...await Promise.all(U.map(async uf=>({uf,...await one(uf)})))];
-    const n=r[0];
-    secondRoundLive=true;
-    $("cd").textContent="TSE · consulta a cada 1s";
-    document.querySelector(".mast .live").classList.add("is-live");
-
+ if(running)return;
+ if(Date.now()<RESULTS_START){showWaiting();return}
+ if(Date.now()<nationalRetryAt)return;
+ running=true;
+ try{
+  const n=await one("BR");
+  if(!(n.l.v>0&&n.f.v>0))throw Error("Resultado nacional ainda não publicado");
+  secondRoundLive=true;nationalRetryAt=0;
+  $("err").style.display="none";$("err").className="err";
+  $("cd").textContent="TSE · nacional a cada 1s";
+  document.querySelector(".mast .live").classList.add("is-live");
     // NATIONAL: compare only when the TSE publishes a genuinely different batch.
     const oldN=prev?.n||null;
     const nationalChanged=!oldN || n.dt!==oldN.dt || n.l.v!==oldN.l.v || n.f.v!==oldN.f.v || n.l.p!==oldN.l.p || n.f.p!==oldN.f.p;
@@ -1008,48 +1030,64 @@ async function go(){
     }
     nat(n,natDelta);
 
-    // STATES: same rule per UF. A 1-second poll with unchanged TSE data keeps
-    // the last meaningful delta visible instead of resetting to zero.
-    const oldStateMap=new Map((prev?.states||[]).map(x=>[x.uf,x]));
-    const nextBaselines=[];
-    states=r.slice(1).map(s=>{
-      const o=oldStateMap.get(s.uf);
-      const changed=!o || s.dt!==o.dt || s.l.v!==o.l.v || s.f.v!==o.f.v || s.l.p!==o.l.p || s.f.p!==o.f.p;
-      if(changed && o){
-        stateDeltas[s.uf]={
-          dlv:s.l.v-o.l.v,
-          dlp:s.l.p-o.l.p,
-          dfv:s.f.v-o.f.v,
-          dfp:s.f.p-o.f.p,
-          dvv:s.vv-o.vv,
-          dst:s.st-o.st
-        };
-      }
-      const d=stateDeltas[s.uf]||{};
-      nextBaselines.push(changed?s:o);
-      return {...s,...d};
-    });
-    prev.states=nextBaselines;
-    draw();
-    renderAnalytics();
 
-    localStorage.setItem("e26-r2",JSON.stringify({prev,natDelta,stateDeltas,history,lastBatchSummary,selectedUF}))
-  }catch(e){
-    secondRoundLive=false;
-    document.querySelector(".mast .live").classList.remove("is-live");
-    const unavailable=/HTTP (403|404)/.test(e.message);
-    if(unavailable){
-      showWaiting();
-    }else{
-      $("err").className="err";
-      $("err").textContent="Falha temporária ao consultar o TSE. Nova tentativa automática em alguns segundos. "+e.message;
-      $("err").style.display="block";
-      $("cd").textContent="Reconectando ao TSE";
-    }
-  } finally {
-    running=false
+  nat(n,natDelta);
+  renderAnalytics();
+  saveElectionSnapshot();
+ }catch(e){
+  secondRoundLive=false;
+  document.querySelector(".mast .live").classList.remove("is-live");
+  const message=String(e?.message||e);
+  const throttled=/HTTP (403|429|503)/.test(message);
+  if(throttled)nationalRetryAt=Date.now()+RETRY_403_429_MS;
+  if(/HTTP 404/.test(message)||message.includes("ainda não publicado")){
+   showWaiting();
+  }else{
+   $("err").className="err";
+   $("err").textContent=throttled?"O TSE limitou temporariamente as consultas nacionais. Nova tentativa automática com pausa de 60 segundos.":"Falha temporária na consulta nacional. Tentaremos novamente automaticamente. "+message;
+   $("err").style.display="block";
+   $("cd").textContent="Reconectando ao TSE";
   }
+ }finally{running=false}
 }
+// Independent regional lane: 27 UFs refresh at most every five seconds.
+// Partial failures do not erase the last verified values for other states.
+async function pollStates(){
+ if(statesRunning||Date.now()<RESULTS_START||Date.now()<stateRetryAt)return;
+ statesRunning=true;
+ try{
+  const results=await Promise.allSettled(U.map(async uf=>({uf,...await one(uf)})));
+  const incoming=results.filter(x=>x.status==="fulfilled").map(x=>x.value);
+  const errors=results.filter(x=>x.status==="rejected").map(x=>String(x.reason?.message||x.reason));
+  if(!incoming.length)throw Error(errors[0]||"Nenhuma UF respondeu");
+  if(errors.some(x=>/HTTP (403|429|503)/.test(x)))stateRetryAt=Date.now()+RETRY_403_429_MS;
+  else stateRetryAt=0;
+  statesLive=errors.length===0;
+  if(!prev)prev={n:null,states:[]};
+  const baseline=new Map((prev.states||[]).map(s=>[s.uf,s]));
+  const latest=new Map(states.map(s=>[s.uf,s]));
+  for(const s of incoming){
+   const o=baseline.get(s.uf);
+   const changed=!o||s.dt!==o.dt||s.l.v!==o.l.v||s.f.v!==o.f.v||s.l.p!==o.l.p||s.f.p!==o.f.p;
+   if(changed&&o){
+    stateDeltas[s.uf]={dlv:s.l.v-o.l.v,dlp:s.l.p-o.l.p,dfv:s.f.v-o.f.v,dfp:s.f.p-o.f.p,dvv:s.vv-o.vv,dst:s.st-o.st};
+   }
+   if(changed)baseline.set(s.uf,s);
+   latest.set(s.uf,{...s,...(stateDeltas[s.uf]||{})});
+  }
+  prev.states=[...baseline.values()];
+  states=[...latest.values()];
+  draw();renderAnalytics();saveElectionSnapshot();
+  const stamp=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  $("stateSync").textContent=incoming.length+" de 27 UFs consultadas às "+stamp+(errors.length?" · outras UFs mantêm último dado disponível":" · ciclo de 5 s");
+ }catch(e){
+  statesLive=false;
+  const msg=String(e?.message||e);
+  if(/HTTP (403|429|503)/.test(msg))stateRetryAt=Date.now()+RETRY_403_429_MS;
+  $("stateSync").textContent="Estados: consulta indisponível no momento; nova tentativa automática. Os dados anteriores foram preservados.";
+ }finally{statesRunning=false}
+}
+
 try{
   const saved=JSON.parse(localStorage.getItem("e26-r2")||"null");
   if(saved?.prev){
@@ -1214,7 +1252,7 @@ async function pollExteriorOfficial(manual=false){
   return;
  }
  if(extFetching||Date.now()<extRetryNotBefore)return;
- if(!manual&&extLastSuccess&&Date.now()-extLastSuccess<90000)return;
+ if(!manual&&extLastSuccess&&Date.now()-extLastSuccess<REGIONAL_POLL_MS)return;
  extFetching=true;extEl("extRefresh").disabled=true;
  try{
   const d=await one("ZZ");
@@ -1242,11 +1280,12 @@ async function pollExteriorOfficial(manual=false){
  }
 }
 extEl("extRefresh").addEventListener("click",()=>pollExteriorOfficial(true));
-setInterval(()=>pollExteriorOfficial(),90000);
+setInterval(()=>pollExteriorOfficial(),REGIONAL_POLL_MS);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)pollExteriorOfficial()});
 pollExteriorOfficial();
 
 go().finally(scheduleNext);
+pollStates().finally(scheduleStates);
 </script>
 </body>
 </html>
