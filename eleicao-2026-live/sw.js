@@ -1,4 +1,4 @@
-const CACHE="eleicoes-2026-v12-map-region-drilldown";
+const CACHE="eleicoes-2026-v13-municipios";
 const STATIC=["./","./index.html","./manifest.webmanifest","./icon.svg","./icon-180.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting()));
