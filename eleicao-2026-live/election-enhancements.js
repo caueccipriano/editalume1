@@ -287,7 +287,7 @@ async function electionOpenMunicipalMap(uf){
  const detail=document.getElementById("mapDetail");
  detail.innerHTML='<button class="geo-back" id="geoBackButton" type="button">← Voltar ao Brasil</button>'+
   '<h4>'+electionSafe(UF_NAMES[uf])+'</h4>'+
-  '<div class="geo-city-muted">Selecione um município no mapa ou procure pelo nome. Os votos são consultados individualmente no TSE.</div>'+
+  '<div class="geo-city-muted">Selecione um município no mapa ou procure pelo nome. A cor rosa representa limites geográficos, não o resultado da votação. Os votos são consultados individualmente no TSE.</div>'+
   '<label class="geo-city-label" for="geoCitySearch">Buscar município</label><input id="geoCitySearch" class="geo-city-search" type="search" placeholder="Digite cidade, por exemplo Jundiaí" autocomplete="off">'+
   '<div id="geoCitySuggestions" class="geo-city-suggestions"></div><div id="geoMunicipalResult" class="geo-municipal-result" aria-live="polite">Escolha uma cidade para ver os votos oficiais.</div>';
  document.getElementById("geoBackButton").addEventListener("click",electionReturnToBrazil);
