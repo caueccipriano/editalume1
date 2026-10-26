@@ -203,6 +203,7 @@ function electionReturnToBrazil(){
  electionCityRequestToken++;
  electionGeoBox.innerHTML=electionBrazilMarkup;
  electionGeoBox.classList.add("geo-map");
+ const key=document.querySelector(".geo-legend");if(key)key.hidden=false;
  document.getElementById("geoStatus").textContent="Mapa do Brasil · toque em um estado para ver todos os municípios.";
  electionBrazilPaint();
 }
@@ -280,6 +281,7 @@ async function electionOpenMunicipalMap(uf){
  if(!electionBrazilMarkup)electionBrazilMarkup=electionGeoBox.innerHTML;
  electionCityUF=uf;electionCitySelected="";
  const token=++electionCityRequestToken;
+ const key=document.querySelector(".geo-legend");if(key)key.hidden=true;
  document.getElementById("geoStatus").textContent="Carregando os limites municipais de "+(UF_NAMES[uf]||uf)+"…";
  electionGeoBox.innerHTML='<div class="geo-city-wait">Carregando municípios…</div>';
  const detail=document.getElementById("mapDetail");
@@ -319,7 +321,7 @@ async function electionOpenMunicipalMap(uf){
 electionGeoBox.addEventListener("click",event=>{
  const municipal=event.target.closest("[data-city-id]");
  if(municipal&&electionCityUF){electionSelectCity(municipal.dataset.cityId);return}
- const state=event.target.closest("path[data-uf]");
+ const state=event.target.closest("[data-uf]");
  if(state&&!electionCityUF)electionOpenMunicipalMap(state.dataset.uf);
 });
 electionGeoBox.addEventListener("keydown",event=>{
