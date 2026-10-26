@@ -236,7 +236,7 @@ async function electionCityCodes(){
  if(electionCityCatalogPromise)return electionCityCatalogPromise;
  electionCityCatalogPromise=(async()=>{
   let data=null;
-  for(const url of ["api/tse-municipio?resource=catalog",B+"config/mun-e006258-cm.json"]){
+  for(const url of ["api/tse-municipio?resource=catalog","https://resultados.tse.jus.br/oficial/ele2026/6258/config/mun-e006258-cm.json"]){
    try{const res=await fetch(url,{cache:"default"});if(res.ok){data=await res.json();break}}catch(_){}
   }
   if(!Array.isArray(data?.abr))throw Error("Catálogo municipal do TSE não disponível");
