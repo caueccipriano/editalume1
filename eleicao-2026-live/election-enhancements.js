@@ -143,3 +143,192 @@ electionGeoBox.addEventListener("click",event=>{
 });
 electionRegionRender();
 loadElectionGeo();
+
+
+/* Drill-down geográfico: Brasil > UF > município.
+   Malhas simplificadas: IBGE (GeoJSON), sob demanda por estado.
+   Resultados: APENAS arquivos de votação por município do TSE. */
+let electionCityUF=null,electionCitySelected="",electionCityRequestToken=0;
+let electionBrazilMarkup="",electionCityCatalogPromise=null;
+const electionCityGeoCache=new Map();
+const electionBrazilPaint=renderMap;
+renderMap=function(){if(electionCityUF)return;electionBrazilPaint();};
+const electionSafe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function electionCityFeatures(g){
+ return (g?.features||[]).filter(f=>/^\d{7}$/.test(String(f.properties?.cd_geocmu||""))&&f.geometry);
+}
+function electionCityGeometryPath(g,proj){
+ const polygons=g?.type==="MultiPolygon"?g.coordinates:g?.type==="Polygon"?[g.coordinates]:[];
+ return polygons.flatMap(poly=>poly.map(ring=>{
+  const points=ring.map(p=>proj(p)).filter(Boolean);
+  return points.length>2?"M"+points.map(p=>p[0].toFixed(2)+","+p[1].toFixed(2)).join("L")+"Z":"";
+ })).filter(Boolean).join(" ");
+}
+function electionCityProjection(features){
+ let minLon=Infinity,maxLon=-Infinity,minLat=Infinity,maxLat=-Infinity;
+ const walk=coords=>{
+  if(!Array.isArray(coords))return;
+  if(typeof coords[0]==="number"&&typeof coords[1]==="number"){
+    minLon=Math.min(minLon,coords[0]);maxLon=Math.max(maxLon,coords[0]);
+    minLat=Math.min(minLat,coords[1]);maxLat=Math.max(maxLat,coords[1]);
+  }else coords.forEach(walk);
+ };
+ for(const f of features)walk(f.geometry.coordinates);
+ if(!Number.isFinite(minLon)||minLon===maxLon||minLat===maxLat)throw Error("Malha geográfica incompleta");
+ const scale=Math.min(510/(maxLon-minLon),510/(maxLat-minLat)),width=(maxLon-minLon)*scale,height=(maxLat-minLat)*scale;
+ const left=(552-width)/2,top=(552-height)/2;
+ return p=>[left+(p[0]-minLon)*scale,top+(maxLat-p[1])*scale];
+}
+async function electionLoadCityShapes(uf){
+ if(electionCityGeoCache.has(uf))return electionCityGeoCache.get(uf);
+ const urls=[
+  "https://cdn.jsdelivr.net/gh/henriquemalvar/br-geojson@main/dist/municipios/"+uf+".geojson",
+  "https://raw.githubusercontent.com/henriquemalvar/br-geojson/main/dist/municipios/"+uf+".geojson"
+ ];
+ let lastError;
+ for(const url of urls){
+  try{
+   const response=await fetch(url,{cache:"force-cache"});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   const shapes=electionCityFeatures(await response.json());
+   if(!shapes.length)throw Error("Sem polígonos municipais");
+   electionCityGeoCache.set(uf,shapes);
+   return shapes;
+  }catch(e){lastError=e}
+ }
+ throw lastError||Error("A geometria deste estado não pôde ser carregada");
+}
+function electionReturnToBrazil(){
+ electionCityUF=null;electionCitySelected="";
+ electionCityRequestToken++;
+ electionGeoBox.innerHTML=electionBrazilMarkup;
+ electionGeoBox.classList.add("geo-map");
+ document.getElementById("geoStatus").textContent="Mapa do Brasil · toque em um estado para ver todos os municípios.";
+ electionBrazilPaint();
+}
+function electionMunicipalList(q){
+ const output=document.getElementById("geoCitySuggestions");
+ if(!output||!electionCityUF)return;
+ const arr=electionCityGeoCache.get(electionCityUF)||[];
+ const normalize=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const text=normalize(q).trim();
+ const matches=arr.filter(f=>normalize(f.properties.nome||"").includes(text)).sort((a,b)=>String(a.properties.nome).localeCompare(String(b.properties.nome),"pt-BR")).slice(0,12);
+ output.innerHTML=matches.map(f=>'<button type="button" data-city-id="'+f.properties.cd_geocmu+'" class="geo-city-item">'+electionSafe(f.properties.nome)+'</button>').join("")||
+  '<span class="geo-city-muted">Município não encontrado. Confira a grafia ou toque no mapa.</span>';
+}
+function electionSelectCity(id){
+ if(!electionCityUF)return;
+ const features=electionCityGeoCache.get(electionCityUF)||[];
+ const city=features.find(x=>x.properties.cd_geocmu===id);
+ if(!city)return;
+ electionCitySelected=id;
+ electionGeoBox.querySelectorAll("[data-city-id]").forEach(el=>{
+  if(el.tagName?.toLowerCase()==="path")el.classList.toggle("selected",el.dataset.cityId===id);
+ });
+ document.getElementById("geoCitySearch").value=city.properties.nome;
+ const result=document.getElementById("geoMunicipalResult");
+ result.innerHTML='<div class="geo-city-muted" role="status">Consultando os votos oficiais de '+electionSafe(city.properties.nome)+'…</div>';
+ const token=++electionCityRequestToken;
+ electionLoadCityVotes(electionCityUF,city,token);
+}
+async function electionCityCodes(){
+ if(electionCityCatalogPromise)return electionCityCatalogPromise;
+ electionCityCatalogPromise=(async()=>{
+  let data=null;
+  for(const url of ["api/tse-municipio?resource=catalog",B+"config/mun-e006258-cm.json"]){
+   try{const res=await fetch(url,{cache:"default"});if(res.ok){data=await res.json();break}}catch(_){}
+  }
+  if(!Array.isArray(data?.abr))throw Error("Catálogo municipal do TSE não disponível");
+  return new Map(data.abr.filter(x=>/^[a-z]{2}$/.test(x.cd||"")).map(a=>
+   [a.cd.toUpperCase(),new Map((a.mu||[]).filter(m=>/^\d{7}$/.test(String(m.cdi||""))&&/^\d{5}$/.test(String(m.cd||"")))
+     .map(m=>[String(m.cdi),String(m.cd)]))]));
+ })().catch(e=>{electionCityCatalogPromise=null;throw e});
+ return electionCityCatalogPromise;
+}
+async function electionLoadCityVotes(uf,feature,token){
+ const result=document.getElementById("geoMunicipalResult");
+ const ibge=feature.properties.cd_geocmu,name=feature.properties.nome;
+ try{
+  const catalog=await electionCityCodes();
+  const code=catalog.get(uf)?.get(ibge);
+  if(!code)throw Error("O município não foi encontrado no catálogo oficial do TSE");
+  const file=uf.toLowerCase()+code+"-c0001-e006258-u.json";
+  const source=B+uf.toLowerCase()+"/"+file;
+  let json=null;
+  for(const url of ["api/tse-municipio?uf="+uf+"&code="+code,source]){
+   try{const response=await fetch(url,{cache:"no-store"});if(response.ok){json=await response.json();break}}catch(_){}
+  }
+  if(!json)throw Error("Arquivo municipal ainda não disponível ou acesso temporariamente indisponível");
+  const d=parse(json);
+  if(token!==electionCityRequestToken||electionCityUF!==uf)return;
+  if(!(d.l.v+d.f.v))throw Error("Não há votos publicados no arquivo oficial deste município");
+  const total=d.l.v+d.f.v;
+  const percent=n=>total?(100*n/total).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%":"—";
+  result.innerHTML='<div class="geo-city-result-head"><span class="geo-source-tag">TSE · 2º turno · Presidente</span><h4>'+electionSafe(name)+' <small>· '+uf+'</small></h4></div>'+
+   '<div class="geo-city-result-grid"><div><small>Lula · 13</small><b>'+fi(d.l.v)+'</b><span>'+percent(d.l.v)+' dos votos dos dois candidatos</span></div>'+
+   '<div><small>Flávio Bolsonaro · 22</small><b>'+fi(d.f.v)+'</b><span>'+percent(d.f.v)+' dos votos dos dois candidatos</span></div></div>'+
+   '<p class="geo-city-note">'+fpct(d.a)+' das seções totalizadas · Arquivo gerado: '+electionSafe(d.dt||"horário indisponível")+'</p>'+
+   '<a href="'+electionSafe(source)+'" target="_blank" rel="noopener noreferrer" class="geo-official-link">Abrir resultado municipal no TSE ↗</a>';
+ }catch(e){
+  if(token!==electionCityRequestToken||electionCityUF!==uf)return;
+  result.innerHTML='<div class="geo-city-muted" role="status">'+electionSafe(e.message)+'. Tente novamente mais tarde ou consulte o portal oficial.</div>'+
+   '<a href="https://resultados.tse.jus.br/" target="_blank" rel="noopener noreferrer" class="geo-official-link">Consultar o TSE ↗</a>';
+ }
+}
+async function electionOpenMunicipalMap(uf){
+ if(!U.includes(uf))return;
+ if(!electionBrazilMarkup)electionBrazilMarkup=electionGeoBox.innerHTML;
+ electionCityUF=uf;electionCitySelected="";
+ const token=++electionCityRequestToken;
+ document.getElementById("geoStatus").textContent="Carregando os limites municipais de "+(UF_NAMES[uf]||uf)+"…";
+ electionGeoBox.innerHTML='<div class="geo-city-wait">Carregando municípios…</div>';
+ const detail=document.getElementById("mapDetail");
+ detail.innerHTML='<button class="geo-back" id="geoBackButton" type="button">← Voltar ao Brasil</button>'+
+  '<h4>'+electionSafe(UF_NAMES[uf])+'</h4>'+
+  '<div class="geo-city-muted">Selecione um município no mapa ou procure pelo nome. Os votos são consultados individualmente no TSE.</div>'+
+  '<label class="geo-city-label" for="geoCitySearch">Buscar município</label><input id="geoCitySearch" class="geo-city-search" type="search" placeholder="Digite cidade, por exemplo Jundiaí" autocomplete="off">'+
+  '<div id="geoCitySuggestions" class="geo-city-suggestions"></div><div id="geoMunicipalResult" class="geo-municipal-result" aria-live="polite">Escolha uma cidade para ver os votos oficiais.</div>';
+ document.getElementById("geoBackButton").addEventListener("click",electionReturnToBrazil);
+ try{
+  const shapes=await electionLoadCityShapes(uf);
+  if(electionCityUF!==uf||token!==electionCityRequestToken)return;
+  const project=electionCityProjection(shapes);
+  const paths=shapes.map(f=>{
+   const id=f.properties.cd_geocmu,name=electionSafe(f.properties.nome||id);
+   return '<path class="geo-municipality" data-city-id="'+id+'" d="'+electionCityGeometryPath(f.geometry,project)+
+    '" tabindex="0" role="button" aria-label="'+name+'"><title>'+name+'</title></path>';
+  }).join("");
+  electionGeoBox.innerHTML='<svg viewBox="0 0 552 552" class="geo-svg geo-city-svg" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Municípios de '+electionSafe(UF_NAMES[uf])+'">'+paths+'</svg>';
+  document.getElementById("geoStatus").textContent=electionSafe(UF_NAMES[uf])+": "+shapes.length+" municípios no mapa · limites geográficos do IBGE. Toque numa cidade ou use a busca.";
+  const input=document.getElementById("geoCitySearch");
+  input.addEventListener("input",e=>electionMunicipalList(e.target.value));
+  input.addEventListener("keydown",e=>{
+   if(e.key==="Enter"){
+    const first=document.querySelector("#geoCitySuggestions [data-city-id]");
+    if(first){e.preventDefault();electionSelectCity(first.dataset.cityId)}
+   }
+  });
+  electionMunicipalList("");
+ }catch(e){
+  if(electionCityUF!==uf||token!==electionCityRequestToken)return;
+  electionGeoBox.innerHTML='<div class="geo-city-wait">Não foi possível desenhar os limites municipais neste momento. Use “Voltar ao Brasil” e tente novamente.</div>';
+  document.getElementById("geoStatus").textContent="Falha ao carregar a malha municipal. O mapa nacional continua disponível.";
+ }
+}
+// Clique e teclado nos limites reais dos municípios, e seleção na busca.
+electionGeoBox.addEventListener("click",event=>{
+ const municipal=event.target.closest("[data-city-id]");
+ if(municipal&&electionCityUF){electionSelectCity(municipal.dataset.cityId);return}
+ const state=event.target.closest("path[data-uf]");
+ if(state&&!electionCityUF)electionOpenMunicipalMap(state.dataset.uf);
+});
+electionGeoBox.addEventListener("keydown",event=>{
+ if(electionCityUF&&(event.key==="Enter"||event.key===" ")){
+  const m=event.target.closest("path[data-city-id]");
+  if(m){event.preventDefault();electionSelectCity(m.dataset.cityId)}
+ }
+});
+document.getElementById("mapDetail").addEventListener("click",event=>{
+ const button=event.target.closest("button[data-city-id]");
+ if(button&&electionCityUF)electionSelectCity(button.dataset.cityId);
+});
