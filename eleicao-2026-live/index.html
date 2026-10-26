@@ -509,7 +509,7 @@ body.screenmode .candidate:first-child{padding:22px}
 
 .ext-historical{font-size:9px;line-height:1.65;color:#8a6573;margin-top:9px;border-top:1px dashed #eedbdf;padding-top:9px}.ext-historical a{color:#9e2851;font-weight:850;text-underline-offset:2px}
 </style>
-<link rel="stylesheet" href="election-enhancements.css?v=12">
+<link rel="stylesheet" href="election-enhancements.css?v=13">
 </head>
 <body>
 <div class="wrap">
@@ -654,8 +654,8 @@ body.screenmode .candidate:first-child{padding:22px}
       <p>Os dados do 1º turno são finais; os do 2º podem estar parciais. A comparação só aparece quando todas as UFs da região tiverem o 1º turno carregado.</p>
     </section>
     <section class="card mappanel analytics">
-      <div class="paneltitle"><div><div class="eyebrow">Mapa geográfico interativo</div><h3>Brasil · toque nos estados</h3></div><div class="sourcepill">Toque em um estado</div></div>
-      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div><div id="geoStatus" class="geo-status" role="status">Carregando mapa geográfico…</div><div class="geo-legend"><span><i style="background:#c91b41"></i>Lula</span><span><i style="background:#4776ce"></i>Flávio</span><span><i style="background:#e5dfe1"></i>Sem dados</span></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
+      <div class="paneltitle"><div><div class="eyebrow">Mapa real · Brasil → Estado → Município</div><h3>Explore os votos por município</h3></div><div class="sourcepill">Toque no estado e depois na cidade</div></div>
+      <div class="maplayout"><div class="mapscroll"><div id="tileMap" class="tilemap"></div><div id="geoStatus" class="geo-status" role="status">Carregando malhas do IBGE…</div><div class="geo-legend"><span><i style="background:#c91b41"></i>Lula</span><span><i style="background:#4776ce"></i>Flávio</span><span><i style="background:#e5dfe1"></i>Sem dados</span></div></div><div id="mapDetail" class="mapdetail">Carregando UFs…</div></div>
     </section>
 
     <section class="card rankpanel analytics">
@@ -1527,6 +1527,6 @@ setTimeout(()=>U.filter(uf=>uf!=="SP").forEach(uf=>loadFirstScope(uf)),2000);
 go().finally(scheduleNext);
 pollStates().finally(scheduleStates);
 </script>
-<script src="election-enhancements.js?v=12"></script>
+<script src="election-enhancements.js?v=13"></script>
 </body>
 </html>
