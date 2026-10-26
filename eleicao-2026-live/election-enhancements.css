@@ -36,3 +36,32 @@
 .geo-openstate{border:0;border-radius:9px;background:#b2123d;color:#fff;font-size:10px;font-weight:900;padding:10px 12px;cursor:pointer;margin-top:12px}
 @media(max-width:900px){.region-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.region-panel{padding:15px 12px}.region-top{flex-direction:column;align-items:flex-start}.region-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.region-entry:last-child{grid-column:span 2}.mappanel .maplayout{grid-template-columns:1fr}.mappanel .mapscroll{overflow:visible}#tileMap.geo-map{padding:4px}}
+
+
+/* Zoom municipal: geometrias reais do IBGE, carregadas ao abrir um estado */
+.geo-city-svg{touch-action:pan-y;max-height:650px}
+.geo-municipality{fill:#f4cdd6;stroke:#fff;stroke-width:.55;stroke-linejoin:round;cursor:pointer;transition:fill .13s ease}
+.geo-municipality:hover,.geo-municipality:focus-visible{fill:#e36a8a;stroke:#a01139;stroke-width:1.5;outline:none}
+.geo-municipality.selected{fill:#b00020;stroke:#7c0828;stroke-width:2.2;filter:drop-shadow(0 1px 2px rgba(100,10,30,.18))}
+.geo-back{border:1px solid #e7c7d0;border-radius:10px;background:#fff3f6;color:#a30d33;font-weight:900;font-size:11px;padding:10px 12px;cursor:pointer;margin-bottom:14px}
+.geo-city-muted{color:#846d76;font-size:11px;line-height:1.65;margin:9px 0}
+.geo-city-wait{min-height:240px;display:grid;place-items:center;text-align:center;padding:22px;border:1px dashed #edced8;color:#836b74;font-size:12px;border-radius:15px;background:#fff8fa}
+.geo-city-label{font-size:10px;font-weight:950;color:#7b4055;display:block;margin:14px 0 7px}
+.geo-city-search{width:100%;min-height:44px;border:1px solid #e5cbd2;border-radius:10px;font-size:12px;padding:10px 12px;color:#492c37;background:#fff}
+.geo-city-search:focus{outline:2px solid #e75e81;outline-offset:1px}
+.geo-city-suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:165px;overflow-y:auto;margin-top:8px}
+.geo-city-item{font-size:10px;color:#763e51;font-weight:850;text-align:left;padding:9px 10px;cursor:pointer;background:#fff7f8;border:1px solid #eed6dc;border-radius:9px;line-height:1.3}
+.geo-city-item:hover,.geo-city-item:focus-visible{background:#ffe7ee;border-color:#d88da2}
+.geo-municipal-result{font-size:11px;line-height:1.6;border-top:1px solid #eddae0;margin-top:13px;padding-top:13px}
+.geo-city-result-head h4{font-size:19px;letter-spacing:-.04em;margin:8px 0;color:#49283a}
+.geo-city-result-head h4 small{font-size:11px;color:#947780;letter-spacing:normal}
+.geo-source-tag{font-size:9px;font-weight:950;color:#a31038;letter-spacing:.08em}
+.geo-city-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.geo-city-result-grid>div{padding:12px 10px;background:#fff9fb;border:1px solid #efd7df;border-radius:12px;min-width:0}
+.geo-city-result-grid small{display:block;font-size:10px;font-weight:850;color:#8c6573;line-height:1.4}
+.geo-city-result-grid b{font-size:clamp(20px,3.3vw,27px);font-weight:1000;color:#3b2630;display:block;margin:6px 0}
+.geo-city-result-grid span{font-size:9px;color:#856b76;display:block}
+.geo-city-note{font-size:10px;line-height:1.6;color:#85737a;margin-top:12px}
+.geo-official-link{display:inline-block;color:#a80b33;font-size:10px;font-weight:950;margin-top:8px;text-decoration:underline;text-underline-offset:3px}
+.geo-legend[hidden]{display:none}
+@media(max-width:620px){.geo-city-suggestions{grid-template-columns:1fr 1fr}.geo-city-result-grid{grid-template-columns:1fr 1fr}.geo-city-svg{max-height:65vh}}
